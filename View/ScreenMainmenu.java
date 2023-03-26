@@ -27,6 +27,7 @@ public class ScreenMainmenu extends Screen{
         InputManager.unregisterListener(KeyEvent.VK_1, this::onPlay);
         InputManager.unregisterListener(KeyEvent.VK_2, this::onExit);
 
+        new ScreenGame();
         GameController.model.setDungeon();
     }
 
