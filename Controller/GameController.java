@@ -8,8 +8,7 @@ public class GameController {
     public static final View.ViewController view = new View.ViewController();
     
     public GameController(){
-        //model.setDungeon();
-        ScreenMainmenu screen = new ScreenMainmenu();
+        new ScreenMainmenu();
     }
 
     public static void exitGame(){
