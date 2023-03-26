@@ -5,11 +5,11 @@ public class ViewController {
 
     public ViewController(){}
 
-    public void setContent(GUIContent content){
+    public void setContent(DrawCommand content){
         t.addContent(content);
     }
 
-    public void clearContent(GUIContent content){
+    public void clearContent(DrawCommand content){
         t.removeContent(content);
     }
 

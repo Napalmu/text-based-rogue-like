@@ -10,7 +10,7 @@ class Terminal extends Frame{
     
     private Label[][] screen;
 
-    private ArrayList<GUIContent> content = new ArrayList<>();
+    private ArrayList<DrawCommand> content = new ArrayList<>();
 
     public Terminal(int width, int height){    
         addWindowListener (new WindowAdapter() {    
@@ -52,17 +52,17 @@ class Terminal extends Frame{
         setChar(x,y,c+"");
     }
 
-    public void addContent(GUIContent content){
+    public void addContent(DrawCommand content){
         this.content.add(content);
         drawContent(content);
     }
 
-    public void removeContent(GUIContent content){
+    public void removeContent(DrawCommand content){
         this.content.remove(content);
         redraw();
     }
 
-    public void drawContent(GUIContent content){
+    public void drawContent(DrawCommand content){
         content.getStream().forEach((c) -> {
             setChar(c.x, c.y, c.c);
         });

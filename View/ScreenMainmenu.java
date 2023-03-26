@@ -6,12 +6,12 @@ import Controller.GameController;
 import Managers.InputManager;
 
 public class ScreenMainmenu extends Screen{
-    private GUIContent title;
-    private GUIContent menu;
+    private DrawCommand title;
+    private DrawCommand menu;
 
     public ScreenMainmenu(){
-        title = new GUIContent(10, 10, "Roguelike","Game");
-        menu = new GUIContent(10, 14, "1: Play","2: Exit");
+        title = new DrawCommand(10, 10, "Roguelike","Game");
+        menu = new DrawCommand(10, 14, "1: Play","2: Exit");
 
         GameController.view.setContent(title);
         GameController.view.setContent(menu);

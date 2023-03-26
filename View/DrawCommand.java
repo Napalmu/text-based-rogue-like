@@ -2,13 +2,13 @@ package View;
 
 import java.util.stream.Stream;
 
-public class GUIContent {
+public class DrawCommand {
 
     private int x;
     private int y;
     private String[] content;
 
-    public GUIContent(int x, int y, String... content) {
+    public DrawCommand(int x, int y, String... content) {
         this.x = x;
         this.y = y;
         this.content = content;
