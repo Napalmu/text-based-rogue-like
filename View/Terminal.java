@@ -1,14 +1,18 @@
 package View;
-import java.awt.*;
+import javax.swing.*;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import Managers.InputManager;
 
-class Terminal extends Frame{
+class Terminal extends JFrame{
     
-    private Label[][] screen;
+    private JLabel[][] screen;
 
     private ArrayList<DrawCommand> content = new ArrayList<>();
 
@@ -20,32 +24,35 @@ class Terminal extends Frame{
         }); 
         this.addKeyListener(InputManager.instance);
                 
-        screen = new Label[height][width];
-        setBackground(Color.BLACK); 
-        setLayout(null);   
-        for(int x=0; x<width;x++){
-            for(int y=0; y<height; y++){
-                Label l = new Label();
+        screen = new JLabel[width][height];
+        JPanel panel = new JPanel();     
+        panel.setBackground(Color.BLACK); 
+        panel.setBounds(0, 0, 800, 600);
+        panel.setLayout(new GridLayout(height, width));
+        for(int y=0; y<height; y++){
+            for(int x=0; x<width;x++){
+                JLabel l = new JLabel();
+                l.setFont(new Font("Courier new", 0, 12));
+                panel.add(l);
                 l.setForeground(Color.WHITE);
-                l.setBounds(x*10, (y+2)*20, 10, 20);  
-                add(l);
-                screen[y][x]=l;
+                screen[x][y]=l;
             }
         }
         
+        add(panel);
         setSize(810,600);      
         setVisible(true); 
     }
 
     public void redraw(){        
-        Stream<Label> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
+        Stream<JLabel> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
         labels.forEach(l -> l.setText(""));
 
         content.forEach(c -> drawContent(c));
     }
 
     public void setChar(int x, int y, String c){
-        screen[y][x].setText(c);
+        screen[x][y].setText(c);
     }
     
     public void setChar(int x, int y, char c){
