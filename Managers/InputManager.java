@@ -65,7 +65,7 @@ public class InputManager implements KeyListener{
     public interface KeyConsumer{
         public void onKeyPressed();
     }
-    public class KeyPressedEvent{
+    public static class KeyPressedEvent{
         private int event;
         private KeyConsumer keyConsumer;
 
