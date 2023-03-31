@@ -16,16 +16,44 @@ public class InputManager implements KeyListener{
         if (!instance.listeners.containsKey(event)) instance.listeners.put(event, new ArrayList<>());
         instance.listeners.get(event).add(consumer);
     }
+    public static void registerListener(KeyPressedEvent keyEvent){
+        registerListener(keyEvent.getEvent(), keyEvent.getKeyConsumer());
+    }
+    // public static void registerListener(int event, KeyConsumer consumer, boolean unregister_after){
+    //     if (!instance.listeners.containsKey(event)) instance.listeners.put(event, new ArrayList<>());
+    //     instance.listeners.get(event).add(consumer);
+
+    //     if(unregister_after == true) instance.listeners.get(event).add(() -> {unregisterListener(event, consumer);});
+    // }
+
+    public void registerListenerList(ArrayList<KeyPressedEvent> keyList, boolean unregister_after){
+        for (KeyPressedEvent kPressedEvent : keyList) {
+            registerListener(kPressedEvent);
+
+            KeyConsumer k = 
+            () ->{    
+                for (KeyPressedEvent _kPressedEvent : keyList) {
+                    unregisterListener(_kPressedEvent);
+                }
+            };
+            registerListener(kPressedEvent.getEvent(), k);
+        }
+
+    }
 
     public static void unregisterListener(int event, KeyConsumer consumer){
         if (instance.listeners.containsKey(event))
             instance.listeners.get(event).remove(consumer);
     }
+    public static void unregisterListener(KeyPressedEvent keyEvent){
+        unregisterListener(keyEvent.getEvent(), keyEvent.getKeyConsumer());
+    }
 
     
     @Override
     public void keyPressed(KeyEvent e) {
-        for (KeyConsumer c : listeners.getOrDefault(e.getKeyCode(), new ArrayList<>())){
+        ArrayList<KeyConsumer> copyList = new ArrayList<>(listeners.getOrDefault(e.getKeyCode(), new ArrayList<>()));
+        for (KeyConsumer c : copyList){
             c.onKeyPressed();
         }
     }
@@ -36,5 +64,22 @@ public class InputManager implements KeyListener{
     @FunctionalInterface
     public interface KeyConsumer{
         public void onKeyPressed();
+    }
+    public class KeyPressedEvent{
+        private int event;
+        private KeyConsumer keyConsumer;
+
+        public KeyPressedEvent(int event, KeyConsumer keyConsumer) {
+            this.event = event;
+            this.keyConsumer = keyConsumer;
+        }
+
+        public int getEvent() {
+            return event;
+        }
+
+        public KeyConsumer getKeyConsumer() {
+            return keyConsumer;
+        }
     }
 }
