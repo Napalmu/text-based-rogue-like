@@ -26,7 +26,7 @@ public class InputManager implements KeyListener{
     //     if(unregister_after == true) instance.listeners.get(event).add(() -> {unregisterListener(event, consumer);});
     // }
 
-    public void registerListenerList(ArrayList<KeyPressedEvent> keyList, boolean unregister_after){
+    public static void registerListenerList(ArrayList<KeyPressedEvent> keyList, boolean unregister_after){
         for (KeyPressedEvent kPressedEvent : keyList) {
             registerListener(kPressedEvent);
 
