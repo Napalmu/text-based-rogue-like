@@ -2,7 +2,7 @@
 
 
 Erno: Pohja. <br />
-Joonatan: Pelaaja ja viholliset -dataluokat. Rajapinta näille. <br />
+Joonatan ja Eemeli: Pelaaja ja viholliset -dataluokat. Rajapinta näille. <br />
 Ingman: Input. Monisäikeisyys. <br />
 Andrei: Dungeon -logiikka. <br />
 Tipu: Grafiikkakoodi, grafiikka. <br />
