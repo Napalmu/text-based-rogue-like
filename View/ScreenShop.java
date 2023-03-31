@@ -45,11 +45,12 @@ public class ScreenShop extends Screen{
     }
 
     public void desc1(){
-        description.content = new String[]{"Jousilla toimiva hyppylaite"};
-        GameController.view.refresh();
+
+        description.setContent(new String[]{"Jousilla toimiva hyppylaite"});
     }
     public void desc2(){
-        description.content = new String[]{"Banaanista ja jäätelöstä koostuva jälkiruoka"};
+        description.setContent(new String[]{"Banaanista ja jäätelöstä koostuva jälkiruoka"});
+
     }
     public void drawDescription(){
         GameController.view.setContent(description);

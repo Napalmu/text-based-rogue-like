@@ -1,12 +1,14 @@
 package View;
 
+import Controller.GameController;
+
 import java.util.stream.Stream;
 
 public class DrawCommand {
 
     private int x;
     private int y;
-    public String[] content;
+    private String[] content;
 
     public DrawCommand(int x, int y, String... content) {
         this.x = x;
@@ -38,5 +40,10 @@ public class DrawCommand {
             this.y = y;
             this.c = c;
         }
+    }
+
+    public void setContent(String[] content) {
+        this.content = content;
+        GameController.view.refresh();
     }
 }
