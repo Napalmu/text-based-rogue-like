@@ -17,8 +17,8 @@ public class MessageRoom extends Room{
 
     @Override
     public void enter() {
-        DrawCommand msg = new DrawCommand(5, 1, messages.toArray(new String[0]));
-        GameController.view.setContent(msg);
+        this.render(new DrawCommand(5,1, messages.toArray(new String[0])));
+
         super.enter();
     }
 }

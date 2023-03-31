@@ -12,6 +12,18 @@ import java.util.stream.Stream;
 
 public abstract class Room {
     private final List<Direction> nextRooms;
+    private final ArrayList<DrawCommand> commands = new ArrayList<>();
+
+    protected void render(DrawCommand command) {
+        this.commands.add(command);
+        GameController.view.setContent(command);
+    }
+
+    protected void clear() {
+        for (DrawCommand command : this.commands) {
+            GameController.view.clearContent(command);
+        }
+    }
 
     public Room(List<Direction> nextRooms) {
         this.nextRooms = nextRooms;
@@ -22,16 +34,18 @@ public abstract class Room {
         String[] rooms = new String[nextRooms.size()];
         for (int i = 0; i < nextRooms.size(); i++) {
             Direction nextRoom = nextRooms.get(i);
-            rooms[i] = (i+1) + ": " + nextRoom.getName();
-
-            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1+i, nextRoom.getDestination()::enter));
+            rooms[i] = (i + 1) + ": " + nextRoom.getName();
+            InputManager.KeyConsumer consumer = () -> {
+                clear();
+                nextRoom.getDestination().enter();
+            };
+            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + i, consumer));
         }
-
-        DrawCommand command = new DrawCommand(5, 6, rooms);
-        GameController.view.setContent(command);
+        render(new DrawCommand(5, 6, rooms));
 
         InputManager.registerListenerList(choices, true);
     }
+
     public void enter() {
         moveToNextRoom();
     }
