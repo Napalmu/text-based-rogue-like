@@ -1,6 +1,6 @@
 package Model;
 
-public class Entity {
+class Entity {
     private int hp;
     private String name;
 

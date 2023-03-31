@@ -1,17 +1,8 @@
 package Model;
 
-public class Player {
-    private int hp;
-
-    public Player(int hp){
-        this.hp = hp;
+class Player extends Entity {
+    public Player(int hp, String name){
+        super(hp, name);
     }
-    public void setHp(int hp){
-        this.hp = hp;
-    }
-    public int getHp(){
-        return hp;
-    }
-
 }
 
