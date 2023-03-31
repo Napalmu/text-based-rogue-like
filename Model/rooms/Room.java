@@ -1,4 +1,4 @@
-package Model;
+package Model.rooms;
 
 import Controller.GameController;
 import Managers.InputManager;
@@ -6,11 +6,9 @@ import View.DrawCommand;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
-public abstract class Room {
+public abstract class Room implements Enterable{
     private final List<Direction> nextRooms;
     private final ArrayList<DrawCommand> commands = new ArrayList<>();
 
@@ -29,7 +27,7 @@ public abstract class Room {
         this.nextRooms = nextRooms;
     }
 
-    private void moveToNextRoom() {
+    protected void moveToNextRoom() {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         String[] rooms = new String[nextRooms.size()];
         for (int i = 0; i < nextRooms.size(); i++) {
@@ -46,7 +44,5 @@ public abstract class Room {
         InputManager.registerListenerList(choices, true);
     }
 
-    public void enter() {
-        moveToNextRoom();
-    }
+    public abstract void enter();
 }

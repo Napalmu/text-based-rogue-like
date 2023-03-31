@@ -1,10 +1,10 @@
-package Model;
+package Model.rooms;
 
 public class Direction {
     private final String name;
-    private final Room destination;
+    private final Enterable destination;
 
-    public Direction(String name, Room destination) {
+    public Direction(String name, Enterable destination) {
         this.name = name;
         this.destination = destination;
     }
@@ -13,7 +13,7 @@ public class Direction {
         return name;
     }
 
-    public Room getDestination() {
+    public Enterable getDestination() {
         return destination;
     }
 }

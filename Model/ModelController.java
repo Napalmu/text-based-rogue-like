@@ -1,11 +1,15 @@
 package Model;
 
+
+import Model.rooms.Dungeon;
+
 public class ModelController {
     
     public ModelController(){}
 
     public void setDungeon(){
-        new Dungeon();
+        Dungeon dungeon = new Dungeon();
+        dungeon.enter();
     }
 
 }

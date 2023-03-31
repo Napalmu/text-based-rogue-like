@@ -1,10 +1,7 @@
-package Model;
+package Model.rooms;
 
-import Controller.GameController;
-import Managers.InputManager;
 import View.DrawCommand;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MessageRoom extends Room{
@@ -19,6 +16,6 @@ public class MessageRoom extends Room{
     public void enter() {
         this.render(new DrawCommand(5,1, messages.toArray(new String[0])));
 
-        super.enter();
+        this.moveToNextRoom();
     }
 }
