@@ -27,12 +27,12 @@ class Terminal extends JFrame{
         screen = new JLabel[width][height];
         JPanel panel = new JPanel();     
         panel.setBackground(Color.BLACK); 
-        panel.setBounds(0, 0, 800, 600);
+        panel.setBounds(0, 0, width*10, height*18);
         panel.setLayout(new GridLayout(height, width));
         for(int y=0; y<height; y++){
             for(int x=0; x<width;x++){
                 JLabel l = new JLabel();
-                l.setFont(new Font("Courier new", 0, 12));
+                l.setFont(new Font("Courier new", 0, 15));
                 panel.add(l);
                 l.setForeground(Color.WHITE);
                 screen[x][y]=l;
@@ -40,7 +40,7 @@ class Terminal extends JFrame{
         }
         
         add(panel);
-        setSize(810,600);      
+        setSize(panel.getSize());      
         setVisible(true); 
     }
 
@@ -49,6 +49,7 @@ class Terminal extends JFrame{
         labels.forEach(l -> l.setText(""));
 
         content.forEach(c -> drawContent(c));
+        repaint();
     }
 
     public void setChar(int x, int y, String c){
@@ -73,5 +74,6 @@ class Terminal extends JFrame{
         content.getStream().forEach((c) -> {
             setChar(c.x, c.y, c.c);
         });
+        repaint();
     }
 }
