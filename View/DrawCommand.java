@@ -6,7 +6,7 @@ public class DrawCommand {
 
     private int x;
     private int y;
-    private String[] content;
+    public String[] content;
 
     public DrawCommand(int x, int y, String... content) {
         this.x = x;

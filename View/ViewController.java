@@ -5,6 +5,10 @@ public class ViewController {
 
     public ViewController(){}
 
+    public void refresh(){
+        t.redraw();
+    }
+
     public void setContent(DrawCommand content){
         t.addContent(content);
     }
