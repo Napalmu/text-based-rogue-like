@@ -10,8 +10,8 @@ public class ScreenMainmenu extends Screen{
     private DrawCommand menu;
 
     public ScreenMainmenu(){
-        title = new DrawCommand(10, 10, "Roguelike","Game");
-        menu = new DrawCommand(10, 14, "1: Play","2: Exit");
+        title = new DrawCommand(10, 10, "Rosmonkaltainen","Peli");
+        menu = new DrawCommand(10, 14, "1: Pelaa","2: Poistu");
 
         GameController.view.setContent(title);
         GameController.view.setContent(menu);
