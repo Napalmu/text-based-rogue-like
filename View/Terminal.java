@@ -1,14 +1,14 @@
 package View;
 import javax.swing.*;
 
+import Controller.InputManager;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.stream.Stream;
-
-import Managers.InputManager;
 
 class Terminal extends JFrame{
     

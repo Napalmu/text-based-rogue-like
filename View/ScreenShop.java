@@ -1,7 +1,7 @@
 package View;
 
 import Controller.GameController;
-import Managers.InputManager;
+import Controller.InputManager;
 
 import java.awt.event.KeyEvent;
 

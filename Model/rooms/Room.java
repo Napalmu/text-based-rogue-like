@@ -1,7 +1,7 @@
 package Model.rooms;
 
 import Controller.GameController;
-import Managers.InputManager;
+import Controller.InputManager;
 import View.DrawCommand;
 
 import java.awt.event.KeyEvent;

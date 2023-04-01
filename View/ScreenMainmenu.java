@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import Controller.GameController;
-import Managers.InputManager;
+import Controller.InputManager;
 
 public class ScreenMainmenu extends Screen{
     private DrawCommand title;
