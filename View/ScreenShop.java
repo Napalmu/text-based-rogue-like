@@ -5,7 +5,7 @@ import Controller.InputManager;
 
 import java.awt.event.KeyEvent;
 
-public class ScreenShop extends Screen{
+class ScreenShop extends Screen{
     private String[] screen = new String[]{
             "╔═════════════════════════════════════════════════════════╤════════════════════╗",
             "║                                                         │                    ║",

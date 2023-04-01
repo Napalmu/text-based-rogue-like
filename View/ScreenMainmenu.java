@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Controller.GameController;
 import Controller.InputManager;
 
-public class ScreenMainmenu extends Screen{
+class ScreenMainmenu extends Screen{
     private DrawCommand title;
     private DrawCommand menu;
 

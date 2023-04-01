@@ -2,7 +2,7 @@ package View;
 
 import Controller.GameController;
 
-public class ScreenGame extends Screen{
+class ScreenGame extends Screen{
     
     private String[] screen = new String[]{
         "╔═════════════════════════════════════════════════════════╤════════════════════╗",
