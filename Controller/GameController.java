@@ -1,6 +1,5 @@
 package Controller;
 
-import View.ScreenMainmenu;
 /**
  * -model: Muuttuja, jossa
  */
@@ -11,7 +10,7 @@ public class GameController {
     public static final View.ViewController view = new View.ViewController();
 
     private GameController(){
-        new ScreenMainmenu();
+        view.startGame();
     }
     public static GameController startGame() {
         if (main== null) {

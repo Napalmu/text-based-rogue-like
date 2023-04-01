@@ -5,6 +5,10 @@ public class ViewController {
 
     public ViewController(){}
 
+    public void startGame(){
+        new ScreenMainmenu();
+    }
+
     public void refresh(){
         t.redraw();
     }
