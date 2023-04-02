@@ -1,14 +1,15 @@
 package View;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.InputManager;
+import View.ascii_art.AsciiDrawing;
 
 class ScreenMainmenu extends Screen{
     private DrawCommand title;
     private DrawCommand menu;
+    private DrawCommand art;
 
     InputManager.KeyConsumer a = this::onPlay;
     InputManager.KeyConsumer b = this::onExit;
@@ -16,9 +17,16 @@ class ScreenMainmenu extends Screen{
     InputManager.KeyConsumer c =this::onShop;
 
     public ScreenMainmenu(){
-        title = new DrawCommand(10, 10, "Rosmonkaltainen","Peli");
-        menu = new DrawCommand(10, 14, "1: Pelaa","2: Poistu");
+        title = new DrawCommand(25, 13, "                  ",
+                                                       " Rosmonkaltainen  ",
+                                                       " Peli             ");
+        menu = new DrawCommand(25, 16, "                  ",
+                                                      " 1: Pelaa         ",
+                                                      " 2: Poistu        ",
+                                                      "                  ");
+        art = new DrawCommand(0, 0, AsciiDrawing.MAINMENU.getArt());
 
+        GameController.view.setContent(art);
         GameController.view.setContent(title);
         GameController.view.setContent(menu);
 
