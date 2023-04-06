@@ -33,7 +33,39 @@ public enum AsciiDrawing {
             };
         }
 
-    };
+    },
+    OUTSIDE(){
+
+        @Override
+        public String[] getArt() {
+            return new String[]{
+                "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO                                  ",
+                "OOOOOOOOOOOOOOOOOOOOOOOO      OOOOOOO  OOOO                                    ",
+                "OOOOOOOOOOOOOOO      OOO        OOOOO                                          ",
+                "OOOOOOOOOOOO                                       oo                          ",
+                "OOOOOOOOO                                         oooo                         ",
+                "OOOOOOOO                                          oooo                         ",
+                "OOOOOO                                             ii                          ",
+                "OOO█                                               ii                          ",
+                "OOO█                                                                           ",
+                "OOOOO                                                                          ",
+                "OOOOO                                         oo                               ",
+                "OOOO                                         oooo                              ",
+                "OOOO                                         oooo                              ",
+                "OOO                                           ii                               ",
+                "OO                                            ii         oo                    ",
+                "O                                                       oooo                   ",
+                "OOO                                                     oooo                   ",
+                "OOO                                                      ii                    ",
+                "OO                                                       ii                    ",
+                "OO                                                                             ",
+                "OO                                                                             ",
+                "O                                                                              "
+            };
+        }
+
+    },
+    ;
 
     public abstract String[] getArt();
 }

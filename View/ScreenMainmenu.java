@@ -15,6 +15,7 @@ class ScreenMainmenu extends Screen{
     InputManager.KeyConsumer b = this::onExit;
 
     InputManager.KeyConsumer c =this::onShop;
+    InputManager.KeyConsumer d =this::onAdventure;
 
     public ScreenMainmenu(){
         title = new DrawCommand(25, 13, "                  ",
@@ -33,6 +34,7 @@ class ScreenMainmenu extends Screen{
         InputManager.registerListener(KeyEvent.VK_1, a);
         InputManager.registerListener(KeyEvent.VK_2, b);
         InputManager.registerListener(KeyEvent.VK_3, c);
+        InputManager.registerListener(KeyEvent.VK_4, d);
     }
 
     /**
@@ -46,10 +48,7 @@ class ScreenMainmenu extends Screen{
         System.out.println("Fhbasfvhnfsdghds");
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
-
-        InputManager.unregisterListener(KeyEvent.VK_1, a);
-        InputManager.unregisterListener(KeyEvent.VK_2, b);
-        InputManager.unregisterListener(KeyEvent.VK_3, c);
+        unregisterListeners();
 
         new ScreenGame();
         GameController.model.setDungeon();
@@ -58,12 +57,29 @@ class ScreenMainmenu extends Screen{
         System.out.println("Fhbasfvhnfsdghds");
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
+        unregisterListeners();
 
+
+        new ScreenShop();        
+    }
+
+    public void onAdventure(){
+        System.out.println("Fhbasfvhnfsdghds");
+        GameController.view.clearContent(art);
+        GameController.view.clearContent(title);
+        GameController.view.clearContent(menu);
+        unregisterListeners();
+
+
+        new ScreenAdventure(); 
+    }
+
+
+    public void unregisterListeners(){
         InputManager.unregisterListener(KeyEvent.VK_1, a);
         InputManager.unregisterListener(KeyEvent.VK_2, b);
         InputManager.unregisterListener(KeyEvent.VK_3, c);
-
-        new ScreenShop();
+        InputManager.unregisterListener(KeyEvent.VK_4, d);
     }
     public void onExit(){
         GameController.exitGame();

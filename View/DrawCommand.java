@@ -19,6 +19,15 @@ public class DrawCommand {
     public char getAt(int x, int y){
         return content[y].charAt(x);
     }
+    public void setContent(String[] content) {
+        this.content = content;
+        GameController.view.refresh();
+    }
+    public void setXY(int x, int y){
+        this.x=x;
+        this.y=y;
+        GameController.view.refresh();
+    }
 
     public Stream<CharacterPosition> getStream(){
         Stream.Builder<CharacterPosition> c = Stream.builder();
@@ -42,8 +51,4 @@ public class DrawCommand {
         }
     }
 
-    public void setContent(String[] content) {
-        this.content = content;
-        GameController.view.refresh();
-    }
 }
