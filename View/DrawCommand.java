@@ -8,12 +8,25 @@ public class DrawCommand {
 
     private int x;
     private int y;
+
     private String[] content;
 
     public DrawCommand(int x, int y, String... content) {
         this.x = x;
         this.y = y;
         this.content = content;
+    }
+
+    protected int GetX(){
+        return x;
+    }
+    
+    protected int GetY(){
+        return y;
+    }
+
+    protected String[] GetContent(){
+        return content;
     }
 
     public char getAt(int x, int y){

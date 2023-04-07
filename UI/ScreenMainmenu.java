@@ -1,9 +1,11 @@
-package View;
+package UI;
 
 import java.awt.event.KeyEvent;
 
 import Controller.GameController;
 import Controller.InputManager;
+import View.DrawCommand;
+import View.ScreenAdventure;
 import View.ascii_art.AsciiDrawing;
 
 class ScreenMainmenu extends Screen{

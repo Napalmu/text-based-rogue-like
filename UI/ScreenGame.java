@@ -1,6 +1,7 @@
-package View;
+package UI;
 
 import Controller.GameController;
+import View.DrawCommand;
 
 class ScreenGame extends Screen{
     

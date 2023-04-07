@@ -1,7 +1,8 @@
-package View;
+package UI;
 
 import Controller.GameController;
 import Controller.InputManager;
+import View.DrawCommand;
 
 import java.awt.event.KeyEvent;
 

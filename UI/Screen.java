@@ -1,4 +1,4 @@
-package View;
+package UI;
 
 class Screen {
     
