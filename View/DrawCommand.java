@@ -40,6 +40,7 @@ public class DrawCommand {
 
     void setContent(String[] content) {
         this.content = content;
+        GameController.view.refresh();
     }
 
     //kun asetetaan piirrettäväksi
