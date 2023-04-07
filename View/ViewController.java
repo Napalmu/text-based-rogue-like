@@ -45,14 +45,22 @@ public class ViewController {
     }
 
     private char roomTypeToChar(RoomType type) {
-        return switch (type) {
-            case MSG -> 'M';
-            case BOSS -> 'B';
-            case ENEMY -> 'E';
-            case TREASURE -> 'T';
-            case ADVENTURE -> 'A';
-            case SHOP -> 'S';
-        };
+        switch (type) {
+            case MSG:
+                return 'M';
+            case BOSS:
+                return 'B';
+            case ENEMY:
+                return 'E';
+            case TREASURE:
+                return 'T';
+            case ADVENTURE:
+                return 'A';
+            case SHOP:
+                return 'S';
+            default:
+                throw new IllegalArgumentException();
+        }
     }
     public void drawMap() {
         MapRoom[][] map = GameController.model.getMap();

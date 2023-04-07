@@ -15,6 +15,27 @@ public class Dungeon implements Enterable {
         //Room nextRoom = f.createMessageRoom(new Room[0], "XDDDD");
         //this.startingRoom = f.createMessageRoom(new Room[] {nextRoom}, "Tervetuloa2!", "Mene pois2!");
     }
+    private Room room(RoomFactory f, char c) {
+        switch (c) {
+            case 'T':
+                return f.createTreasureRoom(new Item[]{this.keyToBossRoom});
+            case 'E':
+                return f.createMessageRoom("Vihollishuone...");
+            case 'M':
+                return f.createMessageRoom("Viesti huone...");
+            case 'A':
+                return f.createMessageRoom("Seikkailuhuone...");
+            case 'S':
+                return f.createMessageRoom("Kauppa huone...");
+            case '*':
+                this.startingRoom = f.createMessageRoom("Aloitushuone");
+                return this.startingRoom;
+            case 'B':
+                return f.createBossRoom(this.keyToBossRoom);
+            default:
+                return null;
+        }
+    }
     public void testDungeon() {
         String[] s = new String[] {
                 "T B S",
@@ -25,19 +46,7 @@ public class Dungeon implements Enterable {
         this.rooms = new Room[s.length][s[0].length()];
         for (int y = 0; y < s.length; y++) {
             for (int x = 0; x < s[y].length(); x++) {
-                rooms[y][x] = switch (s[y].charAt(x)) {
-                    case 'T' -> f.createTreasureRoom(new Item[]{this.keyToBossRoom});
-                    case 'E' -> f.createMessageRoom("Vihollishuone...");
-                    case 'M' -> f.createMessageRoom("Viesti huone...");
-                    case 'A' -> f.createMessageRoom("Seikkailuhuone...");
-                    case 'S' -> f.createMessageRoom("Kauppa huone...");
-                    case '*' -> {
-                        this.startingRoom = f.createMessageRoom("Aloitushuone");
-                        yield this.startingRoom;
-                    }
-                    case 'B' -> f.createBossRoom(this.keyToBossRoom);
-                    default -> null;
-                };
+                rooms[y][x] = room(f, s[y].charAt(x));
                 if (this.rooms[y][x] == null) continue;
                 this.addNeighbour(y-1,x,"Pohjoiseen", "Etelään", rooms[y][x]);
                 this.addNeighbour(y+1,x,"Etelään", "Pohjoiseen", rooms[y][x]);
