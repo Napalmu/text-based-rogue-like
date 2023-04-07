@@ -13,8 +13,7 @@ public class MessageRoom extends Room{
     }
 
     @Override
-    public void enter() {
-        super.enter();
+    protected void enterRoom() {
         this.render(new DrawCommand(5,1, messages.toArray(new String[0])));
 
         this.moveToNextRoom();

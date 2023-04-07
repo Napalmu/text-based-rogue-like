@@ -7,7 +7,6 @@ import View.DrawCommand;
 import View.MapRoom;
 
 public class ModelController {
-    private Dungeon currentDungeon;
 
     public ModelController(){
 
@@ -26,16 +25,13 @@ public class ModelController {
         });
         GameController.view.setContent(inventoryList);
     }
-    public void setDungeon(){
+    public void startGame(){
         listenForInventoryChanges();
         Dungeon dungeon = new Dungeon();
         dungeon.enter();
     }
-    public void setDungeon(Dungeon dungeon) {
-        this.currentDungeon = dungeon;
-    }
     public MapRoom[][] getMap() {
-        return this.currentDungeon.getMap();
+        return Dungeon.currentDungeon.getMap();
     }
 
 }

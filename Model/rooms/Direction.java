@@ -9,7 +9,7 @@ public class Direction {
         this.destination = destination;
     }
 
-    public String getName() {
+    public String getLabel() {
         return name;
     }
 

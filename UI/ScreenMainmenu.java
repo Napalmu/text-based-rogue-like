@@ -43,7 +43,7 @@ class ScreenMainmenu extends Screen{
      * 1)Poistaa mainmenun titlen ja tapahtumakuuntelijat.
      * 2)Luo uuden screengame olion, pelin perusnäkymän.
      * 3)gamecontroller luokalla on staattinen muuttuja 'model', jossa on kasa settereitä piirrettäville asioille.
-     * kutsumalla setDungeon metodia, piirretään perusnäkymään dungeon olio.
+     * kutsumalla startGame metodia, piirretään perusnäkymään dungeon olio.
      * Eli model paketissa on joukko asioita, joita perusnäkymään voidaan piirtää.
      */
     public void onPlay(){
@@ -53,7 +53,7 @@ class ScreenMainmenu extends Screen{
         unregisterListeners();
 
         new ScreenGame();
-        GameController.model.setDungeon();
+        GameController.model.startGame();
     }
     public void onShop() {
         System.out.println("Fhbasfvhnfsdghds");

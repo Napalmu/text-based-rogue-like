@@ -8,14 +8,14 @@ import View.DrawCommand;
 
 public class TreasureRoom extends Room{
     private final Item[] items;
+    //huoneessa ollaan jo käyty
     private boolean hasEntered = false;
     public TreasureRoom(Item[] items) {
         this.items = items;
     }
 
     @Override
-    public void enter() {
-        super.enter();
+    public void enterRoom() {
         if (hasEntered) {
             this.render(new DrawCommand(1,1, "Täältä et enää löydä uusia aarteita!"));
             this.moveToNextRoom();

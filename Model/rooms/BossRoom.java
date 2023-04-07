@@ -15,8 +15,7 @@ public class BossRoom extends EnemyRoom{
     }
 
     @Override
-    public void enter() {
-        super.enter();
+    public void enterRoom() {
         this.hasEntered = true;
         this.render(new DrawCommand(1,1, "Olet bossi huoneessa nyt!"));
         EntityManager.getPlayer().getInventory().removeItem(this.key);

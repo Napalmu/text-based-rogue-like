@@ -63,7 +63,8 @@ public class AdventureRoom extends Room{
     }
 
     @Override
-    public void enter() {
+    protected void enterRoom() {
+
     }
 
     @Override

@@ -1,11 +1,11 @@
 package Model.rooms;
-import Controller.GameController;
 import Controller.RoomType;
 import Model.Item;
-import View.DrawCommand;
 import View.MapRoom;
 
 public class Dungeon implements Enterable {
+    public static Dungeon currentDungeon;
+
     private Room startingRoom;
     private Room[][] rooms;
     private final Item keyToBossRoom = new Item("Mahtava avain");
@@ -20,13 +20,13 @@ public class Dungeon implements Enterable {
             case 'T':
                 return f.createTreasureRoom(new Item[]{this.keyToBossRoom});
             case 'E':
-                return f.createMessageRoom("Vihollishuone...");
+                return new EnemyRoom(); //TODO käytä factory
             case 'M':
                 return f.createMessageRoom("Viesti huone...");
             case 'A':
                 return f.createMessageRoom("Seikkailuhuone...");
             case 'S':
-                return f.createMessageRoom("Kauppa huone...");
+                return new ShopRoom(); //TODO käytä factory
             case '*':
                 this.startingRoom = f.createMessageRoom("Aloitushuone");
                 return this.startingRoom;
@@ -48,10 +48,10 @@ public class Dungeon implements Enterable {
             for (int x = 0; x < s[y].length(); x++) {
                 rooms[y][x] = room(f, s[y].charAt(x));
                 if (this.rooms[y][x] == null) continue;
-                this.addNeighbour(y-1,x,"Pohjoiseen", "Etelään", rooms[y][x]);
-                this.addNeighbour(y+1,x,"Etelään", "Pohjoiseen", rooms[y][x]);
-                this.addNeighbour(y,x-1,"Länteen", "Itään", rooms[y][x]);
-                this.addNeighbour(y,x+1,"Itään", "Länteen", rooms[y][x]);
+                this.addNeighbour(y-1,x,CompassPoints.NORTH, CompassPoints.SOUTH, rooms[y][x]);
+                this.addNeighbour(y+1,x,CompassPoints.SOUTH, CompassPoints.NORTH, rooms[y][x]);
+                this.addNeighbour(y,x-1,CompassPoints.WEST, CompassPoints.EAST, rooms[y][x]);
+                this.addNeighbour(y,x+1,CompassPoints.EAST, CompassPoints.WEST, rooms[y][x]);
             }
         }
     }
@@ -85,7 +85,7 @@ public class Dungeon implements Enterable {
     }
     @Override
     public void enter() {
-        GameController.model.setDungeon(this);
+        Dungeon.currentDungeon = this;
         this.startingRoom.enter();
     }
 
