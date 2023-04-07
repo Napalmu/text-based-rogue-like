@@ -8,7 +8,25 @@ import java.util.Arrays;
 public class ViewController {
     private Terminal t = new Terminal(80,24);
 
-    public ViewController(){}
+    private DrawArea infoDrawArea;
+    public DrawArea getInfoDrawArea() {
+        return infoDrawArea;
+    }
+    private DrawArea mainDrawArea;
+    public DrawArea getMainDrawArea() {
+        return mainDrawArea;
+    }
+    private DrawArea dataDrawArea;
+
+    public DrawArea getDataDrawArea() {
+        return dataDrawArea;
+    }
+
+    public ViewController(){
+        infoDrawArea = new DrawArea(2, 16, 0, 0);
+        mainDrawArea = new DrawArea(2, 1, 0, 0);
+        dataDrawArea = new DrawArea(59, 1, 0, 0);
+    }
 
     public void startGame(){
         GameController.ui.mainMenu();
@@ -33,6 +51,7 @@ public class ViewController {
      * @param content the content to draw
      */
     public void setContent(DrawCommand content){
+        content.Activate();
         t.addContent(content);
     }
 

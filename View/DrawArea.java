@@ -12,8 +12,15 @@ public class DrawArea extends DrawCommand {
     }
     public void createContent(DrawCommand drawCommand, String nameTag) {
         DrawCommand content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
-        this.contentList.put(nameTag, content);
-        GameController.view.setContent(content);
+        this.contentList.put(nameTag, content);        
+        GameController.view.setContent(drawCommand);
+    }
+
+    //öäh en tiiä mitä vittua teen
+    void Activate(){
+        for (DrawCommand drawCommand : contentList.values()) {
+            GameController.view.setContent(drawCommand);
+        }
     }
 
     public void removeContent(String nameTag){

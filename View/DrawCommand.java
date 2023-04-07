@@ -17,30 +17,51 @@ public class DrawCommand {
         this.content = content;
     }
 
-    protected int GetX(){
+    int GetX(){
         return x;
     }
     
-    protected int GetY(){
+    int GetY(){
         return y;
     }
 
-    protected String[] GetContent(){
+    void SetX(int x){
+        this.x = x;
+    }
+
+    void SetY(int y){
+        this.y = y;
+    }
+
+
+    String[] GetContent(){
         return content;
     }
 
-    public char getAt(int x, int y){
-        return content[y].charAt(x);
+    void SetContent(String... content){
+        this.content = content;
     }
+
+    //kun asetetaan piirrettäväksi
+    void Activate(){
+        //
+    }
+
+    // public char getAt(int x, int y){
+    //     return content[y].charAt(x);
+    // }
+
+    // void setXY(int x, int y){
+    //     this.x=x;
+    //     this.y=y;
+    //     GameController.view.refresh();
+    // }
+
     public void setContent(String[] content) {
         this.content = content;
         GameController.view.refresh();
     }
-    public void setXY(int x, int y){
-        this.x=x;
-        this.y=y;
-        GameController.view.refresh();
-    }
+
 
     public Stream<CharacterPosition> getStream(){
         Stream.Builder<CharacterPosition> c = Stream.builder();

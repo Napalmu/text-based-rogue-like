@@ -9,6 +9,7 @@ import Controller.InputManager;
 import Controller.InputManager.KeyConsumer;
 import Controller.RoomType;
 import View.DrawCommand;
+import View.DrawMovingStructure;
 import View.ascii_art.AsciiDrawing;
 
 public class AdventureRoom extends Room{
@@ -20,7 +21,7 @@ public class AdventureRoom extends Room{
     List<PointOfInterest> pointsOfInterest;
 
     
-    DrawCommand player = new DrawCommand(x, y, "X");
+    DrawMovingStructure player = new DrawMovingStructure(x, y, new DrawCommand(0, 0, "X"));
     private KeyConsumer up    = ()->{y = y-1; move();};
     private KeyConsumer down  = ()->{y = y+1; move();};
     private KeyConsumer left  = ()->{x = x-1; move();};
