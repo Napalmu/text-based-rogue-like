@@ -36,6 +36,7 @@ public class DrawArea extends DrawCommand {
         for (DrawCommand drawCommand : contentList.values()) {
             GameController.view.clearContent(drawCommand);
         }
+        contentList.clear();
     }
 
 }
