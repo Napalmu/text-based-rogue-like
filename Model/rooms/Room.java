@@ -80,7 +80,7 @@ public abstract class Room implements Enterable{
     }
 
     public final void enter() {
-        mainDrawArea.createContent("RoomText", new DrawText());
+        mainDrawArea.createContent("RoomText", new DrawText(4, 0));
         this.playerInside = true;
         this.hasBeenEntered = true;
         GameController.view.drawMap();
