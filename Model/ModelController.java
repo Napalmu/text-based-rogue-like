@@ -17,7 +17,7 @@ public class ModelController {
     }
 
     private void listenForInventoryChanges() {
-        infoDrawArea.createContent("Inventory", new DrawText("Inventory:"));
+        dataDrawArea.createContent("Inventory", new DrawText("Inventory:"));
 
         Player player = (Player) EntityManager.createPlayer(100, "Pekka");
         player.getInventory().addListener(items -> {
@@ -26,7 +26,7 @@ public class ModelController {
             for (int i = 0; i < items.length; i++) {
                 itemNames[i+1] = items[i].getName();
             }
-            infoDrawArea.setContent("Inventory", itemNames);
+            dataDrawArea.setContent("Inventory", itemNames);
         });
     }
     public void startGame(){
