@@ -33,6 +33,7 @@ public class ViewController {
      * @param content the content to draw
      */
     public void setContent(DrawCommand content){
+        content.Activate();
         t.addContent(content);
     }
 
