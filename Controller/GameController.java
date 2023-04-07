@@ -5,9 +5,10 @@ package Controller;
  */
 public class GameController {
     private static GameController main;
-    public static final Model.ModelController model = new Model.ModelController();
 
     public static final View.ViewController view = new View.ViewController();
+
+    public static final Model.ModelController model = new Model.ModelController();
 
     public static final UI.UIController ui = new UI.UIController();
 

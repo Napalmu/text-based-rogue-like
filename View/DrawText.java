@@ -11,7 +11,6 @@ public class DrawText extends DrawCommand {
 
     public void setContent(String... content) {
         super.setContent(content);
-        GameController.view.refresh();
     }
     public char getAt(int x, int y){
         return GetContent()[y].charAt(x);

@@ -3,17 +3,21 @@ package Model;
 
 import Controller.GameController;
 import Model.rooms.Dungeon;
+import View.DrawCommand;
 import View.DrawText;
 import View.MapRoom;
+import View.DrawArea;
 
 public class ModelController {
-
+    DrawArea infoDrawArea;
+    DrawArea dataDrawArea;
     public ModelController(){
-
+        dataDrawArea = GameController.view.getDataDrawArea();
+        infoDrawArea = GameController.view.getInfoDrawArea();
     }
 
     private void listenForInventoryChanges() {
-        DrawText inventoryList = new DrawText(60, 1,"Inventory:");
+        dataDrawArea.createContent("Inventory", new DrawText("Inventory:"));
         Player player = (Player) EntityManager.createPlayer(100, "Pekka");
         player.getInventory().addListener(items -> {
             String[] itemNames = new String[items.length+1];
@@ -21,9 +25,9 @@ public class ModelController {
             for (int i = 0; i < items.length; i++) {
                 itemNames[i+1] = items[i].getName();
             }
-            inventoryList.setContent(itemNames);
+            dataDrawArea.setContent("Inventory", itemNames);
+
         });
-        GameController.view.setContent(inventoryList);
     }
     public void startGame(){
         listenForInventoryChanges();
