@@ -1,6 +1,9 @@
 package View;
 
 import Controller.GameController;
+import Controller.RoomType;
+
+import java.util.Arrays;
 
 public class ViewController {
     private Terminal t = new Terminal(80,24);
@@ -39,5 +42,36 @@ public class ViewController {
 
     public void shutDown(){
         t.dispose();
+    }
+
+    private char roomTypeToChar(RoomType type) {
+        return switch (type) {
+            case MSG -> 'M';
+            case BOSS -> 'B';
+            case ENEMY -> 'E';
+            case TREASURE -> 'T';
+            case ADVENTURE -> 'A';
+            case SHOP -> 'S';
+        };
+    }
+    public void drawMap() {
+        MapRoom[][] map = GameController.model.getMap();
+        String[] stringMap = new String[map.length];
+        for (int y = 0; y < map.length; y++) {
+            char[] chars = new char[map[y].length];
+            for (int x = 0; x < map[y].length; x++) {
+                if (map[y][x] == null) {
+                    chars[x] = ' ';
+                    continue;
+                }
+                chars[x] = roomTypeToChar(map[y][x].getRoomType());
+                if (map[y][x].hasPlayerInside()) {
+                    chars[x] = '$';
+                }
+            }
+            stringMap[y] = new String(chars);
+        }
+        System.out.println(Arrays.toString(stringMap));
+        setContent(new DrawCommand(50, 16, stringMap));
     }
 }

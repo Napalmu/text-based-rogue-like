@@ -1,22 +1,27 @@
 package Model.rooms;
 
-import Controller.GameController;
+import Controller.RoomType;
 import Model.EntityManager;
 import Model.Item;
 import Model.Player;
 import View.DrawCommand;
 
-import java.util.List;
-
 public class TreasureRoom extends Room{
     private final Item[] items;
-
-    public TreasureRoom( Item[] items) {
+    private boolean hasEntered = false;
+    public TreasureRoom(Item[] items) {
         this.items = items;
     }
 
     @Override
     public void enter() {
+        super.enter();
+        if (hasEntered) {
+            this.render(new DrawCommand(1,1, "Täältä et enää löydä uusia aarteita!"));
+            this.moveToNextRoom();
+            return;
+        }
+        hasEntered = true;
         Player player = EntityManager.getPlayer();
         String[] messages = new String[this.items.length+1];
         messages[0] = "Tervetuloa aarrehuoneeseen!";
@@ -29,5 +34,10 @@ public class TreasureRoom extends Room{
         player.getInventory().addItems(this.items);
 
         this.moveToNextRoom();
+    }
+
+    @Override
+    public RoomType getType() {
+        return RoomType.TREASURE;
     }
 }

@@ -1,7 +1,5 @@
 package View;
 
-import Controller.GameController;
-import Model.rooms.Room;
 import Model.rooms.RoomFactory;
 import View.ascii_art.AsciiDrawing;
 

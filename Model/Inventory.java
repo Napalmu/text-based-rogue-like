@@ -23,6 +23,9 @@ public class Inventory {
         items.remove(item);
         update();
     }
+    public boolean containsItem(Item item) {
+        return items.contains(item);
+    }
     public void addListener(InventoryListener listener) {
         this.listeners.add(listener);
     }

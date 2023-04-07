@@ -1,14 +1,14 @@
 package Model.rooms;
+import Controller.GameController;
+import Controller.RoomType;
 import Model.Item;
-import View.ascii_art.AsciiDrawing;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import View.DrawCommand;
+import View.MapRoom;
 
 public class Dungeon implements Enterable {
     private Room startingRoom;
     private Room[][] rooms;
+    private final Item keyToBossRoom = new Item("Mahtava avain");
     public Dungeon(){
         testDungeon();
         //RoomFactory f = new RoomFactory();
@@ -26,7 +26,7 @@ public class Dungeon implements Enterable {
         for (int y = 0; y < s.length; y++) {
             for (int x = 0; x < s[y].length(); x++) {
                 rooms[y][x] = switch (s[y].charAt(x)) {
-                    case 'T' -> f.createTreasureRoom(new Item[]{new Item("Avain")});
+                    case 'T' -> f.createTreasureRoom(new Item[]{this.keyToBossRoom});
                     case 'E' -> f.createMessageRoom("Vihollishuone...");
                     case 'M' -> f.createMessageRoom("Viesti huone...");
                     case 'A' -> f.createMessageRoom("Seikkailuhuone...");
@@ -35,7 +35,7 @@ public class Dungeon implements Enterable {
                         this.startingRoom = f.createMessageRoom("Aloitushuone");
                         yield this.startingRoom;
                     }
-                    case 'B' -> f.createMessageRoom("Bossi huone...");
+                    case 'B' -> f.createBossRoom(this.keyToBossRoom);
                     default -> null;
                 };
                 if (this.rooms[y][x] == null) continue;
@@ -51,8 +51,37 @@ public class Dungeon implements Enterable {
         this.rooms[y][x].addDirection(new Direction(dir2, room));
         room.addDirection(new Direction(dir, this.rooms[y][x]));
     }
+
+    public MapRoom[][] getMap() {
+        MapRoom[][] map = new MapRoom[rooms.length][rooms[0].length];
+
+        for (int y = 0; y < this.rooms.length; y++) {
+            for (int x = 0; x < this.rooms[y].length; x++) {
+                Room r = this.rooms[y][x];
+                if (r == null) continue;
+                map[y][x] = new MapRoom() {
+                    @Override
+                    public RoomType getRoomType() {
+                        return r.getType();
+                    }
+
+                    @Override
+                    public boolean hasPlayerInside() {
+                        return r.hasPlayerInside();
+                    }
+                };
+            }
+        }
+        return map;
+    }
     @Override
     public void enter() {
+        GameController.model.setDungeon(this);
         this.startingRoom.enter();
+    }
+
+    @Override
+    public boolean canEnter() {
+        return true;
     }
 }

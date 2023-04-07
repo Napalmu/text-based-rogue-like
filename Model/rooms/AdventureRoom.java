@@ -2,12 +2,12 @@ package Model.rooms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.awt.event.KeyEvent;
 
 import Controller.GameController;
 import Controller.InputManager;
 import Controller.InputManager.KeyConsumer;
+import Controller.RoomType;
 import View.DrawCommand;
 import View.ascii_art.AsciiDrawing;
 
@@ -64,6 +64,11 @@ public class AdventureRoom extends Room{
 
     @Override
     public void enter() {
+    }
+
+    @Override
+    public RoomType getType() {
+        return RoomType.ADVENTURE;
     }
 
     private void exit(){

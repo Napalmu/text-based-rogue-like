@@ -2,6 +2,7 @@ package Model.rooms;
 
 import Controller.GameController;
 import Controller.InputManager;
+import Controller.RoomType;
 import View.DrawCommand;
 
 import java.awt.event.KeyEvent;
@@ -11,6 +12,10 @@ import java.util.List;
 public abstract class Room implements Enterable{
     private final List<Direction> nextRooms = new ArrayList<>();
     private final ArrayList<DrawCommand> commands = new ArrayList<>();
+    private boolean playerInside = false;
+    public boolean hasPlayerInside() {
+        return playerInside;
+    }
 
     public void addDirection(Direction direction) {
         this.nextRooms.add(direction);
@@ -25,6 +30,10 @@ public abstract class Room implements Enterable{
             GameController.view.clearContent(command);
         }
     }
+    private void exit() {
+        clear();
+        this.playerInside = false;
+    }
     protected void moveToNextRoom() {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         String[] rooms = new String[nextRooms.size()];
@@ -32,8 +41,12 @@ public abstract class Room implements Enterable{
             Direction nextRoom = nextRooms.get(i);
             rooms[i] = (i + 1) + ": " + nextRoom.getName();
             InputManager.KeyConsumer consumer = () -> {
-                clear();
-                nextRoom.getDestination().enter();
+                if (nextRoom.getDestination().canEnter()) {
+                    exit();
+                    nextRoom.getDestination().enter();
+                } else {
+                    this.moveToNextRoom();
+                }
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + i, consumer));
         }
@@ -42,5 +55,12 @@ public abstract class Room implements Enterable{
         InputManager.registerListenerList(choices, true);
     }
 
-    public abstract void enter();
+    public void enter() {
+        this.playerInside = true;
+        GameController.view.drawMap();
+    }
+    public abstract RoomType getType();
+    public boolean canEnter() {
+        return true;
+    }
 }
