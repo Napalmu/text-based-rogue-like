@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Room implements Enterable{
-    private final List<Direction> nextRooms;
+    private final List<Direction> nextRooms = new ArrayList<>();
     private final ArrayList<DrawCommand> commands = new ArrayList<>();
 
+    public void addDirection(Direction direction) {
+        this.nextRooms.add(direction);
+    }
     protected void render(DrawCommand command) {
         this.commands.add(command);
         GameController.view.setContent(command);
@@ -22,11 +25,6 @@ public abstract class Room implements Enterable{
             GameController.view.clearContent(command);
         }
     }
-
-    public Room(List<Direction> nextRooms) {
-        this.nextRooms = nextRooms;
-    }
-
     protected void moveToNextRoom() {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         String[] rooms = new String[nextRooms.size()];

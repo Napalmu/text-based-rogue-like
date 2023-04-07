@@ -4,9 +4,14 @@ import java.util.HashMap;
 
 import Controller.EntityTypes;
 
-class EntityManager {
+public class EntityManager {
     private static HashMap<EntityTypes, ArrayList<Entity>> entities = new HashMap<>();
-
+    public static Player getPlayer() {
+        if (!entities.containsKey(EntityTypes.PLAYER)) {
+            return (Player) createPlayer(100, "Pekka");
+        }
+        return (Player) entities.get(EntityTypes.PLAYER).get(0);
+    }
     static Entity createPlayer(int hp, String name){
         Entity e = new Player(hp, name);
         ArrayList<Entity> l = new ArrayList<>();

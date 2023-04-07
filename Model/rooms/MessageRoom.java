@@ -7,8 +7,7 @@ import java.util.List;
 public class MessageRoom extends Room{
     private final List<String> messages;
 
-    public MessageRoom(List<Direction> nextRooms, List<String> messages) {
-        super(nextRooms);
+    public MessageRoom(List<String> messages) {
         this.messages = messages;
     }
 

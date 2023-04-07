@@ -26,7 +26,8 @@ public class DummyPlayer implements Fighter {
         initiative = storeInitiative;
 
         Random rand = new Random();
-        return rand.nextInt(0, 5);
+        return 0;
+        //return rand.nextInt(0, 5);
     }
 
     public void takeDamage(int dmg) {

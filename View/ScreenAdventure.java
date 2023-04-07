@@ -10,6 +10,6 @@ public class ScreenAdventure {
     private DrawCommand art;
     
     public ScreenAdventure(){        
-        new RoomFactory().createAdventureRoom(new Room[0], AsciiDrawing.OUTSIDE);
+        new RoomFactory().createAdventureRoom( AsciiDrawing.OUTSIDE);
     }
 }

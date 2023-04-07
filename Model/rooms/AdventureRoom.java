@@ -26,8 +26,7 @@ public class AdventureRoom extends Room{
     private KeyConsumer left  = ()->{x = x-1; move();};
     private KeyConsumer right = ()->{x = x+1; move();};
 
-    public AdventureRoom(List<Direction> nextRooms, AsciiDrawing map) {
-        super(nextRooms);
+    public AdventureRoom(AsciiDrawing map) {
         pointsOfInterest = getPointsOfInterest();
         GameController.view.setContent(new DrawCommand(0, 0, map.getArt()));
         pointsOfInterest.forEach((poi) -> GameController.view.setContent(poi.drawCommand));

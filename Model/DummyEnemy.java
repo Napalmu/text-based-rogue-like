@@ -14,7 +14,7 @@ public class DummyEnemy implements Fighter{
         this.hp = 2;
     }
 
-    public void proceed(){
+    public int proceed(){
         initiative--;
 
         if(initiative == 0){
@@ -22,6 +22,12 @@ public class DummyEnemy implements Fighter{
             initiative = storeInitiative;
             System.out.println(":D");
         }
+        return 0;
+    }
+
+    @Override
+    public int performAction() {
+        return 0;
     }
 
     public void performAttack(Fighter target, int dmg){ }
