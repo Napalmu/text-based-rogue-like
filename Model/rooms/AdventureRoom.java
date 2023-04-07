@@ -17,6 +17,8 @@ public class AdventureRoom extends Room{
     private int x=10;
     private int y=10;
 
+    private final ArrayList<DrawCommand> commands = new ArrayList<>();
+
     List<Room> areaStack = new ArrayList<>();
     List<PointOfInterest> pointsOfInterest;
     AsciiDrawing map;
@@ -78,7 +80,16 @@ public class AdventureRoom extends Room{
 
         render(player);
     }
+    private void render(DrawCommand command) {
+        this.commands.add(command);
+        GameController.view.setContent(command);
+    }
 
+    private void clear() {
+        for (DrawCommand command : this.commands) {
+            GameController.view.clearContent(command);
+        }
+    }
     @Override
     public RoomType getType() {
         return RoomType.ADVENTURE;

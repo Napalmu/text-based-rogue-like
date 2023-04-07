@@ -28,7 +28,7 @@ public class BossRoom extends EnemyRoom{
         Player player = EntityManager.getPlayer();
         boolean hasKey = player.getInventory().containsItem(key);
         if (!hasKey) {
-            this.render(new DrawCommand(2,16, "Et voi mennä bossi huoneeseen ilman avainta"));
+            mainDrawArea.setContent("RoomText", "Et voi mennä bossi huoneeseen ilman avainta");
         }
         return hasKey;
     }
