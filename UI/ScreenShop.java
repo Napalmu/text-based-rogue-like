@@ -3,40 +3,16 @@ package UI;
 import Controller.GameController;
 import Controller.InputManager;
 import View.DrawCommand;
+import View.ascii_art.AsciiDrawing;
 
 import java.awt.event.KeyEvent;
 
 class ScreenShop extends Screen{
-    private String[] screen = new String[]{
-            "╔═════════════════════════════════════════════════════════╤════════════════════╗",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "║                                                         │                    ║",
-            "╟─────────────────────────────────────────────────────────┴────────────────────╢",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "║                                                                              ║",
-            "╚══════════════════════════════════════════════════════════════════════════════╝",
-    };
+ 
     DrawCommand description;
     DrawCommand items;
     public ScreenShop(){
-        GameController.view.setContent(new DrawCommand(0, 0, screen));
+        GameController.view.setContent(new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt()));
         description=new DrawCommand(2, 16, "Tervetuloa kauppaan!","Mitä saisi olla?");
         items=new DrawCommand(60, 1, "1: Hyppykeppi","2: Banaanisplitti");
         drawDescription();
