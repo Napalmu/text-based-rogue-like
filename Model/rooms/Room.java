@@ -15,6 +15,7 @@ public abstract class Room implements Enterable{
     private boolean hasBeenEntered = false;
 
     protected DrawArea mainDrawArea = GameController.view.getMainDrawArea();
+    protected DrawArea infoDrawArea = GameController.view.getInfoDrawArea();
 
     public boolean hasBeenEntered() {
         return hasBeenEntered;

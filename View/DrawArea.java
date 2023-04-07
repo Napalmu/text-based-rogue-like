@@ -17,11 +17,11 @@ public class DrawArea extends DrawCommand {
     }
 
     //öäh en tiiä mitä vittua teen
-    void Activate(){
-        for (DrawCommand drawCommand : contentList.values()) {
-            GameController.view.setContent(drawCommand);
-        }
-    }
+    // void Activate(){
+    //     for (DrawCommand drawCommand : contentList.values()) {
+    //         GameController.view.setContent(drawCommand);
+    //     }
+    // }
 
     public void removeContent(String nameTag){
         GameController.view.clearContent(contentList.get(nameTag));
