@@ -17,7 +17,7 @@ public class MessageRoom extends Room{
 
     @Override
     protected void enterRoom() {
-        this.render(new DrawCommand(5,1, this.messages.toArray(new String[0])));
+        mainDrawArea.setContent("RoomText", new String[0]);
         //GameController.view.setContent(new DrawCommand(5,1, "Aloitushuone"));
         //GameController.view.getMainDrawArea().setContent(new String[]{"Aloitushuone"});
         this.moveToNextRoom();

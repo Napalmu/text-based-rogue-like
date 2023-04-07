@@ -7,7 +7,7 @@ public class EnemyRoom extends Room{
 
     @Override
     public void enterRoom() {
-        this.render(new DrawCommand(1,1, "Tulit vihollishuoneeseen!"));
+        mainDrawArea.setContent("Roominfo","Tulit vihollishuoneeseen!");
         this.moveToNextRoom();
     }
 

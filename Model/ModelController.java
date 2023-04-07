@@ -3,7 +3,6 @@ package Model;
 
 import Controller.GameController;
 import Model.rooms.Dungeon;
-import View.DrawCommand;
 import View.DrawText;
 import View.MapRoom;
 import View.DrawArea;

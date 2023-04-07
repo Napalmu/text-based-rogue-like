@@ -3,16 +3,18 @@ package Model.rooms;
 import Controller.GameController;
 import Controller.InputManager;
 import Controller.RoomType;
-import View.DrawCommand;
+import View.DrawText;
+import View.DrawArea;
 
 import java.awt.event.KeyEvent;
 import java.util.*;
 
 public abstract class Room implements Enterable{
     private final List<Direction> nextRooms = new ArrayList<>();
-    private final ArrayList<DrawCommand> commands = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
+
+    protected DrawArea mainDrawArea = GameController.view.getMainDrawArea();
 
     public boolean hasBeenEntered() {
         return hasBeenEntered;
@@ -25,20 +27,12 @@ public abstract class Room implements Enterable{
     public void addDirection(Direction direction) {
         this.nextRooms.add(direction);
     }
-    protected void render(DrawCommand command) {
-        this.commands.add(command);
-        GameController.view.setContent(command);
-    }
 
-    protected void clear() {
-        for (DrawCommand command : this.commands) {
-            GameController.view.clearContent(command);
-        }
-    }
+
 
     protected void exit(Enterable target) {
         if (target.canEnter()) {
-            clear();
+            mainDrawArea.clearArea();
             this.playerInside = false;
             target.enter();
         } else {
@@ -80,12 +74,13 @@ public abstract class Room implements Enterable{
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }
-        render(new DrawCommand(5, 6, rooms));
+        mainDrawArea.createContent("RoomSelect", new DrawText(5, 6, rooms));
 
         InputManager.registerListenerList(choices, true);
     }
 
     public final void enter() {
+        mainDrawArea.createContent("RoomText", new DrawText());
         this.playerInside = true;
         this.hasBeenEntered = true;
         GameController.view.drawMap();

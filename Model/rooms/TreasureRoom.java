@@ -17,7 +17,7 @@ public class TreasureRoom extends Room{
     @Override
     public void enterRoom() {
         if (hasEntered) {
-            this.render(new DrawCommand(1,1, "Täältä et enää löydä uusia aarteita!"));
+            mainDrawArea.setContent("RoomText", "Täältä et enää löydä uusia aarteita!");
             this.moveToNextRoom();
             return;
         }
