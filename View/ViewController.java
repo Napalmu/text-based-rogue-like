@@ -1,12 +1,14 @@
 package View;
 
+import Controller.GameController;
+
 public class ViewController {
     private Terminal t = new Terminal(80,24);
 
     public ViewController(){}
 
     public void startGame(){
-        new ScreenMainmenu();
+        GameController.ui.mainMenu();
     }
 
     public void refresh(){

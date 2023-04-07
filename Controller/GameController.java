@@ -9,6 +9,8 @@ public class GameController {
 
     public static final View.ViewController view = new View.ViewController();
 
+    public static final UI.UIController ui = new UI.UIController();
+
     private GameController(){
         view.startGame();
     }
