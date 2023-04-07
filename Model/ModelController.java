@@ -9,8 +9,8 @@ import View.MapRoom;
 import View.DrawArea;
 
 public class ModelController {
-    DrawArea infoDrawArea;
-    DrawArea dataDrawArea;
+    private DrawArea infoDrawArea;
+    private DrawArea dataDrawArea;
     public ModelController(){
         dataDrawArea = GameController.view.getDataDrawArea();
         infoDrawArea = GameController.view.getInfoDrawArea();
