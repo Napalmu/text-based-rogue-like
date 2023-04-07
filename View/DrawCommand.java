@@ -38,7 +38,7 @@ public class DrawCommand {
         return content;
     }
 
-    void SetContent(String... content){
+    void setContent(String[] content) {
         this.content = content;
     }
 
@@ -57,10 +57,7 @@ public class DrawCommand {
     //     GameController.view.refresh();
     // }
 
-    public void setContent(String[] content) {
-        this.content = content;
-        GameController.view.refresh();
-    }
+
 
 
     public Stream<CharacterPosition> getStream(){

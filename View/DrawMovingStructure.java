@@ -17,6 +17,10 @@ public class DrawMovingStructure extends DrawCommand{
     void Activate(){
         GameController.view.setContent(this.drawCommand);
     }
+
+    public void setContent(String... content){
+        drawCommand.setContent(content);
+    }
     
     public void setXY(int x, int y){
         SetX(x);

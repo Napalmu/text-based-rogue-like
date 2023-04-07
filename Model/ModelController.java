@@ -21,7 +21,7 @@ public class ModelController {
             for (int i = 0; i < items.length; i++) {
                 itemNames[i+1] = items[i].getName();
             }
-            inventoryList.setContent(itemNames);
+            // inventoryList.setContent(itemNames);
         });
         GameController.view.setContent(inventoryList);
     }

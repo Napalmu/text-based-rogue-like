@@ -10,10 +10,10 @@ public class DrawArea extends DrawCommand {
         super(x, y);
         
     }
-    public void createContent(DrawCommand drawCommand, String nameTag) {
+    public void createContent(String nameTag, DrawCommand drawCommand) {
         DrawCommand content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
         this.contentList.put(nameTag, content);        
-        GameController.view.setContent(drawCommand);
+        GameController.view.setContent(content);
     }
 
     //öäh en tiiä mitä vittua teen
@@ -28,8 +28,8 @@ public class DrawArea extends DrawCommand {
         contentList.remove(nameTag);
     }
 
-    public DrawCommand getContent(String nameTag){
-        return contentList.get(nameTag);
+    public void setContent(String nameTag, String... content){
+        contentList.get(nameTag).setContent(content);
     }
 
     public void clearArea(){
