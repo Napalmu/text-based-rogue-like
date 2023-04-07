@@ -19,7 +19,7 @@ public class AdventureRoom extends Room{
 
     List<Room> areaStack = new ArrayList<>();
     List<PointOfInterest> pointsOfInterest;
-
+    AsciiDrawing map;
     
     DrawMovingStructure player = new DrawMovingStructure(x, y, new DrawCommand(0, 0, "X"));
     private KeyConsumer up    = ()->{y = y-1; move();};
@@ -29,20 +29,23 @@ public class AdventureRoom extends Room{
 
     public AdventureRoom(AsciiDrawing map) {
         pointsOfInterest = getPointsOfInterest();
-        GameController.view.setContent(new DrawCommand(0, 0, map.getArt()));
-        pointsOfInterest.forEach((poi) -> GameController.view.setContent(poi.drawCommand));
-        InputManager.registerListener(KeyEvent.VK_W, up);
-        InputManager.registerListener(KeyEvent.VK_A, left);
-        InputManager.registerListener(KeyEvent.VK_S, down);
-        InputManager.registerListener(KeyEvent.VK_D, right);
-    
-        GameController.view.setContent(player);
+        this.map = map;
     }
 
     protected List<PointOfInterest> getPointsOfInterest() {
         ArrayList<PointOfInterest> pois = new ArrayList<>();
         pois.add(new PointOfInterest(20,10,'b', this::gainBlueberry));
+        pois.add(new PointOfInterest(30, 15, 'E', this::leave));
         return pois;
+    }
+    private void leave(PointOfInterest poi) {
+        InputManager.unregisterListener(KeyEvent.VK_W, up);
+        InputManager.unregisterListener(KeyEvent.VK_A, left);
+        InputManager.unregisterListener(KeyEvent.VK_S, down);
+        InputManager.unregisterListener(KeyEvent.VK_D, right);
+        this.player.setContent(new String[0]);
+        this.clear();
+        this.moveToNextRoom();
     }
 
     private void gainBlueberry(PointOfInterest poi){
@@ -65,19 +68,20 @@ public class AdventureRoom extends Room{
 
     @Override
     protected void enterRoom() {
+        x=10; y=10; move();
+        render(new DrawCommand(0, 0, map.getArt()));
+        pointsOfInterest.forEach((poi) -> render(poi.drawCommand));
+        InputManager.registerListener(KeyEvent.VK_W, up);
+        InputManager.registerListener(KeyEvent.VK_A, left);
+        InputManager.registerListener(KeyEvent.VK_S, down);
+        InputManager.registerListener(KeyEvent.VK_D, right);
 
+        render(player);
     }
 
     @Override
     public RoomType getType() {
         return RoomType.ADVENTURE;
-    }
-
-    private void exit(){
-        InputManager.unregisterListener(KeyEvent.VK_W, up);
-        InputManager.unregisterListener(KeyEvent.VK_A, left);
-        InputManager.unregisterListener(KeyEvent.VK_S, down);
-        InputManager.unregisterListener(KeyEvent.VK_D, right);
     }
     
     protected interface ActionOnEntry{

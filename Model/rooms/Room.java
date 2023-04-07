@@ -36,7 +36,7 @@ public abstract class Room implements Enterable{
         }
     }
 
-    private void exit(Enterable target) {
+    protected void exit(Enterable target) {
         if (target.canEnter()) {
             clear();
             this.playerInside = false;

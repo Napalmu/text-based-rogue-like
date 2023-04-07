@@ -2,6 +2,7 @@ package Model.rooms;
 import Controller.RoomType;
 import Model.Item;
 import View.MapRoom;
+import View.ascii_art.AsciiDrawing;
 
 public class Dungeon implements Enterable {
     public static Dungeon currentDungeon;
@@ -24,7 +25,7 @@ public class Dungeon implements Enterable {
             case 'M':
                 return f.createMessageRoom("Viesti huone...");
             case 'A':
-                return f.createMessageRoom("Seikkailuhuone...");
+                return f.createAdventureRoom(AsciiDrawing.OUTSIDE);
             case 'S':
                 return new ShopRoom(); //TODO käytä factory
             case '*':
