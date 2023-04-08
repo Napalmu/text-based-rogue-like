@@ -2,7 +2,7 @@ package Model;
 
 import Model.Inventory.InventoryListener;
 
-class Player extends Entity {
+public class Player extends Entity {
     private Inventory inventory = new Inventory();
     public Player(int hp, String name){
         super(hp, name);
