@@ -1,10 +1,12 @@
 package View;
 import Controller.GameController;
+import Model.GameEvent;
+import Model.ModelController.GameEventListener;
 
 import java.util.ArrayList;
 
 
-public class DrawArea extends DrawCommand {
+public abstract class DrawArea extends DrawCommand implements GameEventListener{
 
     private ArrayList<DrawCommand> contentList = new ArrayList<>();
 
@@ -38,5 +40,7 @@ public class DrawArea extends DrawCommand {
         }
         contentList.clear();
     }
+
+    public abstract void handleGameEvent(GameEvent e);
 
 }

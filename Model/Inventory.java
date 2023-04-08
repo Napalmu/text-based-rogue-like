@@ -1,7 +1,9 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import Controller.GameController;
+import Controller.GameEventType;
 
 class Inventory {
     public interface InventoryListener {
@@ -16,8 +18,20 @@ class Inventory {
         }
     }
     public void addItems(Item... items) {
-        this.items.addAll(List.of(items));
+        for (Item i : items){
+            this.items.add(i);
+            GameController.model.emitGameEvent(new GameEvent() {
+    
+                @Override
+                public GameEventType getEventType() {return GameEventType.ITEMXRECEIVED;}
+    
+                @Override
+                public String getEventText() {return i.getName();}
+                
+            });
+        }
         update();
+
 
     }
     public void removeItem(Item item) {

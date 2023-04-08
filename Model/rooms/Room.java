@@ -1,8 +1,10 @@
 package Model.rooms;
 
 import Controller.GameController;
+import Controller.GameEventType;
 import Controller.InputManager;
 import Controller.RoomType;
+import Model.GameEvent;
 import View.DrawText;
 import View.ViewController.Area;
 import java.awt.event.KeyEvent;
@@ -95,6 +97,15 @@ abstract class Room implements Enterable {
         this.playerInside = true;
         //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
         GameController.view.drawMap();
+        GameController.model.emitGameEvent(new GameEvent() {
+
+            @Override
+            public GameEventType getEventType() {return GameEventType.ROOMXENTERED;}
+
+            @Override
+            public String getEventText() {return getType().name();}
+            
+        });
         this.enterRoom();
 
         //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
