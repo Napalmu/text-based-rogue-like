@@ -37,6 +37,8 @@ public class DummyEnemy implements Fighter{
     }
 
     public void die(){
-        // jotain luokkaa Battle.removeFighter(this.fighter);
+        if (this.hp <=0){
+            // jotain luokkaa Battle.removeFighter(this.fighter);
+        }
     }
 }

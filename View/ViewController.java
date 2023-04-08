@@ -3,8 +3,6 @@ package View;
 import Controller.GameController;
 import Controller.RoomType;
 
-import java.util.Arrays;
-
 public class ViewController {
     private Terminal t = new Terminal(80,24);
 

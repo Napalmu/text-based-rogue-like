@@ -1,6 +1,5 @@
 package Model.rooms;
 
-import Controller.GameController;
 import Controller.RoomType;
 
 import java.util.List;

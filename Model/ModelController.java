@@ -8,11 +8,9 @@ import View.MapRoom;
 import View.DrawArea;
 
 public class ModelController {
-    private DrawArea infoDrawArea;
     private DrawArea dataDrawArea;
     public ModelController(){
         dataDrawArea = GameController.view.getDataDrawArea();
-        infoDrawArea = GameController.view.getInfoDrawArea();
     }
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {

@@ -1,7 +1,6 @@
 package Model.rooms;
 
 import Controller.RoomType;
-import View.DrawCommand;
 
 public class ShopRoom extends Room{
     @Override

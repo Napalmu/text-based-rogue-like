@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.Random;
-
 // Älä lue tätä pls tää on placeholder mikä tulee iloisesti poistumaan mahd. pian
 
 
@@ -24,9 +22,6 @@ public class DummyPlayer implements Fighter {
     public int performAction()
     {
         initiative = storeInitiative;
-
-        Random rand = new Random();
-        // return rand.nextInt(0, 5);
         return 0;
     }
 
@@ -35,6 +30,8 @@ public class DummyPlayer implements Fighter {
     }
 
     public void die(){
+        if(this.hp<=0){
         // täs kohtaa sä kuolet
+        }
     }
 }

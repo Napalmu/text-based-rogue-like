@@ -4,7 +4,6 @@ import Controller.RoomType;
 import Model.EntityManager;
 import Model.Item;
 import Model.Player;
-import View.DrawCommand;
 
 public class TreasureRoom extends Room{
     private final Item[] items;
