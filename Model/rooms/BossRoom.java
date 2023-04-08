@@ -16,7 +16,7 @@ class BossRoom extends EnemyRoom{
 
     @Override
     public void enterRoom() {
-        mainDrawArea.setContent("RoomText", "Olet bossi huoneessa nyt!",
+        roomText.setContent("Olet bossi huoneessa nyt!",
                 "Bossin nimi: " + this.enemy.getName());
         EntityManager.getPlayer().removeItem(this.key);
         this.moveToNextRoom();
@@ -30,7 +30,7 @@ class BossRoom extends EnemyRoom{
         Player player = EntityManager.getPlayer();
         boolean hasKey = player.hasItem(key);
         if (!hasKey) {
-            mainDrawArea.setContent("RoomText", "Et voi mennä bossi huoneeseen ilman avainta");
+            roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
         }
         return hasKey;
     }

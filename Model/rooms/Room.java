@@ -4,9 +4,7 @@ import Controller.GameController;
 import Controller.InputManager;
 import Controller.RoomType;
 import View.DrawText;
-import View.DrawArea;
-import View.DrawCommand;
-
+import View.ViewController.Area;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
@@ -15,8 +13,8 @@ abstract class Room implements Enterable {
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
 
-    protected DrawText roomSelect = (DrawText)GameController.view.CreateMainAreaContent(new DrawText(5, 6));
-    protected DrawText roomText = (DrawText)GameController.view.CreateMainAreaContent(new DrawText(4, 0)); 
+    protected DrawText roomSelect;
+    protected DrawText roomText; 
 
     public boolean hasBeenEntered() {
         return hasBeenEntered;
@@ -41,7 +39,7 @@ abstract class Room implements Enterable {
      */
     protected final void exit(Enterable target) {
         if (target.canEnter()) {
-            mainDrawArea.clearArea();
+            GameController.view.clearArea(Area.mainArea);
             this.playerInside = false;
             target.enter();
         } else {
@@ -82,7 +80,7 @@ abstract class Room implements Enterable {
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }
-        mainDrawArea.createContent("RoomSelect", new DrawText(5, 6, rooms));
+        roomSelect = (DrawText)GameController.view.createAreaContent(new DrawText(5, 6, rooms), Area.mainArea);
 
         InputManager.registerListenerList(choices, true);
     }
@@ -93,12 +91,14 @@ abstract class Room implements Enterable {
      * varmistaen että täällä olevaa koodia ei ylikirjoiteta
      */
     public final void enter() {
-        mainDrawArea.createContent("RoomText", new DrawText(4, 0));
+        roomText = (DrawText)GameController.view.createAreaContent(new DrawText(4, 0), Area.mainArea); 
         this.playerInside = true;
-        this.hasBeenEntered = true;
         //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
         GameController.view.drawMap();
         this.enterRoom();
+
+        //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
+        this.hasBeenEntered = true;
     }
 
     /**

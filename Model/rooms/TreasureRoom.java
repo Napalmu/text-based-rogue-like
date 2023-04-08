@@ -14,7 +14,7 @@ class TreasureRoom extends Room{
     @Override
     public void enterRoom() {
         if (hasBeenEntered()) {
-            mainDrawArea.setContent("RoomText", "Täältä et enää löydä uusia aarteita!");
+            roomText.setContent("Täältä et enää löydä uusia aarteita!");
             this.moveToNextRoom();
             return;
         }
@@ -26,7 +26,7 @@ class TreasureRoom extends Room{
             Item item = items1[i];
             messages[i+1] = "Sait: " + item.getName();
         }
-        mainDrawArea.setContent("RoomText", messages);
+        roomText.setContent( messages);
         player.addItems(this.items);
 
         this.moveToNextRoom();

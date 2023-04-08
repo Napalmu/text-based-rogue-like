@@ -13,12 +13,13 @@ public class DrawArea extends DrawCommand {
         
     }
     public DrawCommand createContent(DrawCommand drawCommand) {
-        DrawCommand content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
+        DrawCommand content;
+        if(drawCommand instanceof DrawText) content = new DrawText(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
+        else content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
         this.contentList.add(content);
         GameController.view.setContent(content);
         return content;
     }
-
     //öäh en tiiä mitä vittua teen
     // void Activate(){
     //     for (DrawCommand drawCommand : contentList.values()) {

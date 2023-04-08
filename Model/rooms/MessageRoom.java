@@ -13,7 +13,7 @@ class MessageRoom extends Room{
 
     @Override
     protected void enterRoom() {
-        mainDrawArea.setContent("RoomText", messages.toArray(new String[0]));
+        roomText.setContent(messages.toArray(new String[0]));
         this.moveToNextRoom();
     }
 

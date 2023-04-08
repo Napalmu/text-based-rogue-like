@@ -18,6 +18,7 @@ class Inventory {
     public void addItems(Item... items) {
         this.items.addAll(List.of(items));
         update();
+
     }
     public void removeItem(Item item) {
         items.remove(item);

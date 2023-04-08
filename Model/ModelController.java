@@ -6,16 +6,17 @@ import Model.rooms.Dungeon;
 import Model.rooms.RoomFactory;
 import View.DrawText;
 import View.MapRoom;
-import View.DrawArea;
+import View.ViewController.Area;
 
 public class ModelController {
     private DrawText invText;
     private Dungeon dungeon;
     public ModelController(){
-        invText = (DrawText)GameController.view.CreateInfoAreaContent(new DrawText());
+        
     }
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {
+        invText = (DrawText)GameController.view.createAreaContent(new DrawText(), Area.dataArea);
         invText.setContent("Inventory:");
         Player player = EntityManager.getPlayer();
         player.addInventoryListener(items -> {
@@ -25,7 +26,7 @@ public class ModelController {
                 itemNames[i+1] = items[i].getName();
             }
             invText.setContent(itemNames);
-
+            System.out.println(itemNames[1]+ " M");
         });
     }
     public void startGame(){

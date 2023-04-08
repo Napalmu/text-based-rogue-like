@@ -5,7 +5,7 @@ import Controller.RoomType;
 class ShopRoom extends Room{
     @Override
     protected void enterRoom() {
-        mainDrawArea.setContent("RoomText", "Tulit kauppaan");
+        roomText.setContent("Tulit kauppaan");
         this.moveToNextRoom();
     }
 

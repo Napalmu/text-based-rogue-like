@@ -2,10 +2,10 @@ package UI;
 
 import Controller.GameController;
 import Controller.InputManager;
-import View.DrawArea;
 import View.DrawCommand;
 import View.DrawText;
 import View.ascii_art.AsciiDrawing;
+import View.ViewController.Area;
 
 import java.awt.event.KeyEvent;
 
@@ -19,9 +19,9 @@ class ScreenShop extends Screen{
 
 
          
-        description = (DrawText)GameController.view.CreateInfoAreaContent(new DrawText("Tervetuloa kauppaan!","Mitä saisi olla?"));
+        description = (DrawText)GameController.view.createAreaContent(new DrawText("Tervetuloa kauppaan!","Mitä saisi olla?"), Area.infoArea);
 
-        items = (DrawText)GameController.view.CreateDataAreaContent(new DrawText("1: Hyppykeppi","2: Banaanisplitti"));
+        items = (DrawText)GameController.view.createAreaContent(new DrawText("1: Hyppykeppi","2: Banaanisplitti"), Area.dataArea);
         //TODO: korvaa teksti oliolla itemeistä
         
         InputManager.registerListener(KeyEvent.VK_1, this::desc1);

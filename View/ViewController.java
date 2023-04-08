@@ -7,16 +7,52 @@ public class ViewController {
     private Terminal t = new Terminal(80,24);
 
     private DrawArea infoDrawArea;
-    public DrawCommand CreateInfoAreaContent(DrawCommand drawCommand){
-        return infoDrawArea.createContent(drawCommand);
-    }
+
     private DrawArea mainDrawArea;
-    public DrawCommand CreateMainAreaContent(DrawCommand drawCommand){
-        return mainDrawArea.createContent(drawCommand);
-    }
+
     private DrawArea dataDrawArea;
-    public DrawCommand CreateDataAreaContent(DrawCommand drawCommand){
-        return dataDrawArea.createContent(drawCommand);
+
+    public DrawCommand createAreaContent(DrawCommand drawCommand, Area area){
+        switch (area) {
+            case infoArea:
+                return infoDrawArea.createContent(drawCommand);
+            case mainArea:
+                return mainDrawArea.createContent(drawCommand);
+            case dataArea:
+                return dataDrawArea.createContent(drawCommand);
+            default:
+                return null;
+        }
+    }
+
+    public void clearArea(Area area){
+        switch (area) {
+            case infoArea:
+                infoDrawArea.clearArea();
+                break;
+            case mainArea:
+                mainDrawArea.clearArea();
+                break;
+            case dataArea:
+                dataDrawArea.clearArea();
+                break;
+            default:
+        }
+    }
+
+    public void removeContent(DrawCommand content, Area area){
+        switch (area) {
+            case infoArea:
+                infoDrawArea.removeContent(content);
+                break;
+            case mainArea:
+                mainDrawArea.removeContent(content);
+                break;
+            case dataArea:
+                dataDrawArea.removeContent(content);
+                break;
+            default:
+        }
     }
 
     public ViewController(){
@@ -97,5 +133,10 @@ public class ViewController {
             stringMap[y] = new String(chars);
         }
         setContent(new DrawCommand(50, 16, stringMap));
+    }
+    public enum Area{
+        infoArea,
+        mainArea,
+        dataArea
     }
 }
