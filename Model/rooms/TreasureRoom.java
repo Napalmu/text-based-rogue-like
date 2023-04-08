@@ -4,7 +4,6 @@ import Controller.RoomType;
 import Model.EntityManager;
 import Model.Item;
 import Model.Player;
-import View.DrawCommand;
 
 public class TreasureRoom extends Room{
     private final Item[] items;
@@ -28,7 +27,7 @@ public class TreasureRoom extends Room{
             messages[i+1] = "Sait: " + item.getName();
         }
         mainDrawArea.setContent("RoomText", messages);
-        player.getInventory().addItems(this.items);
+        player.addItems(this.items);
 
         this.moveToNextRoom();
     }

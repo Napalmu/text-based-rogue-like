@@ -38,7 +38,7 @@ public class DrawCommand {
         return content;
     }
 
-    void setContent(String[] content) {
+    void setContent(String... content) {
         this.content = content;
         GameController.view.refresh();
     }

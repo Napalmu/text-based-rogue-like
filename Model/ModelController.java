@@ -8,17 +8,15 @@ import View.MapRoom;
 import View.DrawArea;
 
 public class ModelController {
-    private DrawArea infoDrawArea;
     private DrawArea dataDrawArea;
     public ModelController(){
         dataDrawArea = GameController.view.getDataDrawArea();
-        infoDrawArea = GameController.view.getInfoDrawArea();
     }
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {
         dataDrawArea.createContent("Inventory", new DrawText("Inventory:"));
         Player player = EntityManager.getPlayer();
-        player.getInventory().addListener(items -> {
+        player.addInventoryListener(items -> {
             String[] itemNames = new String[items.length+1];
             itemNames[0] = "Inventory:";
             for (int i = 0; i < items.length; i++) {

@@ -1,5 +1,5 @@
 package View;
-import Controller.GameController;
+
 public class DrawText extends DrawCommand {
 
     public DrawText(int x, int y, String... content) {
