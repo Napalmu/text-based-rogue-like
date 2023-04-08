@@ -28,7 +28,7 @@ public class TreasureRoom extends Room{
             messages[i+1] = "Sait: " + item.getName();
         }
         mainDrawArea.setContent("RoomText", messages);
-        player.getInventory().addItems(this.items);
+        player.addItems(this.items);
 
         this.moveToNextRoom();
     }
