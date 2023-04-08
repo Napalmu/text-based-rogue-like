@@ -1,13 +1,19 @@
 package Model.rooms;
 
 import Controller.RoomType;
-import View.DrawCommand;
+import Model.Enemy;
 
 public class EnemyRoom extends Room{
+    protected Enemy enemy;
+
+    public EnemyRoom(Enemy enemy) {
+        this.enemy = enemy;
+    }
 
     @Override
     public void enterRoom() {
-        mainDrawArea.setContent("RoomText","Tulit vihollishuoneeseen!");
+        mainDrawArea.setContent("RoomText","Tulit vihollishuoneeseen!"
+                , "Vihollisen nimi: " + enemy.getName());
         this.moveToNextRoom();
     }
 

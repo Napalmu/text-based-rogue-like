@@ -70,7 +70,8 @@ public class AdventureRoom extends Room{
 
     @Override
     protected void enterRoom() {
-        x=10; y=10; move();
+        //x=0; y=0; move();
+        this.player.setContent("X");
         render(new DrawCommand(0, 0, map.getArt()));
         pointsOfInterest.forEach((poi) -> render(poi.drawCommand));
         InputManager.registerListener(KeyEvent.VK_W, up);

@@ -1,30 +1,32 @@
 package Model.rooms;
 
 import Controller.RoomType;
+import Model.Enemy;
 import Model.EntityManager;
 import Model.Item;
 import Model.Player;
-import View.DrawCommand;
 
 public class BossRoom extends EnemyRoom{
     private final Item key;
-    private boolean hasEntered = false;
 
-    public BossRoom(Item key) {
+    public BossRoom(Enemy enemy, Item key) {
+        super(enemy);
         this.key = key;
     }
 
     @Override
     public void enterRoom() {
-        this.hasEntered = true;
-        mainDrawArea.setContent("RoomText", "Olet bossi huoneessa nyt!");
+        mainDrawArea.setContent("RoomText", "Olet bossi huoneessa nyt!",
+                "Bossin nimi: " + this.enemy.getName());
         EntityManager.getPlayer().getInventory().removeItem(this.key);
         this.moveToNextRoom();
     }
 
     @Override
     public boolean canEnter() {
-        if (hasEntered) return true;
+        //jos huoneessa on jo aiemmin käyty, avainta ei tarvita
+        if (hasBeenEntered()) return true;
+        //tarkistetaan onko pelaajalla vaadittu avain
         Player player = EntityManager.getPlayer();
         boolean hasKey = player.getInventory().containsItem(key);
         if (!hasKey) {

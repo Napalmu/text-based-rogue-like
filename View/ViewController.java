@@ -16,6 +16,10 @@ public class ViewController {
     public DrawArea getMainDrawArea() {
         return mainDrawArea;
     }
+    private MainAreaI mainArea; //Andrein säätö
+    public MainAreaI getMainArea() {
+        return this.mainArea; //Andrein säätö
+    }
     private DrawArea dataDrawArea;
 
     public DrawArea getDataDrawArea() {
@@ -26,6 +30,7 @@ public class ViewController {
         infoDrawArea = new DrawArea(2, 16, 0, 0);
         mainDrawArea = new DrawArea(2, 1, 0, 0);
         dataDrawArea = new DrawArea(59, 1, 0, 0);
+        mainArea = new MainArea(2, 1,0,0); //Andrein säätö
     }
 
     public void startGame(){
@@ -81,6 +86,7 @@ public class ViewController {
                 throw new IllegalArgumentException();
         }
     }
+
     public void drawMap() {
         MapRoom[][] map = GameController.model.getMap();
         String[] stringMap = new String[map.length];
@@ -98,7 +104,6 @@ public class ViewController {
             }
             stringMap[y] = new String(chars);
         }
-        System.out.println(Arrays.toString(stringMap));
         setContent(new DrawCommand(50, 16, stringMap));
     }
 }

@@ -19,7 +19,7 @@ public class EntityManager {
         l.add(e);
         return e;
     }
-    static Entity createEnemy(int hp, String name){
+    public static Entity createEnemy(int hp, String name){
         Entity e = new Enemy(hp, name);
         if (!entities.containsKey(EntityTypes.ENEMY)){
             ArrayList<Entity> l = new ArrayList<>();

@@ -14,10 +14,10 @@ public class ModelController {
         dataDrawArea = GameController.view.getDataDrawArea();
         infoDrawArea = GameController.view.getInfoDrawArea();
     }
-
+    //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {
         dataDrawArea.createContent("Inventory", new DrawText("Inventory:"));
-        Player player = (Player) EntityManager.createPlayer(100, "Pekka");
+        Player player = EntityManager.getPlayer();
         player.getInventory().addListener(items -> {
             String[] itemNames = new String[items.length+1];
             itemNames[0] = "Inventory:";
@@ -29,6 +29,7 @@ public class ModelController {
         });
     }
     public void startGame(){
+        EntityManager.createPlayer(100, "Pekka");
         listenForInventoryChanges();
         Dungeon dungeon = new Dungeon();
         dungeon.enter();

@@ -8,20 +8,17 @@ import View.DrawCommand;
 
 public class TreasureRoom extends Room{
     private final Item[] items;
-    //huoneessa ollaan jo käyty
-    private boolean hasEntered = false;
     public TreasureRoom(Item[] items) {
         this.items = items;
     }
 
     @Override
     public void enterRoom() {
-        if (hasEntered) {
+        if (hasBeenEntered()) {
             mainDrawArea.setContent("RoomText", "Täältä et enää löydä uusia aarteita!");
             this.moveToNextRoom();
             return;
         }
-        hasEntered = true;
         Player player = EntityManager.getPlayer();
         String[] messages = new String[this.items.length+1];
         messages[0] = "Tervetuloa aarrehuoneeseen!";

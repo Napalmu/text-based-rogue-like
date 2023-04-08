@@ -13,6 +13,7 @@ public class Direction {
         return name;
     }
 
+
     public Enterable getDestination() {
         return destination;
     }

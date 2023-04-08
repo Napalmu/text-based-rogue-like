@@ -5,16 +5,18 @@ import Controller.InputManager;
 import Controller.RoomType;
 import View.DrawText;
 import View.DrawArea;
+import View.MainAreaI;
 
 import java.awt.event.KeyEvent;
 import java.util.*;
 
-public abstract class Room implements Enterable{
+public abstract class Room implements Enterable {
     private final List<Direction> nextRooms = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
 
     protected DrawArea mainDrawArea = GameController.view.getMainDrawArea();
+    protected MainAreaI andreinDrawArea = GameController.view.getMainArea();
     protected DrawArea infoDrawArea = GameController.view.getInfoDrawArea();
 
     public boolean hasBeenEntered() {
@@ -25,21 +27,28 @@ public abstract class Room implements Enterable{
         return playerInside;
     }
 
+    /**
+     * Lisää paikan, jonne huoneesta voi siirtyä seuraavaksi
+     * Esim, että pohjoisesta löytyy toinen huone
+     * @param direction kohde
+     */
     public void addDirection(Direction direction) {
         this.nextRooms.add(direction);
     }
 
-
-
-    protected void exit(Enterable target) {
+    /**
+     * Tätä metodia täytyy kutsua, kun huoneesta lähdetään
+     * @param target kohde, johon seuraavaksi mennään
+     */
+    protected final void exit(Enterable target) {
         if (target.canEnter()) {
             mainDrawArea.clearArea();
+            andreinDrawArea.hide();
             this.playerInside = false;
             target.enter();
         } else {
             this.moveToNextRoom();
         }
-
     }
     protected void moveToNextRoom() {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
@@ -75,18 +84,31 @@ public abstract class Room implements Enterable{
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }
-        mainDrawArea.createContent("RoomSelect", new DrawText(5, 6, rooms));
+        andreinDrawArea.drawOptions(rooms);
+        //vanha:
+        //mainDrawArea.createContent("RoomSelect", new DrawText(5, 6, rooms));
 
         InputManager.registerListenerList(choices, true);
     }
 
+    /**
+     * Kutsutaan aina kun huoneeseen tullaan.
+     * Ero enterRoom metodiin on, että tätä metodia aliluokat ei voi muokata
+     * varmistaen että täällä olevaa koodia ei ylikirjoiteta
+     */
     public final void enter() {
         mainDrawArea.createContent("RoomText", new DrawText(4, 0));
+        andreinDrawArea.show();
         this.playerInside = true;
         this.hasBeenEntered = true;
+        //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
         GameController.view.drawMap();
         this.enterRoom();
     }
+
+    /**
+     * Huonekohtainen enter metodi, tätä metodia ei koskaan kuulu kutsua enter metodin ulkopuolella
+     */
     protected abstract void enterRoom();
 
     public abstract RoomType getType();
