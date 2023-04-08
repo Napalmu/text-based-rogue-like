@@ -9,14 +9,14 @@ import View.MapRoom;
 import View.DrawArea;
 
 public class ModelController {
-    private DrawArea dataDrawArea;
+    private DrawText invText;
     private Dungeon dungeon;
     public ModelController(){
-        dataDrawArea = GameController.view.getDataDrawArea();
+        invText = (DrawText)GameController.view.CreateInfoAreaContent(new DrawText());
     }
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {
-        dataDrawArea.createContent("Inventory", new DrawText("Inventory:"));
+        invText.setContent("Inventory:");
         Player player = EntityManager.getPlayer();
         player.addInventoryListener(items -> {
             String[] itemNames = new String[items.length+1];
@@ -24,7 +24,7 @@ public class ModelController {
             for (int i = 0; i < items.length; i++) {
                 itemNames[i+1] = items[i].getName();
             }
-            dataDrawArea.setContent("Inventory", itemNames);
+            invText.setContent(itemNames);
 
         });
     }

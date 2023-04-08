@@ -7,17 +7,16 @@ public class ViewController {
     private Terminal t = new Terminal(80,24);
 
     private DrawArea infoDrawArea;
-    public DrawArea getInfoDrawArea() {
-        return infoDrawArea;
+    public DrawCommand CreateInfoAreaContent(DrawCommand drawCommand){
+        return infoDrawArea.createContent(drawCommand);
     }
     private DrawArea mainDrawArea;
-    public DrawArea getMainDrawArea() {
-        return mainDrawArea;
+    public DrawCommand CreateMainAreaContent(DrawCommand drawCommand){
+        return mainDrawArea.createContent(drawCommand);
     }
     private DrawArea dataDrawArea;
-
-    public DrawArea getDataDrawArea() {
-        return dataDrawArea;
+    public DrawCommand CreateDataAreaContent(DrawCommand drawCommand){
+        return dataDrawArea.createContent(drawCommand);
     }
 
     public ViewController(){

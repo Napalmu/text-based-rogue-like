@@ -5,6 +5,7 @@ import Controller.InputManager;
 import Controller.RoomType;
 import View.DrawText;
 import View.DrawArea;
+import View.DrawCommand;
 
 import java.awt.event.KeyEvent;
 import java.util.*;
@@ -14,8 +15,8 @@ abstract class Room implements Enterable {
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
 
-    protected DrawArea mainDrawArea = GameController.view.getMainDrawArea();
-    protected DrawArea infoDrawArea = GameController.view.getInfoDrawArea();
+    protected DrawText roomSelect = (DrawText)GameController.view.CreateMainAreaContent(new DrawText(5, 6));
+    protected DrawText roomText = (DrawText)GameController.view.CreateMainAreaContent(new DrawText(4, 0)); 
 
     public boolean hasBeenEntered() {
         return hasBeenEntered;

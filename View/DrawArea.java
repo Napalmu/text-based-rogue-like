@@ -1,19 +1,20 @@
 package View;
 import Controller.GameController;
-import java.util.HashMap;
-import java.util.Map.Entry;
+
+import java.util.ArrayList;
+
 
 public class DrawArea extends DrawCommand {
 
-    private HashMap<String, DrawCommand> contentList = new HashMap<>();
+    private ArrayList<DrawCommand> contentList = new ArrayList<>();
 
     public DrawArea(int x, int y, int width, int height) {
         super(x, y);
         
     }
-    public DrawCommand createContent(String nameTag, DrawCommand drawCommand) {
+    public DrawCommand createContent(DrawCommand drawCommand) {
         DrawCommand content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
-        this.contentList.put(nameTag, content);        
+        this.contentList.add(content);
         GameController.view.setContent(content);
         return content;
     }
@@ -25,27 +26,13 @@ public class DrawArea extends DrawCommand {
     //     }
     // }
 
-    public void removeContent(String nameTag){
-        GameController.view.clearContent(contentList.get(nameTag));
-        contentList.remove(nameTag);
-    }
     public void removeContent(DrawCommand content){
         GameController.view.clearContent(content);
-        String key = "";
-        for(Entry<String, DrawCommand> entry : contentList.entrySet()){
-            if(entry.getValue().equals(content)){
-                key = entry.getKey();
-            }
-        };
-        contentList.remove(key);
-    }
-
-    public void setContent(String nameTag, String... content){
-        contentList.get(nameTag).setContent(content);
+        contentList.remove(content);
     }
 
     public void clearArea(){
-        for (DrawCommand drawCommand : contentList.values()) {
+        for (DrawCommand drawCommand : contentList) {
             GameController.view.clearContent(drawCommand);
         }
         contentList.clear();
