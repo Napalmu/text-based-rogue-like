@@ -97,6 +97,10 @@ abstract class Room implements Enterable {
         this.playerInside = true;
         //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
         GameController.view.drawMap();
+        this.enterRoom();
+        
+        //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
+        this.hasBeenEntered = true;
         GameController.model.emitGameEvent(new GameEvent() {
 
             @Override
@@ -106,10 +110,6 @@ abstract class Room implements Enterable {
             public String getEventText() {return getType().name();}
             
         });
-        this.enterRoom();
-
-        //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
-        this.hasBeenEntered = true;
     }
 
     /**
