@@ -16,7 +16,7 @@ public abstract class Room implements Enterable {
     private boolean hasBeenEntered = false;
 
     protected DrawArea mainDrawArea = GameController.view.getMainDrawArea();
-    protected MainAreaI andreinDrawArea = GameController.view.getMainArea();
+    protected MainAreaI mainArea = GameController.view.getMainArea();
     protected DrawArea infoDrawArea = GameController.view.getInfoDrawArea();
 
     public boolean hasBeenEntered() {
@@ -43,7 +43,7 @@ public abstract class Room implements Enterable {
     protected final void exit(Enterable target) {
         if (target.canEnter()) {
             mainDrawArea.clearArea();
-            andreinDrawArea.hide();
+            mainArea.hide();
             this.playerInside = false;
             target.enter();
         } else {
@@ -84,7 +84,7 @@ public abstract class Room implements Enterable {
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }
-        andreinDrawArea.drawOptions(rooms);
+        mainArea.drawOptions(rooms);
         //vanha:
         //mainDrawArea.createContent("RoomSelect", new DrawText(5, 6, rooms));
 
@@ -98,7 +98,7 @@ public abstract class Room implements Enterable {
      */
     public final void enter() {
         mainDrawArea.createContent("RoomText", new DrawText(4, 0));
-        andreinDrawArea.show();
+        mainArea.show();
         this.playerInside = true;
         this.hasBeenEntered = true;
         //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
