@@ -1,6 +1,6 @@
 package Model.rooms;
 
-public class Direction {
+class Direction {
     private final String name;
     private final Enterable destination;
 

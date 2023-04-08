@@ -8,7 +8,6 @@ import View.MapRoom;
 import View.ascii_art.AsciiDrawing;
 
 public class Dungeon implements Enterable {
-    public static Dungeon currentDungeon;
     private final Item keyToBossRoom = new Item("Mahtava avain");
     private Room startingRoom;
     private Room[][] rooms;
@@ -20,23 +19,23 @@ public class Dungeon implements Enterable {
         //this.startingRoom = f.createMessageRoom(new Room[] {nextRoom}, "Tervetuloa2!", "Mene pois2!");
     }
 
-    private Room room(RoomFactory f, char c) {
+    private Room room(RoomFactory f, char c) {        
         switch (c) {
             case 'T':
-                return f.createTreasureRoom(new Item[]{this.keyToBossRoom});
+                return (Room) f.createTreasureRoom(new Item[]{this.keyToBossRoom});
             case 'E':
-                return f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki"));
+                return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki"));
             case 'M':
-                return f.createMessageRoom("Viesti huone...");
+                return (Room) f.createMessageRoom("Viesti huone...");
             case 'A':
-                return f.createAdventureRoom(AsciiDrawing.OUTSIDE);
+                return (Room) f.createAdventureRoom(AsciiDrawing.OUTSIDE);
             case 'S':
                 return new ShopRoom(); //TODO käytä factory
             case '*':
-                this.startingRoom = f.createMessageRoom("Aloitushuone");
+                this.startingRoom = (Room) f.createMessageRoom("Aloitushuone");
                 return this.startingRoom;
             case 'B':
-                return f.createBossRoom(
+                return (Room) f.createBossRoom(
                         (Enemy) EntityManager.createEnemy(100, "Bossi")
                         , this.keyToBossRoom);
             default:
@@ -95,7 +94,6 @@ public class Dungeon implements Enterable {
 
     @Override
     public void enter() {
-        Dungeon.currentDungeon = this;
         this.startingRoom.enter();
     }
 

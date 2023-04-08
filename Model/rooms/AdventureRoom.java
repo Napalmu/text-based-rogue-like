@@ -12,7 +12,7 @@ import View.DrawCommand;
 import View.DrawMovingStructure;
 import View.ascii_art.AsciiDrawing;
 
-public class AdventureRoom extends Room{
+class AdventureRoom extends Room{
 
     private int x=10;
     private int y=10;

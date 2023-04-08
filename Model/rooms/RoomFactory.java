@@ -7,21 +7,25 @@ import Model.Item;
 import View.ascii_art.AsciiDrawing;
 
 public class RoomFactory {
-    public Room createAdventureRoom(AsciiDrawing map){
+    public Enterable createAdventureRoom(AsciiDrawing map){
         return new AdventureRoom(map);
     }
-
-    public Room createMessageRoom(String... messages) {
+    
+    public Enterable createMessageRoom(String... messages) {
         return new MessageRoom(Arrays.asList(messages));
     }
-    public Room createTreasureRoom(Item[] items) {
+    public Enterable createTreasureRoom(Item[] items) {
         return new TreasureRoom(items);
     }
-    public Room createBossRoom(Enemy enemy, Item key) {
+    public Enterable createBossRoom(Enemy enemy, Item key) {
         return new BossRoom(enemy,key);
     }
 
-    public Room createEnemyRoom(Enemy enemy) {
+    public Enterable createEnemyRoom(Enemy enemy) {
         return new EnemyRoom(enemy);
+    }
+
+    public Dungeon createStartingRoom(String... messages){
+        return new Dungeon();
     }
 }

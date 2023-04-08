@@ -5,7 +5,7 @@ import Model.EntityManager;
 import Model.Item;
 import Model.Player;
 
-public class TreasureRoom extends Room{
+class TreasureRoom extends Room{
     private final Item[] items;
     public TreasureRoom(Item[] items) {
         this.items = items;

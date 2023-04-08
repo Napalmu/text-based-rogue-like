@@ -3,12 +3,14 @@ package Model;
 
 import Controller.GameController;
 import Model.rooms.Dungeon;
+import Model.rooms.RoomFactory;
 import View.DrawText;
 import View.MapRoom;
 import View.DrawArea;
 
 public class ModelController {
     private DrawArea dataDrawArea;
+    private Dungeon dungeon;
     public ModelController(){
         dataDrawArea = GameController.view.getDataDrawArea();
     }
@@ -29,11 +31,11 @@ public class ModelController {
     public void startGame(){
         EntityManager.createPlayer(100, "Pekka");
         listenForInventoryChanges();
-        Dungeon dungeon = new Dungeon();
+        this.dungeon = new RoomFactory().createStartingRoom();
         dungeon.enter();
     }
     public MapRoom[][] getMap() {
-        return Dungeon.currentDungeon.getMap();
+        return dungeon.getMap();
     }
 
 }

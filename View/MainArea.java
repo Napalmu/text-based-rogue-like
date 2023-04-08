@@ -4,7 +4,7 @@ import Controller.GameController;
 
 import java.util.stream.Stream;
 
-public class MainArea extends DrawArea implements MainAreaI{
+class MainArea extends DrawArea implements MainAreaI{
     private final DrawCommand message;
     private final DrawCommand options;
     public MainArea(int x, int y, int width, int height) {

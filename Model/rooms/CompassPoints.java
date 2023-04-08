@@ -1,6 +1,6 @@
 package Model.rooms;
 
-public class CompassPoints {
+class CompassPoints {
     public static String NORTH = "Pohjoiseen";
     public static String SOUTH = "Etelään";
     public static String WEST = "Länteen";

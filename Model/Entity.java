@@ -1,6 +1,6 @@
 package Model;
 
-class Entity {
+public abstract class Entity {
     private int hp;
     private String name;
 

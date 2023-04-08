@@ -2,7 +2,7 @@ package Model.rooms;
 
 import Controller.RoomType;
 
-public class ShopRoom extends Room{
+class ShopRoom extends Room{
     @Override
     protected void enterRoom() {
         mainDrawArea.setContent("RoomText", "Tulit kauppaan");

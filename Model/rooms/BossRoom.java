@@ -6,7 +6,7 @@ import Model.EntityManager;
 import Model.Item;
 import Model.Player;
 
-public class BossRoom extends EnemyRoom{
+class BossRoom extends EnemyRoom{
     private final Item key;
 
     public BossRoom(Enemy enemy, Item key) {

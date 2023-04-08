@@ -9,7 +9,7 @@ import View.DrawArea;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
-public abstract class Room implements Enterable {
+abstract class Room implements Enterable {
     private final List<Direction> nextRooms = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;

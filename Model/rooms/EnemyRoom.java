@@ -3,7 +3,7 @@ package Model.rooms;
 import Controller.RoomType;
 import Model.Enemy;
 
-public class EnemyRoom extends Room{
+class EnemyRoom extends Room{
     protected Enemy enemy;
 
     public EnemyRoom(Enemy enemy) {
