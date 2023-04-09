@@ -2,7 +2,10 @@ package Model;
 
 import java.util.ArrayList;
 
-class Inventory {
+
+import Model.DrawCommandInterfaces.DataIconList;
+
+class Inventory implements DataIconList {
     public interface InventoryListener {
         void onChange(Item[] items);
     }
@@ -34,5 +37,14 @@ class Inventory {
     }
     public void removeListener(InventoryListener listener) {
         this.listeners.remove(listener);
+    }
+
+    @Override
+    public String getHeader() {
+        return "Inventory";
+    }
+    @Override
+    public ArrayList<Item> getDataList() {
+        return items;
     }
 }

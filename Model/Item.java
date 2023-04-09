@@ -1,6 +1,8 @@
 package Model;
 
-public class Item {
+import Model.DrawCommandInterfaces.DataIcon;
+
+public class Item implements DataIcon{
     private String name;
 
     public Item(String name) {
