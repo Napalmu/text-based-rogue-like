@@ -1,8 +1,6 @@
 package Model;
 
 
-import java.util.ArrayList;
-
 import Controller.GameController;
 import Model.rooms.Dungeon;
 import Model.rooms.RoomFactory;
@@ -30,7 +28,6 @@ public class ModelController {
                 itemNames[i+1] = items[i].getName();
             }
             invText.setContent(itemNames);
-            System.out.println(itemNames[1]+ " M");
         });
     }
     public void startGame(){

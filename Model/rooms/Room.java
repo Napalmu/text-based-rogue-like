@@ -1,7 +1,6 @@
 package Model.rooms;
 
 import Controller.GameController;
-import Controller.GameEventType;
 import Controller.InputManager;
 import Controller.RoomType;
 import Model.GameEventManager;

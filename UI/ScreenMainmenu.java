@@ -46,7 +46,6 @@ class ScreenMainmenu extends Screen{
      * Eli model paketissa on joukko asioita, joita perusnäkymään voidaan piirtää.
      */
     public void onPlay(){
-        System.out.println("Fhbasfvhnfsdghds");
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
         unregisterListeners();
@@ -55,7 +54,6 @@ class ScreenMainmenu extends Screen{
         GameController.model.startGame();
     }
     public void onShop() {
-        System.out.println("Fhbasfvhnfsdghds");
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
         unregisterListeners();
@@ -65,7 +63,6 @@ class ScreenMainmenu extends Screen{
     }
 
     public void onAdventure(){
-        System.out.println("Fhbasfvhnfsdghds");
         GameController.view.clearContent(art);
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
