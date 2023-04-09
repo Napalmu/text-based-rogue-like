@@ -1,7 +1,6 @@
 package View;
 
 import Controller.GameController;
-import Model.GameEvent;
 
 import java.util.stream.Stream;
 
@@ -36,13 +35,5 @@ class MainArea extends DrawArea implements MainAreaI{
     }
     public void drawOptions(String... options) {
         this.options.setContent(options);
-    }
-
-    @Override
-    public void handleGameEvent(GameEvent e) {
-        switch(e.getEventType()){
-            default:
-            return;
-        }
     }
 }

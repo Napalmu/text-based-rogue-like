@@ -4,7 +4,7 @@ import Controller.GameController;
 import Controller.GameEventType;
 import Controller.InputManager;
 import Controller.RoomType;
-import Model.GameEvent;
+import Model.GameEventManager;
 import View.DrawText;
 import View.ViewController.Area;
 import java.awt.event.KeyEvent;
@@ -101,15 +101,7 @@ abstract class Room implements Enterable {
         
         //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
         this.hasBeenEntered = true;
-        GameController.model.emitGameEvent(new GameEvent() {
-
-            @Override
-            public GameEventType getEventType() {return GameEventType.ROOMXENTERED;}
-
-            @Override
-            public String getEventText() {return getType().name();}
-            
-        });
+        GameEventManager.emitRoomEnteredEvent(this);
     }
 
     /**

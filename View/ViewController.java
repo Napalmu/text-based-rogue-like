@@ -62,9 +62,6 @@ public class ViewController {
     }
 
     public void startGame(){
-        GameController.model.registerGameEventListener(infoDrawArea);
-        GameController.model.registerGameEventListener(mainDrawArea);
-        GameController.model.registerGameEventListener(dataDrawArea);
         GameController.ui.mainMenu();
     }
 

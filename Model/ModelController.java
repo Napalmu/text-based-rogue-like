@@ -14,17 +14,8 @@ public class ModelController {
     private DrawText invText;
     private Dungeon dungeon;
 
-    private ArrayList<GameEventListener> eventListeners = new ArrayList<>();
     public ModelController(){
         
-    }
-
-    public void registerGameEventListener(GameEventListener listener){
-        eventListeners.add(listener);
-    }
-
-    public void emitGameEvent(GameEvent e){
-        eventListeners.forEach(listener -> listener.handleGameEvent(e));
     }
 
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
@@ -52,7 +43,4 @@ public class ModelController {
         return dungeon.getMap();
     }
 
-    public interface GameEventListener{
-        void handleGameEvent(GameEvent e);
-    }
 }
