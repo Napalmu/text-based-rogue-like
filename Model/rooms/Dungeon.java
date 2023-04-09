@@ -7,6 +7,7 @@ import Model.EntityManager;
 import Model.Item;
 import View.MapRoom;
 import View.ascii_art.AsciiDrawing;
+import static Model.rooms.CompassPoints.*;
 
 public class Dungeon implements Enterable {
     private final Item keyToBossRoom = EntityManager.createItem(ItemType.KEY);
@@ -15,15 +16,12 @@ public class Dungeon implements Enterable {
 
     public Dungeon() {
         testDungeon();
-        //RoomFactory f = new RoomFactory();
-        //Room nextRoom = f.createMessageRoom(new Room[0], "XDDDD");
-        //this.startingRoom = f.createMessageRoom(new Room[] {nextRoom}, "Tervetuloa2!", "Mene pois2!");
     }
 
     private Room room(RoomFactory f, char c) {        
         switch (c) {
             case 'T':
-                return (Room) f.createTreasureRoom(new Item[]{this.keyToBossRoom});
+                return (Room) f.createTreasureRoom(this.keyToBossRoom);
             case 'E':
                 return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki"));
             case 'M':
@@ -56,16 +54,23 @@ public class Dungeon implements Enterable {
             for (int x = 0; x < s[y].length(); x++) {
                 rooms[y][x] = room(f, s[y].charAt(x));
                 if (this.rooms[y][x] == null) continue;
-                this.addNeighbour(y - 1, x, CompassPoints.NORTH, CompassPoints.SOUTH, rooms[y][x]);
-                this.addNeighbour(y + 1, x, CompassPoints.SOUTH, CompassPoints.NORTH, rooms[y][x]);
-                this.addNeighbour(y, x - 1, CompassPoints.WEST, CompassPoints.EAST, rooms[y][x]);
-                this.addNeighbour(y, x + 1, CompassPoints.EAST, CompassPoints.WEST, rooms[y][x]);
+                this.addNeighbour(y - 1, x, NORTH, SOUTH, rooms[y][x]);
+                this.addNeighbour(y + 1, x, SOUTH, NORTH, rooms[y][x]);
+                this.addNeighbour(y, x - 1, WEST, EAST, rooms[y][x]);
+                this.addNeighbour(y, x + 1, EAST, WEST, rooms[y][x]);
             }
         }
     }
 
     private void addNeighbour(int y, int x, String dir, String dir2, Room room) {
-        if (y < 0 || x < 0 || y >= this.rooms.length || x >= this.rooms[0].length || this.rooms[y][x] == null) return;
+            
+        if (y < 0 || 
+            x < 0 || 
+            y >= this.rooms.length || 
+            x >= this.rooms[0].length || 
+            this.rooms[y][x] == null) 
+            return;
+
         this.rooms[y][x].addDirection(new Direction(dir2, room));
         room.addDirection(new Direction(dir, this.rooms[y][x]));
     }
@@ -79,14 +84,10 @@ public class Dungeon implements Enterable {
                 if (r == null) continue;
                 map[y][x] = new MapRoom() {
                     @Override
-                    public RoomType getRoomType() {
-                        return r.getType();
-                    }
+                    public RoomType getRoomType() {return r.getType();}
 
                     @Override
-                    public boolean hasPlayerInside() {
-                        return r.hasPlayerInside();
-                    }
+                    public boolean hasPlayerInside() {return r.hasPlayerInside();}
                 };
             }
         }

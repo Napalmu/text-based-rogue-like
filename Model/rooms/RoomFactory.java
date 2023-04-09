@@ -14,7 +14,7 @@ public class RoomFactory {
     public Enterable createMessageRoom(String... messages) {
         return new MessageRoom(Arrays.asList(messages));
     }
-    public Enterable createTreasureRoom(Item[] items) {
+    public Enterable createTreasureRoom(Item... items) {
         return new TreasureRoom(items);
     }
     public Enterable createBossRoom(Enemy enemy, Item key) {
