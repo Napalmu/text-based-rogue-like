@@ -3,9 +3,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Controller.EntityTypes;
+import Controller.GameConcept;
+import Controller.ItemType;
 
 public class EntityManager {
-    private static HashMap<EntityTypes, ArrayList<Entity>> entities = new HashMap<>();
+    private static HashMap<GameConcept, ArrayList<Entity>> entities = new HashMap<>();
     public static Player getPlayer() {
         if (!entities.containsKey(EntityTypes.PLAYER)) {
             return (Player) createPlayer(100, "Pekka");
@@ -30,5 +32,11 @@ public class EntityManager {
         }
         return e;
     }
-
+    public static Item createItem(ItemType type) {
+        Item i = new Item(type);
+        ArrayList<Entity> list = entities.getOrDefault(type, new ArrayList<>());
+        entities.putIfAbsent(type, list);
+        list.add(i);
+        return i;
+    }
 }

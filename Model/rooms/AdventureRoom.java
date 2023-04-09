@@ -6,7 +6,9 @@ import java.awt.event.KeyEvent;
 
 import Controller.GameController;
 import Controller.InputManager;
+import Controller.ItemType;
 import Controller.InputManager.KeyConsumer;
+import Model.EntityManager;
 import Controller.RoomType;
 import View.DrawCommand;
 import View.DrawMovingStructure;
@@ -54,7 +56,8 @@ class AdventureRoom extends Room{
         GameController.view.clearContent(poi.drawCommand);
         GameController.view.drawContentOneShot(new DrawCommand(5, 5, "You picked up a blueberry"));
         pointsOfInterest.remove(poi);
-        //Add item to inventory
+        
+        EntityManager.getPlayer().addItems(EntityManager.createItem(ItemType.BLUEBERRY));
     }
 
     private void move(){

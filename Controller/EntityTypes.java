@@ -1,6 +1,7 @@
 package Controller;
 
-public enum EntityTypes {
+public enum EntityTypes implements GameConcept{
     PLAYER,
-    ENEMY
+    ENEMY,
+    BLUEBERRY
 }

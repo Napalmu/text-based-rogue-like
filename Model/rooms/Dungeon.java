@@ -1,5 +1,6 @@
 package Model.rooms;
 
+import Controller.ItemType;
 import Controller.RoomType;
 import Model.Enemy;
 import Model.EntityManager;
@@ -8,7 +9,7 @@ import View.MapRoom;
 import View.ascii_art.AsciiDrawing;
 
 public class Dungeon implements Enterable {
-    private final Item keyToBossRoom = new Item("Mahtava avain");
+    private final Item keyToBossRoom = EntityManager.createItem(ItemType.KEY);
     private Room startingRoom;
     private Room[][] rooms;
 

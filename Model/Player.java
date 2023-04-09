@@ -8,7 +8,7 @@ public class Player extends Entity {
         super(hp, name);
     }
 
-    public void addItems(Item[] items) {
+    public void addItems(Item... items) {
         inventory.addItems(items);
     }
 
