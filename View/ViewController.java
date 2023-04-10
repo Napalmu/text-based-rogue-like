@@ -96,25 +96,6 @@ public class ViewController {
         t.dispose();
     }
 
-    private char roomTypeToChar(RoomType type) {
-        switch (type) {
-            case MSG:
-                return 'M';
-            case BOSS:
-                return 'B';
-            case ENEMY:
-                return 'E';
-            case TREASURE:
-                return 'T';
-            case ADVENTURE:
-                return 'A';
-            case SHOP:
-                return 'S';
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
     public void drawMap() {
         MapRoom[][] map = GameController.model.getMap();
         String[] stringMap = new String[map.length];
@@ -125,7 +106,7 @@ public class ViewController {
                     chars[x] = ' ';
                     continue;
                 }
-                chars[x] = roomTypeToChar(map[y][x].getRoomType());
+                chars[x] = map[y][x].getRoomType().symbol;
                 if (map[y][x].hasPlayerInside()) {
                     chars[x] = '$';
                 }
