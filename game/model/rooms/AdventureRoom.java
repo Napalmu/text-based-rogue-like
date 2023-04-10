@@ -105,6 +105,13 @@ class AdventureRoom extends Room{
         return keys;
     }
     @Override
+    protected ArrayList<String> getEvents(){
+        ArrayList<String> result = new ArrayList<>();
+        result.add("A: Aloita seikkailu.");
+        return result;
+    }
+
+    @Override
     public RoomType getType() {
         return RoomType.ADVENTURE;
     }

@@ -92,7 +92,7 @@ abstract class Room implements Enterable {
 
     /**
      * Metodi palauttaa huonekohtaiset napinpainalluseventit. Huone perii metodin tarvittaessa.
-     * 
+     *      
      * @return Lista eventeistä
      */
     protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){return new ArrayList<>();}
