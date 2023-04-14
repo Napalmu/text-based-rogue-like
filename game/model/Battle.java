@@ -27,7 +27,7 @@ class Battle {
                 endBattle();
             }
             if (fighter.getSpeed() == 0){
-                fighter.TargetAndAction(fighters);
+                Attack(fighter.TargetAndAction(fighters));
             }
 
             fighter.proceed();
@@ -37,12 +37,12 @@ class Battle {
     }   
 
     /** Work in progress varsinaiset aktiojutut
-     * @param Target keneen isku tehdään
-     * @param dmg tehtävän damadgn määrä
+     * @param targetAndDmg int[] joka kertoo kohteen ja damagen määrän. tähän vois olla ehkä joku parempi
+     * ku int[] nii voi ehdottaa sellasta :)
     */
 
-    public void Attack(int target, int dmg) {
-        fighters.get(target).takeDamage(dmg);
+    public void Attack(int[] targetAndDmg) {
+        fighters.get(targetAndDmg[0]).takeDamage(targetAndDmg[1]);
     }
 
     public void endBattle() {}
