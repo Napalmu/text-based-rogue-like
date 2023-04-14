@@ -1,28 +1,37 @@
 package game.model;
 
-// Älä lue tätä pls tää on placeholder mikä tulee iloisesti poistumaan mahd. pian
+import java.util.ArrayList;
 
-
-public class DummyPlayer implements Fighter {
-    private int initiative;
-    private int storeInitiative;
+class DummyPlayer implements Fighter {
+    private int speed;
+    private int storeSpeed;
     private int hp;
 
     public DummyPlayer (){
-        this.initiative = 2;
-        this.storeInitiative = initiative;
+        this.speed = 2;
+        this.storeSpeed = speed;
         this.hp = 4;
     }
 
-    public int proceed(){
-        initiative--;
-        return initiative;
+    
+    public int getSpeed() {
+        return speed;
     }
 
-    public int performAction()
+    public void proceed(){
+        speed--;
+    }
+
+    /**
+     * @param fighters ArrayList Fighter-rajapintoja
+     * @return int[] itegerin taulukko.
+     */
+
+    public int[] TargetAndAction(ArrayList<Fighter> fighters)
     {
-        initiative = storeInitiative;
-        return 0;
+        speed = storeSpeed;
+        int[] choices = {2, 2};
+        return choices;
     }
 
     public void takeDamage(int dmg) {
@@ -31,7 +40,8 @@ public class DummyPlayer implements Fighter {
 
     public void die(){
         if(this.hp<=0){
-        // täs kohtaa sä kuolet
+        // täs kohtaa sä kuolet :)
         }
     }
+
 }

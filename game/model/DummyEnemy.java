@@ -1,9 +1,11 @@
 package game.model;
 
+import java.util.ArrayList;
+
 // Älä lue tätä pls tää on placeholder mikä tulee iloisesti poistumaan mahd. pian
 
 
-public class DummyEnemy implements Fighter{
+class DummyEnemy implements Fighter{
     private int initiative;
     private final int storeInitiative;
     private int hp;
@@ -14,23 +16,9 @@ public class DummyEnemy implements Fighter{
         this.hp = 2;
     }
 
-    public int proceed(){
+    public void proceed(){
         initiative--;
-
-        if(initiative == 0){
-            // performAttack();
-            initiative = storeInitiative;
-            System.out.println(":D");
-        }
-        return 0;
     }
-
-    @Override
-    public int performAction() {
-        return 0;
-    }
-
-    public void performAttack(Fighter target, int dmg){ }
 
     public void takeDamage(int dmg) {
         this.hp -= dmg;
@@ -40,5 +28,23 @@ public class DummyEnemy implements Fighter{
         if (this.hp <=0){
             // jotain luokkaa Battle.removeFighter(this.fighter);
         }
+    }
+
+    @Override
+    public int getSpeed() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSpeed'");
+    }
+
+    @Override
+    public int[] TargetAndAction(ArrayList<Fighter> fighters) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'TargetAndAction'");
+    }
+
+    @Override
+    public void takeDamage() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'takeDamage'");
     }
 }

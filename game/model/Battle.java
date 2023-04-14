@@ -2,7 +2,7 @@ package game.model;
 
 import java.util.ArrayList;
 
-public class Battle {
+class Battle {
     private ArrayList<Fighter> fighters;
 
     public Battle(ArrayList<Fighter> fighters) {
@@ -15,14 +15,34 @@ public class Battle {
         proceedBattle();
     }
 
+
+    /* Tarkastetaan onko taistelijoita jäljellä, yli yksi,
+     * Tarkastetaan onko jonkun vuoro toimia ja tehdään (work in progress)
+     * Vähennetään taistelijoiden odotusaikaa.
+     */
+
     public void proceedBattle(){
         for (Fighter fighter : fighters) {
-            fighter.proceed();
+            if (fighters.size() <= 1){
+                endBattle();
+            }
+            if (fighter.getSpeed() == 0){
+                fighter.TargetAndAction(fighters);
+            }
 
-            // if fighter.proceed() == 0 { fighter.doAction(); }
+            fighter.proceed();
         }
 
         // Input continue -> proceedBattle()
+    }   
+
+    /** Work in progress varsinaiset aktiojutut
+     * @param Target keneen isku tehdään
+     * @param dmg tehtävän damadgn määrä
+    */
+
+    public void Attack(int target, int dmg) {
+        fighters.get(target).takeDamage(dmg);
     }
 
     public void endBattle() {}
