@@ -30,7 +30,7 @@ public class GameEventManager {
     }
     public static RoomManager roomManager = new RoomManager()
      */
-    @FunctionalInterface public interface RoomEnteredListener{ void action(IRoom room); }
+    @FunctionalInterface public interface RoomEnteredListener{ void action(IRoom room,boolean success); }
 
     private static ArrayList<RoomEnteredListener> roomListeners = new ArrayList<>();
     public static void registerListener(RoomEnteredListener listener){
@@ -39,8 +39,11 @@ public class GameEventManager {
     public static void unregisterListener(RoomEnteredListener listener){
         roomListeners.remove(listener);
     }
-    public static void emitRoomEnteredEvent(IRoom room){
-        roomListeners.forEach(listener -> listener.action(room));
+    public static void emitRoomEnteredEvent(IRoom room, boolean success){
+        roomListeners.forEach(listener -> listener.action(room, success));
+    }
+    public static void emitRoomEnteredEvent(IRoom room) {
+        emitRoomEnteredEvent(room, true);
     }
 
     @FunctionalInterface public interface DamageReceivedListener{ void action(int amount); }

@@ -1,10 +1,8 @@
 package game.model.rooms;
 
+import game.controller.GameController;
 import game.controller.RoomType;
-import game.model.Enemy;
-import game.model.EntityManager;
-import game.model.Item;
-import game.model.Player;
+import game.model.*;
 
 class BossRoom extends EnemyRoom{
     private final Item key;
@@ -16,8 +14,6 @@ class BossRoom extends EnemyRoom{
 
     @Override
     public void enterRoom() {
-        roomText.setContent("Olet bossi huoneessa nyt!",
-                "Bossin nimi: " + this.enemy.getName());
         EntityManager.getPlayer().getInventory().removeItem(this.key);
         this.moveToNextRoom();
     }
@@ -30,7 +26,8 @@ class BossRoom extends EnemyRoom{
         Player player = EntityManager.getPlayer();
         boolean hasKey = player.getInventory().containsItem(key);
         if (!hasKey) {
-            roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
+            GameEventManager.emitRoomEnteredEvent(this, false);
+            //roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
         }
         return hasKey;
     }

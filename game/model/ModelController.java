@@ -39,6 +39,15 @@ public class ModelController {
         IBattle battle = new Battle(EntityManager.getPlayer(), enemies);
         GameEventManager.emitBattleStarted(battle);
     }
+
+    /**
+     * Asettaa tän hetkiseksi dungeoniksi parametri dungeonin.
+     * Tarvitaan, jotta kartta voitaisiin piirtää siitä dungeonista, jossa ollaan
+     * @param dungeon dungeon
+     */
+    public void moveToDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
     public void startGame(){
         EntityManager.createPlayer(100, "Pekka");
         listenForInventoryChanges();

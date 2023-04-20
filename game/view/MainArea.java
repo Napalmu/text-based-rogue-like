@@ -9,30 +9,44 @@ import game.model.rooms.IRoom;
 import java.util.stream.Stream;
 
 class MainArea extends DrawArea {
-    private final DrawCommand message;
+    private final ScrollingDrawArea message;
     private final DrawCommand options;
     public MainArea(int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.message = new DrawCommand(x+1,y+1, "");
+        this.message = new ScrollingDrawArea(x+1,y+1, new String[10]);
+        //this.message = new DrawCommand(x+1,y+1, "");
         this.options = new DrawCommand(x+5,y+6, "");
 
         GameEventManager.registerListener(this::battleStarted);
         GameEventManager.registerListener(this::roomEntered);
     }
-    private void roomEntered(IRoom room) {
-        this.message.setContent("");
+    private void roomEntered(IRoom room, boolean success) {
+        this.message.clear();
         this.options.setContent("");
+        //TODO erilliset metodit
         switch (room.getType()) {
             case MSG:
-                this.message.setContent("Tulit viestihuoneeseen!");
+                this.message.addMessage("Tulit viestihuoneeseen!");
                 break;
             case TREASURE:
                 //TODO pitkät lauseet hankalia
                 if (room.hasBeenEntered()) {
-                    this.message.setContent("Saavut huoneeseen, jossa on arkku.",
+                    this.message.addMessage("Saavut huoneeseen, jossa on arkku.",
                             "Epäonneksesi huomaat kuitenkin, että olet jo käynyt", "huoneessa.");
                 } else {
-                    this.message.setContent("Löydät itsesi huoneesta, josta löytyy", "salaperäinen arkku");
+                    this.message.addMessage("Löydät itsesi huoneesta, josta löytyy", "salaperäinen arkku");
+                }
+                break;
+            case BOSS:
+                if (!success) {
+                    this.message.addMessage("Höh, näyttää siltä, että tarvitset", "avaimen päästäksesi sisään");
+                    break;
+                }
+                if (room.hasBeenEntered()) {
+                    this.message.addMessage("Tässä huoneessa asui aikoinaan hirveä mörkö",
+                            "onneksi tapoit hänet jo");
+                } else {
+                    this.message.addMessage("Tässä huoneessa asuu hirveä mörkö");
                 }
                 break;
         }
@@ -43,7 +57,7 @@ class MainArea extends DrawArea {
             enemies.append("Vihollinen: ").append(enemy.getName()).append("\n");
         }
         System.out.println(enemies);
-        this.message.setContent(enemies.toString());
+        this.message.addMessage(enemies.toString());
     }
 
     @Override

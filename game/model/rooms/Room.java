@@ -4,18 +4,14 @@ import game.controller.GameController;
 import game.controller.InputManager;
 import game.controller.RoomType;
 import game.model.GameEventManager;
-import game.view.DrawText;
-import game.view.ViewController.Area;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 abstract class Room implements Enterable, IRoom{
     private final List<Direction> directions = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
-
-    protected DrawText roomSelect;
-    protected DrawText roomText; 
 
     public boolean hasBeenEntered() {
         return hasBeenEntered;
@@ -40,27 +36,34 @@ abstract class Room implements Enterable, IRoom{
      */
     protected final void exit(Enterable target) {
         if (target.canEnter()) {
-            GameController.view.clearArea(Area.mainArea);
+            //ei tarvita enään, koska näkymä kuuntelee RoomEnter tapahtumia
+            //GameController.view.clearArea(Area.mainArea);
             this.playerInside = false;
+            this.hasBeenEntered = true;
             target.enter();
         } else {
+            //kysytään uusi valinta
             this.moveToNextRoom();
         }
     }
+
+    /**
+     * Kysyy käyttäjältä minne siirrytään ja siirtyy sinne
+     */
     protected void moveToNextRoom() {
         GameController.view.moveToNextRoom(this.directions, this::exit);
     }
 
     /**
      * Metodi palauttaa huonekohtaiset napinpainalluseventit. Huone perii metodin tarvittaessa.
-     *      
+     * todo remove
      * @return Lista eventeistä
      */
     protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){return new ArrayList<>();}
 
     /**
      * Metodi palauttaa huonekohtaiset kohteet, joihin huoneesta voi mennä. Huone perii metodin tarvittaessa.
-     * 
+     * todo remove
      * @return Lista kohteista
      */
     protected ArrayList<Direction> getDestinations(){
@@ -76,9 +79,6 @@ abstract class Room implements Enterable, IRoom{
         this.playerInside = true;
         GameEventManager.emitRoomEnteredEvent(this);
         this.enterRoom();
-
-        //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
-        this.hasBeenEntered = true;
     }
 
     /**

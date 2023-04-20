@@ -4,7 +4,7 @@ import java.util.List;
 
 import game.controller.GameController;
 import game.controller.RoomType;
-
+//TODO poista koko huone, koska turha
 class MessageRoom extends Room{
     private final List<String> messages;
 

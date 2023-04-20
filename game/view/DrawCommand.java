@@ -9,7 +9,7 @@ public class DrawCommand {
     private int x;
     private int y;
 
-    protected String[] content;
+    private String[] content;
 
     public DrawCommand(int x, int y, String... content) {
         this.x = x;

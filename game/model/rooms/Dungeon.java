@@ -2,6 +2,7 @@ package game.model.rooms;
 
 import static game.model.rooms.CompassPoints.*;
 
+import game.controller.GameController;
 import game.controller.ItemType;
 import game.controller.RoomType;
 import game.model.Enemy;
@@ -97,6 +98,7 @@ public class Dungeon implements Enterable {
 
     @Override
     public void enter() {
+        GameController.model.moveToDungeon(this);
         this.startingRoom.enter();
     }
 

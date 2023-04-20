@@ -70,7 +70,7 @@ public class ViewController {
         infoDrawArea = new InfoArea(2, 16, 0, 0);
         mainDrawArea = new MainArea(2, 1, 0, 0);
         dataDrawArea = new TextArea(59, 1, 0, 0);
-        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) room -> {
+        GameEventManager.registerListener((room, success) -> {
             this.drawMap();
         });
     }
