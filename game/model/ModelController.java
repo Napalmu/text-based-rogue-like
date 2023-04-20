@@ -30,6 +30,15 @@ public class ModelController {
             invText.setContent(itemNames);
         });
     }
+
+    /**
+     * Aloittaa taistelun vihollisia vastaan. Kertoo näkymälle taistelun alkamisesta.
+     * @param enemies viholliset, joita vastaan taistella
+     */
+    public void startBattle(Enemy... enemies) {
+        IBattle battle = new Battle(EntityManager.getPlayer(), enemies);
+        GameEventManager.emitBattleStarted(battle);
+    }
     public void startGame(){
         EntityManager.createPlayer(100, "Pekka");
         listenForInventoryChanges();

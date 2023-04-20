@@ -38,5 +38,4 @@ public abstract class DrawArea extends DrawCommand{
         }
         contentList.clear();
     }
-
 }

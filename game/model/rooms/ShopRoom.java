@@ -5,7 +5,6 @@ import game.controller.RoomType;
 class ShopRoom extends Room{
     @Override
     protected void enterRoom() {
-        roomText.setContent("Tulit kauppaan");
         this.moveToNextRoom();
     }
 

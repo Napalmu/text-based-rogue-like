@@ -7,11 +7,10 @@ import game.model.GameEventManager;
 import game.view.DrawText;
 import game.view.ViewController.Area;
 
-import java.awt.event.KeyEvent;
 import java.util.*;
 
-abstract class Room implements Enterable {
-    private final List<Direction> nextRooms = new ArrayList<>();
+abstract class Room implements Enterable, IRoom{
+    private final List<Direction> directions = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
 
@@ -32,7 +31,7 @@ abstract class Room implements Enterable {
      * @param direction kohde
      */
     public void addDirection(Direction direction) {
-        this.nextRooms.add(direction);
+        this.directions.add(direction);
     }
 
     /**
@@ -49,45 +48,7 @@ abstract class Room implements Enterable {
         }
     }
     protected void moveToNextRoom() {
-        ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
-        ArrayList<String> rooms = new ArrayList<>();
-        //seuraavan koodin idea on, että tietyille ilmansuunnille annetaan aina samat numerot:
-        //(hyvin kyseenalaista koodia)
-        //järjestetään kohteen, niin että pienemmät numerot tulevat ensin.
-        //eli esim. pohjoisen numero on 1 ja etelän 3.
-        //jos kohde ei ole ilmansuunta, se laitetaan ilmansuuntien jälkeen
-        nextRooms.sort((o1, o2) -> {
-            int key1 = CompassPoints.getKeyMatchingDirection(o1.getLabel());
-            int key2 = CompassPoints.getKeyMatchingDirection(o2.getLabel());
-            if (key1 == -1) return 1;
-            if (key2 == -1) return -1;
-            return Integer.compare(key1,key2);
-        });
-        //numerot, jotka on jo asetettu johonkin toimintoon
-        TreeSet<Integer> usedKeys = new TreeSet<>();
-        for (Direction nextRoom : nextRooms) {
-            int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
-            usedKeys.add(key);
-        }
-        for (int i = 0; i < nextRooms.size(); i++) {
-            Direction nextRoom = nextRooms.get(i);
-            //esim pohjoista vastaa numero 1
-            int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
-            if (key == -1) //ei ilmansuunta
-                key = usedKeys.isEmpty() ? 1 : usedKeys.last() + 1;//etsitään seuraava vapaa numero
-            usedKeys.add(key);
-            rooms.add(key + ": " + nextRoom.getLabel());
-            InputManager.KeyConsumer consumer = () -> {
-                this.exit(nextRoom.getDestination());
-            };
-            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
-        }
-        rooms.addAll(getEvents());
-        DrawText content = new DrawText(5, 6, rooms.toArray(new String[rooms.size()]));
-        roomSelect = (DrawText)GameController.view.createAreaContent(content, Area.mainArea);
-
-        choices.addAll(getKeyEvents());
-        InputManager.registerListenerList(choices, true);
+        GameController.view.moveToNextRoom(this.directions, this::exit);
     }
 
     /**
@@ -98,11 +59,12 @@ abstract class Room implements Enterable {
     protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){return new ArrayList<>();}
 
     /**
-     * Metodi palauttaa huonekohtaiset eventit näytettäväksi infolaatikkoon. Huone perii metodin tarvittaessa.
+     * Metodi palauttaa huonekohtaiset kohteet, joihin huoneesta voi mennä. Huone perii metodin tarvittaessa.
      * 
-     * @return Lista eventeistä
+     * @return Lista kohteista
      */
-    protected ArrayList<String> getEvents(){return new ArrayList<>();}
+    protected ArrayList<Direction> getDestinations(){
+        return new ArrayList<>();}
 
     /**
      * Kutsutaan aina kun huoneeseen tullaan.
@@ -110,15 +72,13 @@ abstract class Room implements Enterable {
      * varmistaen että täällä olevaa koodia ei ylikirjoiteta
      */
     public final void enter() {
-        roomText = (DrawText)GameController.view.createAreaContent(new DrawText(4, 0), Area.mainArea); 
+        //roomText = (DrawText)GameController.view.createAreaContent(new DrawText(4, 0), Area.mainArea);
         this.playerInside = true;
-        //ilmoittaa näkymälle, että muutos sijainnissa on tapahtunut
-        GameController.view.drawMap();
+        GameEventManager.emitRoomEnteredEvent(this);
         this.enterRoom();
-        
+
         //tämä ennen enter room kutsua aiheutti itemin epätoimivuutta, koitin korjata näin
         this.hasBeenEntered = true;
-        GameEventManager.emitRoomEnteredEvent(this);
     }
 
     /**

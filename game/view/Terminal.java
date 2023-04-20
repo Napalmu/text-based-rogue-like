@@ -47,7 +47,6 @@ class Terminal extends JFrame{
     public void redraw(){        
         Stream<JLabel> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
         labels.forEach(l -> l.setText(""));
-
         for(int i=0; i<content.size(); i++){
             drawContent(content.get(i));
         }

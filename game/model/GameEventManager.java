@@ -1,14 +1,37 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.model.rooms.Enterable;
+import game.model.rooms.IRoom;
 
 public class GameEventManager {
     
-    private GameEventManager(){}
+    private GameEventManager(){
 
-    @FunctionalInterface public interface RoomEnteredListener{ void action(Enterable room); }
+    }
+    /*
+    //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
+    private abstract static class SmallEventManager<T> {
+        protected final ArrayList<T> listeners = new ArrayList<>();
+        public void register(T listener) {
+            listeners.add(listener);
+        }
+        public void unregister(T listener) {
+            listeners.remove(listener);
+        }
+    }
+
+    private static class RoomManager extends SmallEventManager<RoomEnteredListener> {
+        public void emit(IRoom room) {
+            this.listeners.forEach(l -> l.action(room));
+        }
+    }
+    public static RoomManager roomManager = new RoomManager()
+     */
+    @FunctionalInterface public interface RoomEnteredListener{ void action(IRoom room); }
+
     private static ArrayList<RoomEnteredListener> roomListeners = new ArrayList<>();
     public static void registerListener(RoomEnteredListener listener){
         roomListeners.add(listener);
@@ -16,7 +39,7 @@ public class GameEventManager {
     public static void unregisterListener(RoomEnteredListener listener){
         roomListeners.remove(listener);
     }
-    public static void emitRoomEnteredEvent(Enterable room){
+    public static void emitRoomEnteredEvent(IRoom room){
         roomListeners.forEach(listener -> listener.action(room));
     }
 
@@ -42,5 +65,17 @@ public class GameEventManager {
     }
     public static void emitItemReceivedEvent(Item item){
         itemListeners.forEach(listener -> listener.action(item));
+    }
+
+    @FunctionalInterface public interface BattleStartedListener{ void action(IBattle battle);}
+    private static ArrayList<BattleStartedListener> battleListeners = new ArrayList<>();
+    public static void registerListener(BattleStartedListener listener){
+        battleListeners.add(listener);
+    }
+    public static void unregisterListener(BattleStartedListener listener){
+        battleListeners.remove(listener);
+    }
+    public static void emitBattleStarted(IBattle item){
+        battleListeners.forEach(listener -> listener.action(item));
     }
 }

@@ -24,7 +24,7 @@ class AdventureRoom extends Room{
     List<Room> areaStack = new ArrayList<>();
     List<PointOfInterest> pointsOfInterest;
     AsciiDrawing map;
-    
+
     DrawMovingStructure player = new DrawMovingStructure(x, y, new DrawCommand(0, 0, "X"));
     private KeyConsumer up    = ()->{y = y-1; move();};
     private KeyConsumer down  = ()->{y = y+1; move();};
@@ -34,6 +34,17 @@ class AdventureRoom extends Room{
     public AdventureRoom(AsciiDrawing map) {
         pointsOfInterest = getPointsOfInterest();
         this.map = map;
+        this.addDirection(new Direction("Seikkailu", new Enterable() {
+            @Override
+            public void enter() {
+                startAdventure();
+            }
+
+            @Override
+            public boolean canEnter() {
+                return true;
+            }
+        }));
     }
 
     protected List<PointOfInterest> getPointsOfInterest() {
@@ -57,7 +68,7 @@ class AdventureRoom extends Room{
         GameController.view.drawContentOneShot(new DrawCommand(5, 5, "You picked up a blueberry"));
         pointsOfInterest.remove(poi);
         
-        EntityManager.getPlayer().addItems(EntityManager.createItem(ItemType.BLUEBERRY));
+        EntityManager.getPlayer().getInventory().addItems(EntityManager.createItem(ItemType.BLUEBERRY));
     }
 
     private void move(){
@@ -76,7 +87,7 @@ class AdventureRoom extends Room{
         this.moveToNextRoom();
     }
     
-    private void startAdveture(){        
+    private void startAdventure(){
         this.player.setContent("X");
         render(new DrawCommand(0, 0, map.getArt()));
         pointsOfInterest.forEach((poi) -> render(poi.drawCommand));
@@ -101,15 +112,15 @@ class AdventureRoom extends Room{
     @Override
     protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){
         ArrayList<InputManager.KeyPressedEvent> keys = new ArrayList<>();
-        keys.add(new InputManager.KeyPressedEvent(KeyEvent.VK_A, this::startAdveture));
+        keys.add(new InputManager.KeyPressedEvent(KeyEvent.VK_A, this::startAdventure));
         return keys;
     }
+
     @Override
-    protected ArrayList<String> getEvents(){
-        ArrayList<String> result = new ArrayList<>();
-        result.add("A: Aloita seikkailu.");
-        return result;
+    protected void moveToNextRoom() {
+        super.moveToNextRoom();
     }
+
 
     @Override
     public RoomType getType() {

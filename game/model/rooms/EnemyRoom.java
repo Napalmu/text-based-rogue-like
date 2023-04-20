@@ -1,5 +1,6 @@
 package game.model.rooms;
 
+import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.Enemy;
 
@@ -12,8 +13,7 @@ class EnemyRoom extends Room{
 
     @Override
     public void enterRoom() {
-        roomText.setContent("Tulit vihollishuoneeseen!"
-                , "Vihollisen nimi: " + enemy.getName());
+        GameController.model.startBattle(enemy);
         this.moveToNextRoom();
     }
 

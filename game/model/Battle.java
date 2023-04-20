@@ -1,12 +1,18 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-class Battle {
+class Battle implements IBattle{
     private ArrayList<Fighter> fighters;
+    private Fighter player;
 
     public Battle(ArrayList<Fighter> fighters) {
         this.fighters = fighters;        
+    }
+    public Battle(Fighter player, Fighter... enemies) {
+        this.fighters = new ArrayList<>(Arrays.asList(enemies));
+        this.fighters.add(player);
     }
 
     public void StartBattle() {
@@ -46,4 +52,16 @@ class Battle {
     }
 
     public void endBattle() {}
+
+    @Override
+    public IEnemy[] getEnemies() {
+        IEnemy[] enemies = new IEnemy[this.fighters.size()-1]; //ei pelaajaa
+        int i = -1;
+        for (Fighter fighter : this.fighters) {
+            i++;
+            if (fighter instanceof Player) continue;
+            enemies[i] = (IEnemy) fighter; //todo fix hack
+        }
+        return enemies;
+    }
 }

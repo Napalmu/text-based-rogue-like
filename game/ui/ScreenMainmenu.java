@@ -48,9 +48,10 @@ class ScreenMainmenu extends Screen{
     public void onPlay(){
         GameController.view.clearContent(title);
         GameController.view.clearContent(menu);
+        GameController.view.clearContent(art);
         unregisterListeners();
 
-        new ScreenGame();
+        GameController.view.onPlay();
         GameController.model.startGame();
     }
     public void onShop() {

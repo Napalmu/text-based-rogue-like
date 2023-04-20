@@ -42,7 +42,6 @@ class DummyEnemy implements Fighter{
         throw new UnsupportedOperationException("Unimplemented method 'TargetAndAction'");
     }
 
-    @Override
     public void takeDamage() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'takeDamage'");

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import game.model.DrawCommandInterfaces.DataIconList;
 
-class Inventory implements DataIconList {
+public class Inventory implements DataIconList {
     public interface InventoryListener {
         void onChange(Item[] items);
     }

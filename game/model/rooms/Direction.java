@@ -1,6 +1,6 @@
 package game.model.rooms;
 
-class Direction {
+public class Direction {
     private final String name;
     private final Enterable destination;
 
