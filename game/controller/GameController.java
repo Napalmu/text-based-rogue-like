@@ -1,5 +1,7 @@
 package game.controller;
 
+import game.view.UIController;
+
 /**
  * -model: Muuttuja, jossa
  */
@@ -10,7 +12,7 @@ public class GameController {
 
     public static final game.model.ModelController model = new game.model.ModelController();
 
-    public static final game.ui.UIController ui = new game.ui.UIController();
+    public static final UIController ui = new UIController();
 
     private GameController(){
         view.startGame();

@@ -1,15 +1,13 @@
-package game.ui;
+package game.view;
 
 import java.awt.event.KeyEvent;
 
 import game.controller.GameController;
 import game.controller.InputManager;
-import game.view.DrawCommand;
-import game.view.DrawText;
 import game.view.ViewController.Area;
 import game.view.ascii_art.AsciiDrawing;
 
-class ScreenShop extends Screen{
+class ScreenShop extends Screen {
  
 
     private DrawText description;

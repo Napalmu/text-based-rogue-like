@@ -1,4 +1,4 @@
-package game.ui;
+package game.view;
 
 import game.model.rooms.RoomFactory;
 import game.view.ascii_art.AsciiDrawing;

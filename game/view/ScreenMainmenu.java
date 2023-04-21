@@ -1,4 +1,4 @@
-package game.ui;
+package game.view;
 
 import java.awt.event.KeyEvent;
 

@@ -1,4 +1,4 @@
-package game.ui;
+package game.view;
 
 import game.controller.GameController;
 import game.view.DrawCommand;
