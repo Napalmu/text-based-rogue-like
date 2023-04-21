@@ -19,8 +19,9 @@ public class Enemy extends Entity implements Fighter, IEnemy{
     }
 
     @Override
-    public int[] TargetAndAction(ArrayList<Fighter> fighters) {
-        return new int[0];
+    public Battle.Action getAction(ArrayList<Fighter> fighters) {
+        //todo ottaa tällä hetkellä vain ekan
+        return new Battle.MeleeAction(fighters.get(0), 10);
     }
 
     @Override

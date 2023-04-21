@@ -4,7 +4,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class Battle implements IBattle{
-    private ArrayList<Fighter> fighters;
+    public abstract static class Action {
+        protected Fighter[] targets;
+        public Action(Fighter[] targets) {
+            this.targets = targets;
+        }
+        public Action(Fighter fighter) {
+            this.targets = new Fighter[] {fighter};
+        }
+        public abstract void doAction();
+    }
+    public static class MeleeAction extends Action {
+        private final int dmg;
+        public MeleeAction(Fighter target, int dmg) {
+            super(target);
+            this.dmg = dmg;
+        }
+
+        @Override
+        public void doAction() {
+            for (Fighter target : this.targets) {
+                target.takeDamage(this.dmg);
+            }
+        }
+    }
+    private final ArrayList<Fighter> fighters;
     private Fighter player;
 
     public Battle(ArrayList<Fighter> fighters) {
@@ -27,13 +51,13 @@ class Battle implements IBattle{
      * Vähennetään taistelijoiden odotusaikaa.
      */
 
-    public void proceedBattle(){
+    private void proceedBattle(){
         for (Fighter fighter : fighters) {
             if (fighters.size() <= 1){
                 endBattle();
             }
             if (fighter.getSpeed() == 0){
-                Attack(fighter.TargetAndAction(fighters));
+                Attack(fighter.getAction(fighters));
             }
 
             fighter.proceed();
@@ -43,12 +67,11 @@ class Battle implements IBattle{
     }   
 
     /** Work in progress varsinaiset aktiojutut
-     * @param targetAndDmg int[] joka kertoo kohteen ja damagen määrän. tähän vois olla ehkä joku parempi
-     * ku int[] nii voi ehdottaa sellasta :)
+     * @param action action
     */
 
-    public void Attack(int[] targetAndDmg) {
-        fighters.get(targetAndDmg[0]).takeDamage(targetAndDmg[1]);
+    public void Attack(Action action) {
+        action.doAction();
     }
 
     public void endBattle() {}
@@ -64,4 +87,6 @@ class Battle implements IBattle{
         }
         return enemies;
     }
+
+
 }

@@ -29,12 +29,14 @@ public class Player extends Entity implements Fighter{
     }
 
     @Override
-    public int[] TargetAndAction(ArrayList<Fighter> fighters) {
-        return new int[0];
+    public Battle.Action getAction(ArrayList<Fighter> fighters) {
+        //todo kysy ui:lta
+        return new Battle.MeleeAction(fighters.get(1), 10);
     }
 
     @Override
     public void takeDamage(int dmg) {
+        this.setHp(this.getHp()-dmg);
 
     }
 
