@@ -1,7 +1,4 @@
 package game.model;
-
-import game.model.Inventory.InventoryListener;
-
 import java.util.ArrayList;
 
 public class Player extends Entity implements Fighter{
@@ -12,10 +9,6 @@ public class Player extends Entity implements Fighter{
 
     public Inventory getInventory() {
         return inventory;
-    }
-
-    public void addInventoryListener(InventoryListener listener) {
-        inventory.addListener(listener);
     }
 
     @Override
