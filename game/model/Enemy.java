@@ -2,7 +2,8 @@ package game.model;
 
 import java.util.ArrayList;
 
-public class Enemy extends Entity implements Fighter, IEnemy{
+public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
+    private final Inventory inventory = new Inventory();
     public Enemy(int hp, String name){
         super(hp, name);
     }
@@ -33,4 +34,7 @@ public class Enemy extends Entity implements Fighter, IEnemy{
     public void die() {
 
     }
+
+    @Override
+    public void receiveItem(Item item) { inventory.addItems(item); }
 }
