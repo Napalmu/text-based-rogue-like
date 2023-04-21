@@ -50,8 +50,8 @@ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     }
 
     @Override
-    public void changeWeapon(Item_Weapon weapon) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changeWeapon'");
+    public void changeWeapon(ItemType item) {
+
     }
+
 }

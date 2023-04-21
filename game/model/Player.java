@@ -57,9 +57,9 @@ public class Player extends Entity implements Fighter, InventoryHolder{
     }
 
     @Override
-    public void changeWeapon(Item_Weapon weapon) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changeWeapon'");
+    public void changeWeapon(ItemType item) {
+
     }
+
 }
 

@@ -62,12 +62,12 @@ public class GameEventManager {
         battleListeners.forEach(listener -> listener.action(item));
     }
 
-    @FunctionalInterface public interface ShopEnteredListener {void action(ArrayList<Item> items);}
+    @FunctionalInterface public interface ShopEnteredListener {void action(ArrayList<Item> items, Runnable onExit);}
     private static ArrayList<ShopEnteredListener> shoplisteners = new ArrayList<>();
     public static void registerListener(ShopEnteredListener listener) {shoplisteners.add(listener);}
-    public static void emitShopEntered(ArrayList<Item> items) {
+    public static void emitShopEntered(ArrayList<Item> items, Runnable onExit) {
         for (ShopEnteredListener shoplistener : shoplisteners) {
-            shoplistener.action(items);
+            shoplistener.action(items, onExit);
         }
     }
 

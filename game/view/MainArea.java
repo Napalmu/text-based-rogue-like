@@ -1,16 +1,12 @@
 package game.view;
 
-import game.controller.GameController;
-import game.controller.InputManager;
 import game.model.GameEventManager;
 import game.model.IBattle;
 import game.model.IEnemy;
 import game.model.Item;
 import game.model.rooms.IRoom;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 class MainArea extends ParentDrawCommand {
     private final ScrollingDrawArea message;
@@ -23,7 +19,7 @@ class MainArea extends ParentDrawCommand {
 
         GameEventManager.registerListener(this::battleStarted);
         GameEventManager.registerListener(this::roomEntered);
-        GameEventManager.registerListener(this::shopEntered);
+        //GameEventManager.registerListener(this::shopEntered);
     }
     private void roomEntered(IRoom room, boolean success) {
         this.message.clear();
@@ -64,11 +60,13 @@ class MainArea extends ParentDrawCommand {
         System.out.println(enemies);
         this.message.addMessage(enemies.toString());
     }
-    private void shopEntered(ArrayList<Item> items) {
-        String[] strings = new String[items.size()];
+    public void drawShopItems(ArrayList<Item> items) {
+        String[] strings = new String[items.size()+2];
+        strings[0] = "Kaupan valikoima:";
+        strings[1] = "0: Pois kaupasta";
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            strings[i] = (i+1) +": "+ item.getType().getName() + " " + item.getType().price();
+            strings[i+2] = (i+1) +": "+ item.getType().getName() + " " + item.getType().price() + "€";
         }
         this.message.setContent(strings);
     }

@@ -28,6 +28,53 @@ public class ViewController {
 
     private DrawMainMenu mainMenu;
 
+    private class Shop {
+        private Item selectedItem;
+        public void shopEntered(ArrayList<Item> items, Runnable onExit) {
+            //tallennetaan näppäinkuuntelijat, jotta ne voidaan poistaa, kun kaupasta lähdetään
+            ArrayList<InputManager.KeyPressedEvent> shopEvents = new ArrayList<>();
+            for (int i = 0; i < items.size(); i++) {
+                Item item = items.get(i);
+                InputManager.KeyPressedEvent event = new InputManager.KeyPressedEvent(KeyEvent.VK_1+i,
+                        () -> selectItem(item));
+                shopEvents.add(event);
+                InputManager.registerListener(event);
+            }
+            //välilyönnillä ostetaan
+            InputManager.KeyPressedEvent close = new InputManager.KeyPressedEvent(KeyEvent.VK_SPACE,
+                    this::buyItem);
+            //Painamalla nollaa lähdetään kaupasta
+            InputManager.KeyPressedEvent exit = new InputManager.KeyPressedEvent(KeyEvent.VK_0,
+                    ()-> exitShop(onExit, shopEvents));
+            shopEvents.add(close); shopEvents.add(exit);
+
+            InputManager.registerListener(close);
+            InputManager.registerListener(exit);
+
+            ViewController.this.mainDrawArea.drawShopItems(items);
+        }
+
+        private void exitShop(Runnable onExit, ArrayList<InputManager.KeyPressedEvent> events) {
+            //poistetaan kauppaan liittyvät kuuntelijat
+            for (InputManager.KeyPressedEvent shopEvent : events) {
+                InputManager.unregisterListener(shopEvent);
+            }
+            ViewController.this.mainDrawArea.drawMessages("Minne päin haluaisit painua?");
+            onExit.run();
+            //ViewController.this.moveToNextPlace();
+        }
+
+        private void selectItem(Item item) {
+            this.selectedItem = item;
+            String msg = item.getType().getDescription() + " (osta välilyönnillä)";
+            ViewController.this.infoDrawArea.setMessage(msg);
+        }
+        private void buyItem() {
+            if (this.selectedItem == null) return; //ei itemiä valittuna vielä
+            GameEventManager.emitBuyItem(this.selectedItem);
+        }
+    }
+    private final Shop shop = new Shop();
     public ViewController(){
         this.infoDrawArea = new InfoArea(2, 16);
         this.mainDrawArea = new MainArea(2, 1);
@@ -35,53 +82,19 @@ public class ViewController {
         this.art = new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt());
 
         //huone vaihtuu, joten kartta pitää piirtää uudestaan
-        GameEventManager.registerListener((room, success) -> {
+        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) (room, success) -> {
             this.drawMap();
         });
-        //GameEventManager.registerListener(this::shopEntered);
-    }
-    private Item selectedItem;
-    private ArrayList<InputManager.KeyPressedEvent> shopEvents;
-    public void shopEntered(ArrayList<Item> items, Runnable onExit) {
-        this.shopEvents = new ArrayList<>();
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            InputManager.KeyPressedEvent event = new InputManager.KeyPressedEvent(KeyEvent.VK_1+i,
-                    () -> selectItem(item));
-            shopEvents.add(event);
-            InputManager.registerListener(event);
-        }
-        InputManager.KeyPressedEvent close = new InputManager.KeyPressedEvent(KeyEvent.VK_SPACE,
-                this::buyItem);
-        InputManager.KeyPressedEvent exit = new InputManager.KeyPressedEvent(KeyEvent.VK_0,
-                ()-> exitShop(onExit));
-        shopEvents.add(close); shopEvents.add(exit);
-
-        InputManager.registerListener(close);
-        InputManager.registerListener(exit);
+        GameEventManager.registerListener(this.shop::shopEntered);
     }
 
-    private void exitShop(Runnable onExit) {
-        for (InputManager.KeyPressedEvent shopEvent : this.shopEvents) {
-            InputManager.unregisterListener(shopEvent);
-        }
-        onExit.run();
-    }
 
-    private void selectItem(Item item) {
-        this.selectedItem = item;
-        this.infoDrawArea.setMessage(item.getType().getDescription());
-    }
-    private void buyItem() {
-        System.out.println("Lol");
-        if (this.selectedItem == null) return;
-        GameEventManager.emitBuyItem(this.selectedItem);
-    }
-
+    /**
+     * Näyttää mainMenun, eli näkymän, joka näkyy, kun peli avataan
+     */
     public void startGame(){
         this.mainMenu = new DrawMainMenu(0,0);
         this.setContent(this.mainMenu);
-        //GameController.ui.mainMenu();
     }
 
     public void refresh(){
