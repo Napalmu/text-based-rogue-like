@@ -1,7 +1,7 @@
 package game.model;
 import java.util.ArrayList;
 
-public class Player extends Entity implements Fighter{
+public class Player extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
     public Player(int hp, String name){
         super(hp, name);
@@ -37,5 +37,8 @@ public class Player extends Entity implements Fighter{
     public void die() {
 
     }
+
+    @Override
+    public void receiveItem(Item item) { inventory.addItems(item); }
 }
 
