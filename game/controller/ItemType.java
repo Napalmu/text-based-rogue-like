@@ -46,7 +46,7 @@ public enum ItemType implements GameConcept{
     SWORD {
         @Override
         public String getName() {return "Komea miekka";}
-
+        
         @Override
         public int price() {
             return 10;

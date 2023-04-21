@@ -1,6 +1,8 @@
 package game.model;
 import java.util.ArrayList;
 
+import game.controller.ItemType;
+
 public class Player extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
     public Player(int hp, String name){
@@ -44,5 +46,20 @@ public class Player extends Entity implements Fighter, InventoryHolder{
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
+
+
+
+
+    @Override
+    public ItemType getCurrentWeapon() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCurrentWeapon'");
+    }
+
+    @Override
+    public void changeWeapon(Item_Weapon weapon) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'changeWeapon'");
+    }
 }
 
