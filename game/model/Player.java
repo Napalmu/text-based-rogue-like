@@ -41,5 +41,8 @@ public class Player extends Entity implements Fighter, InventoryHolder{
 
     @Override
     public void receiveItem(Item item) { inventory.addItems(item); }
+
+    @Override
+    public void disposeItem(Item item) { inventory.removeItem(item); }
 }
 

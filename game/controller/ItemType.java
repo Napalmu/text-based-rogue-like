@@ -40,7 +40,7 @@ public enum ItemType implements GameConcept{
 
         @Override
         public String getDescription() {
-            return null;
+            return "mahtava, avaa oven toiminnajohtajan huoneesen";
         }
     },
     SWORD {
@@ -49,7 +49,7 @@ public enum ItemType implements GameConcept{
 
         @Override
         public int price() {
-            return 0;
+            return 10;
         }
 
         @Override
@@ -57,27 +57,27 @@ public enum ItemType implements GameConcept{
             return null;
         }
     },
-    AXE {
+    HALBERG {
         @Override
-        public String getName() {return "Terävä kirves";}
+        public String getName() {return "kätevä halperi";}
 
         @Override
         public int price() {
-            return 0;
+            return 20;
         }
 
         @Override
         public String getDescription() {
-            return null;
+            return "pitkä varsi, terävä kärki, tehokas panssaroitujakin vastustajia vastaan";
         }
     },
-    LEATHER_CHESTPLATE {
+    PADDED_ARMOR {
         @Override
-        public String getName() {return "Nätti nahkahaarniska";}
+        public String getName() {return "Nätti pehmustepanssari";}
 
         @Override
         public int price() {
-            return 0;
+            return 10;
         }
 
         @Override
@@ -85,13 +85,13 @@ public enum ItemType implements GameConcept{
             return null;
         }
     },
-    CHAINMAIL_CHESTPLATE{
+    CHAINMAIL_ARMOR{
         @Override
         public String getName() {return "Ketjuhaarniska";}
 
         @Override
         public int price() {
-            return 0;
+            return 20;
         }
 
         @Override

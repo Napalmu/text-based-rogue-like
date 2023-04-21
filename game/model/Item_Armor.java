@@ -2,9 +2,9 @@ package game.model;
 
 import game.controller.ItemType;
 
-public class Consumable extends Item {
+public class Item_Armor extends Item_Equipment{
 
-    public Consumable(ItemType type) {
+    public Item_Armor(ItemType type) {
         super(type);
         //TODO Auto-generated constructor stub
     }
