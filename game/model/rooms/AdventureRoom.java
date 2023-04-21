@@ -1,149 +1,148 @@
-package game.model.rooms;
+// package game.model.rooms;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.KeyEvent;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.awt.event.KeyEvent;
 
-import game.controller.GameController;
-import game.controller.InputManager;
-import game.controller.ItemType;
-import game.controller.RoomType;
-import game.controller.InputManager.KeyConsumer;
-import game.model.EntityManager;
-import game.view.DrawCommand;
-import game.view.DrawMovingStructure;
-import game.view.ascii_art.AsciiDrawing;
+// import game.controller.GameController;
+// import game.controller.InputManager;
+// import game.controller.ItemType;
+// import game.controller.RoomType;
+// import game.controller.InputManager.KeyConsumer;
+// import game.model.EntityManager;
+// import game.view.DrawMovingStructure;
+// import game.view.ascii_art.AsciiDrawing;
 
-class AdventureRoom extends Room{
+// class AdventureRoom extends Room{
 
-    private int x=10;
-    private int y=10;
+//     private int x=10;
+//     private int y=10;
 
-    private final ArrayList<DrawCommand> commands = new ArrayList<>();
+//     private final ArrayList<DrawCommand> commands = new ArrayList<>();
 
-    List<Room> areaStack = new ArrayList<>();
-    List<PointOfInterest> pointsOfInterest;
-    AsciiDrawing map;
+//     List<Room> areaStack = new ArrayList<>();
+//     List<PointOfInterest> pointsOfInterest;
+//     AsciiDrawing map;
 
-    DrawMovingStructure player = new DrawMovingStructure(x, y, new DrawCommand(0, 0, "X"));
-    private KeyConsumer up    = ()->{y = y-1; move();};
-    private KeyConsumer down  = ()->{y = y+1; move();};
-    private KeyConsumer left  = ()->{x = x-1; move();};
-    private KeyConsumer right = ()->{x = x+1; move();};
+//     DrawMovingStructure player = new DrawMovingStructure(x, y, new DrawCommand(0, 0, "X"));
+//     private KeyConsumer up    = ()->{y = y-1; move();};
+//     private KeyConsumer down  = ()->{y = y+1; move();};
+//     private KeyConsumer left  = ()->{x = x-1; move();};
+//     private KeyConsumer right = ()->{x = x+1; move();};
 
-    public AdventureRoom(AsciiDrawing map) {
-        pointsOfInterest = getPointsOfInterest();
-        this.map = map;
-        this.addDirection(new Direction("Seikkailu", new Enterable() {
-            @Override
-            public void enter() {
-                startAdventure();
-            }
+//     public AdventureRoom(AsciiDrawing map) {
+//         pointsOfInterest = getPointsOfInterest();
+//         this.map = map;
+//         this.addDirection(new Direction("Seikkailu", new Enterable() {
+//             @Override
+//             public void enter() {
+//                 startAdventure();
+//             }
 
-            @Override
-            public boolean canEnter() {
-                return true;
-            }
-        }));
-    }
+//             @Override
+//             public boolean canEnter() {
+//                 return true;
+//             }
+//         }));
+//     }
 
-    protected List<PointOfInterest> getPointsOfInterest() {
-        ArrayList<PointOfInterest> pois = new ArrayList<>();
-        pois.add(new PointOfInterest(20,10,'b', this::gainBlueberry));
-        pois.add(new PointOfInterest(30, 15, 'E', this::leave));
-        return pois;
-    }
-    private void leave(PointOfInterest poi) {
-        InputManager.unregisterListener(KeyEvent.VK_W, up);
-        InputManager.unregisterListener(KeyEvent.VK_A, left);
-        InputManager.unregisterListener(KeyEvent.VK_S, down);
-        InputManager.unregisterListener(KeyEvent.VK_D, right);
-        this.player.setContent(new String[0]);
-        this.clear();
-        this.moveToNextRoom();
-    }
+//     protected List<PointOfInterest> getPointsOfInterest() {
+//         ArrayList<PointOfInterest> pois = new ArrayList<>();
+//         pois.add(new PointOfInterest(20,10,'b', this::gainBlueberry));
+//         pois.add(new PointOfInterest(30, 15, 'E', this::leave));
+//         return pois;
+//     }
+//     private void leave(PointOfInterest poi) {
+//         InputManager.unregisterListener(KeyEvent.VK_W, up);
+//         InputManager.unregisterListener(KeyEvent.VK_A, left);
+//         InputManager.unregisterListener(KeyEvent.VK_S, down);
+//         InputManager.unregisterListener(KeyEvent.VK_D, right);
+//         this.player.setContent(new String[0]);
+//         this.clear();
+//         this.moveToNextRoom();
+//     }
 
-    private void gainBlueberry(PointOfInterest poi){
-        GameController.view.clearContent(poi.drawCommand);
-        GameController.view.drawContentOneShot(new DrawCommand(5, 5, "You picked up a blueberry"));
-        pointsOfInterest.remove(poi);
+//     private void gainBlueberry(PointOfInterest poi){
+//         GameController.view.clearContent(poi.drawCommand);
+//         GameController.view.drawContentOneShot(new DrawCommand(5, 5, "You picked up a blueberry"));
+//         pointsOfInterest.remove(poi);
         
-        EntityManager.getPlayer().getInventory().addItems(EntityManager.createItem(ItemType.BLUEBERRY));
-    }
+//         EntityManager.getPlayer().getInventory().addItems(EntityManager.createItem(ItemType.BLUEBERRY));
+//     }
 
-    private void move(){
-        player.setXY(x, y); 
-        GameController.view.refresh();
-        for (PointOfInterest poi : pointsOfInterest) {
-            if(x==poi.x && y==poi.y){
-                poi.callback.onEntry(poi);
-                break;
-            }
-        }
-    }
+//     private void move(){
+//         player.setXY(x, y); 
+//         GameController.view.refresh();
+//         for (PointOfInterest poi : pointsOfInterest) {
+//             if(x==poi.x && y==poi.y){
+//                 poi.callback.onEntry(poi);
+//                 break;
+//             }
+//         }
+//     }
 
-    @Override
-    protected void enterRoom() {
-        this.moveToNextRoom();
-    }
+//     @Override
+//     protected void enterRoom() {
+//         this.moveToNextRoom();
+//     }
     
-    private void startAdventure(){
-        this.player.setContent("X");
-        render(new DrawCommand(0, 0, map.getArt()));
-        pointsOfInterest.forEach((poi) -> render(poi.drawCommand));
-        InputManager.registerListener(KeyEvent.VK_W, up);
-        InputManager.registerListener(KeyEvent.VK_A, left);
-        InputManager.registerListener(KeyEvent.VK_S, down);
-        InputManager.registerListener(KeyEvent.VK_D, right);
+//     private void startAdventure(){
+//         this.player.setContent("X");
+//         render(new DrawCommand(0, 0, map.getArt()));
+//         pointsOfInterest.forEach((poi) -> render(poi.drawCommand));
+//         InputManager.registerListener(KeyEvent.VK_W, up);
+//         InputManager.registerListener(KeyEvent.VK_A, left);
+//         InputManager.registerListener(KeyEvent.VK_S, down);
+//         InputManager.registerListener(KeyEvent.VK_D, right);
 
-        render(player);
-    }
-    private void render(DrawCommand command) {
-        this.commands.add(command);
-        GameController.view.setContent(command);
-    }
+//         render(player);
+//     }
+//     private void render(DrawCommand command) {
+//         this.commands.add(command);
+//         GameController.view.setContent(command);
+//     }
 
-    private void clear() {
-        for (DrawCommand command : this.commands) {
-            GameController.view.clearContent(command);
-        }
-    }
+//     private void clear() {
+//         for (DrawCommand command : this.commands) {
+//             GameController.view.clearContent(command);
+//         }
+//     }
 
-    @Override
-    protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){
-        ArrayList<InputManager.KeyPressedEvent> keys = new ArrayList<>();
-        keys.add(new InputManager.KeyPressedEvent(KeyEvent.VK_A, this::startAdventure));
-        return keys;
-    }
+//     @Override
+//     protected ArrayList<InputManager.KeyPressedEvent> getKeyEvents(){
+//         ArrayList<InputManager.KeyPressedEvent> keys = new ArrayList<>();
+//         keys.add(new InputManager.KeyPressedEvent(KeyEvent.VK_A, this::startAdventure));
+//         return keys;
+//     }
 
-    @Override
-    protected void moveToNextRoom() {
-        super.moveToNextRoom();
-    }
+//     @Override
+//     protected void moveToNextRoom() {
+//         super.moveToNextRoom();
+//     }
 
 
-    @Override
-    public RoomType getType() {
-        return RoomType.ADVENTURE;
-    }
+//     @Override
+//     public RoomType getType() {
+//         return RoomType.ADVENTURE;
+//     }
     
-    protected interface ActionOnEntry{
-        void onEntry(PointOfInterest poi);
-    }
+//     protected interface ActionOnEntry{
+//         void onEntry(PointOfInterest poi);
+//     }
 
-    protected static class PointOfInterest{
-        final int x;
-        final int y;
-        final String symbol;
-        final ActionOnEntry callback;
-        final DrawCommand drawCommand;
+//     protected static class PointOfInterest{
+//         final int x;
+//         final int y;
+//         final String symbol;
+//         final ActionOnEntry callback;
+//         final DrawCommand drawCommand;
 
-        public PointOfInterest(int x, int y, char symbol, ActionOnEntry callback) {
-            this.x = x;
-            this.y = y;
-            this.symbol = symbol+"";
-            this.callback = callback;
-            this.drawCommand = new DrawCommand(x,y, this.symbol);
-        }
-    }
-}
+//         public PointOfInterest(int x, int y, char symbol, ActionOnEntry callback) {
+//             this.x = x;
+//             this.y = y;
+//             this.symbol = symbol+"";
+//             this.callback = callback;
+//             this.drawCommand = new DrawCommand(x,y, this.symbol);
+//         }
+//     }
+// }

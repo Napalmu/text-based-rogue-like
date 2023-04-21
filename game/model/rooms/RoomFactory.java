@@ -8,7 +8,8 @@ import game.view.ascii_art.AsciiDrawing;
 
 public class RoomFactory {
     public Enterable createAdventureRoom(AsciiDrawing map){
-        return new AdventureRoom(map);
+        // return new AdventureRoom(map);
+        return null;
     }
     
     public Enterable createMessageRoom(String... messages) {

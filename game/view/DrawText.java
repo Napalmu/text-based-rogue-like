@@ -1,6 +1,11 @@
 package game.view;
 
-public class DrawText extends DrawCommand {
+/**
+ * Luokka helpontamaan KIRJOITTAMISTA eli esim lauseiden lähettämistä drawcommandin avulla.
+ * Ei vielä tarjoa hirveästi etuja drawcommandin yli.
+ * Vain viewin (ja siten) draw areoiden pääasiallisessa käytössä
+ */
+class DrawText extends DrawCommand {
 
     public DrawText(int x, int y, String... content) {
         super(x, y, content);

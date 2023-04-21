@@ -8,11 +8,11 @@ public abstract class DrawArea extends DrawCommand{
 
     private ArrayList<DrawCommand> contentList = new ArrayList<>();
 
-    public DrawArea(int x, int y, int width, int height) {
+    public DrawArea(int x, int y) {
         super(x, y);
         
     }
-    public DrawCommand createContent(DrawCommand drawCommand) {
+    DrawCommand createContent(DrawCommand drawCommand) {
         DrawCommand content;
         if(drawCommand instanceof DrawText) content = new DrawText(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());
         else content = new DrawCommand(drawCommand.GetX() + this.GetX(), drawCommand.GetY() +  this.GetY(), drawCommand.GetContent());

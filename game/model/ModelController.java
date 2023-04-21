@@ -4,12 +4,10 @@ package game.model;
 import game.controller.GameController;
 import game.model.rooms.Dungeon;
 import game.model.rooms.RoomFactory;
-import game.view.DrawText;
 import game.view.MapRoom;
 import game.view.ViewController.Area;
 
 public class ModelController {
-    private DrawText invText;
     private Dungeon dungeon;
 
     public ModelController(){
@@ -18,8 +16,8 @@ public class ModelController {
 
     //Kuuntelee muutoksia inventoryyn ja ilmoittaa UI:lle niistä
     private void listenForInventoryChanges() {
-        invText = (DrawText)GameController.view.createAreaContent(new DrawText(), Area.dataArea);
-        invText.setContent("Inventory:");
+        // invText = (DrawText)GameController.view.createAreaContent(new DrawText(), Area.dataArea);
+        // invText.setContent("Inventory:");
         Player player = EntityManager.getPlayer();
         player.addInventoryListener(items -> {
             String[] itemNames = new String[items.length+1];

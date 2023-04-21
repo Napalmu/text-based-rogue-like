@@ -1,7 +1,13 @@
 package game.view;
 import game.controller.GameController;
 import game.model.DrawCommandInterfaces.DataIcon;
-public class DrawData extends DrawCommand{
+
+/**
+ * Luokka helpontamaan PÄIVITTYVIEN OLIOIDEN käyttämistä piirtämisessä
+ * Esimerkiksi inventory, hp palkki taistelussa, yms... 
+ * Vielä kesken
+ */
+class DrawData extends DrawCommand{
 
     DrawData drawCommand;
 

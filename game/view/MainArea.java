@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 class MainArea extends DrawArea {
     private final ScrollingDrawArea message;
     private final DrawCommand options;
-    public MainArea(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public MainArea(int x, int y) {
+        super(x, y);
         this.message = new ScrollingDrawArea(x+1,y+1, new String[10]);
         //this.message = new DrawCommand(x+1,y+1, "");
         this.options = new DrawCommand(x+5,y+6, "");

@@ -4,7 +4,11 @@ import java.util.stream.Stream;
 
 import game.controller.GameController;
 
-public class DrawCommand {
+/**
+ * Yleinen piirtokomento DrawAreoiden ja yleisesti viewin käyttöön
+ * Kannattaa tarkistaa periikö tämän joku käyttöön spesifimpi ja parempi komento
+ */
+class DrawCommand {
 
     private int x;
     private int y;

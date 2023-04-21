@@ -5,8 +5,8 @@ import game.model.Item;
 
 public class TextArea extends DrawArea{
 
-    public TextArea(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public TextArea(int x, int y) {
+        super(x, y);
         GameEventManager.registerListener(this::itemReceived);
     }
 

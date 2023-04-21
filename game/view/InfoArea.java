@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 
 public class InfoArea extends DrawArea{
     private final ScrollingDrawArea messages;
-    public InfoArea(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public InfoArea(int x, int y) {
+        super(x, y);
         String[] empty = new String[5];
         Arrays.fill(empty, "");
         this.messages = new ScrollingDrawArea(x+1,y+1,empty);
@@ -19,8 +19,8 @@ public class InfoArea extends DrawArea{
         this.messages.addMessage("Saatiin tavara: " + item.getName());
     }
 
-    @Override
-    public Stream<CharacterPosition> getStream() {
-        return this.messages.getStream();
-    }
+    // @Override
+    // public Stream<CharacterPosition> getStream() {
+    //     return this.messages.getStream();
+    // }
 }
