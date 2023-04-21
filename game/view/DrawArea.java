@@ -8,9 +8,8 @@ public abstract class DrawArea extends DrawCommand{
 
     private ArrayList<DrawCommand> contentList = new ArrayList<>();
 
-    public DrawArea(int x, int y) {
-        super(x, y);
-        
+    public DrawArea(int x, int y, String... content) {
+        super(x, y, content);
     }
     DrawCommand createContent(DrawCommand drawCommand) {
         DrawCommand content;

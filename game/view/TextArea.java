@@ -6,8 +6,7 @@ import game.model.Item;
 public class TextArea extends DrawArea{
 
     public TextArea(int x, int y) {
-        super(x, y);
-        this.setContent("Inventory:");
+        super(x, y, "Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
     }
     private void inventoryChanged(Item[] items) {

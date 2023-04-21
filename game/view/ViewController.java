@@ -21,7 +21,11 @@ public class ViewController {
 
     private MainArea mainDrawArea;
 
-    private DrawArea dataDrawArea;
+    private TextArea dataDrawArea;
+
+    private DrawCommand art;
+
+    private DrawMainMenu mainMenu;
 
     public DrawCommand createAreaContent(DrawCommand drawCommand, Area area){
         switch (area) {
@@ -67,16 +71,21 @@ public class ViewController {
     }
 
     public ViewController(){
-        infoDrawArea = new InfoArea(2, 16);
-        mainDrawArea = new MainArea(2, 1);
-        dataDrawArea = new TextArea(59, 1);
+        this.infoDrawArea = new InfoArea(2, 16);
+        this.mainDrawArea = new MainArea(2, 1);
+        this.dataDrawArea = new TextArea(59, 1);
+        this.art = new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt());
+
+        //huone vaihtuu, joten kartta pitää piirtää uudestaan
         GameEventManager.registerListener((room, success) -> {
             this.drawMap();
         });
     }
 
     public void startGame(){
-        GameController.ui.mainMenu();
+        this.mainMenu = new DrawMainMenu(0,0);
+        this.setContent(this.mainMenu);
+        //GameController.ui.mainMenu();
     }
 
     public void refresh(){
@@ -110,7 +119,7 @@ public class ViewController {
         t.dispose();
     }
 
-    public void drawMap() {
+    private void drawMap() {
         MapRoom[][] map = GameController.model.getMap();
         String[] stringMap = new String[map.length];
         for (int y = 0; y < map.length; y++) {
@@ -131,13 +140,19 @@ public class ViewController {
     }
 
     public void onPlay() {
-        setContent(new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt()));
+        clearContent(this.mainMenu);
+        setContent(this.art);
         setContent(mainDrawArea);
         setContent(dataDrawArea);
         setContent(infoDrawArea);
     }
 
-    public void moveToNextRoom(List<Direction> nextRooms, Consumer<Enterable> onChoice) {
+    /**
+     * Kysyy käyttäjältä kohteen, johon seuraavaksi siirrytään
+     * @param nextPlaces Mahdolliset kohteet
+     * @param onChoice kutsutaan, sillä kohteella, jonka käyttäjä valitsi
+     */
+    public void moveToNextPlace(List<Direction> nextPlaces, Consumer<Enterable> onChoice) {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         ArrayList<String> rooms = new ArrayList<>();
         //seuraavan koodin idea on, että tietyille ilmansuunnille annetaan aina samat numerot:
@@ -145,7 +160,7 @@ public class ViewController {
         //järjestetään kohteen, niin että pienemmät numerot tulevat ensin.
         //eli esim. pohjoisen numero on 1 ja etelän 3.
         //jos kohde ei ole ilmansuunta, se laitetaan ilmansuuntien jälkeen
-        nextRooms.sort((o1, o2) -> {
+        nextPlaces.sort((o1, o2) -> {
             int key1 = CompassPoints.getKeyMatchingDirection(o1.getLabel());
             int key2 = CompassPoints.getKeyMatchingDirection(o2.getLabel());
             if (key1 == -1) return 1;
@@ -154,12 +169,12 @@ public class ViewController {
         });
         //numerot, jotka on jo asetettu johonkin toimintoon
         TreeSet<Integer> usedKeys = new TreeSet<>();
-        for (Direction nextRoom : nextRooms) {
+        for (Direction nextRoom : nextPlaces) {
             int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
             usedKeys.add(key);
         }
-        for (int i = 0; i < nextRooms.size(); i++) {
-            Direction nextRoom = nextRooms.get(i);
+        for (int i = 0; i < nextPlaces.size(); i++) {
+            Direction nextRoom = nextPlaces.get(i);
             //esim pohjoista vastaa numero 1
             int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
             if (key == -1) //ei ilmansuunta

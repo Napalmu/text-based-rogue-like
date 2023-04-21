@@ -51,7 +51,7 @@ abstract class Room implements Enterable, IRoom{
      * Kysyy käyttäjältä minne siirrytään ja siirtyy sinne
      */
     protected void moveToNextRoom() {
-        GameController.view.moveToNextRoom(this.directions, this::exit);
+        GameController.view.moveToNextPlace(this.directions, this::exit);
     }
 
     /**
