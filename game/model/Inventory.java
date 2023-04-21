@@ -2,6 +2,7 @@ package game.model;
 
 import java.util.ArrayList;
 
+import game.controller.GameController;
 import game.model.DrawCommandInterfaces.DataIconList;
 
 public class Inventory implements DataIconList {
@@ -12,9 +13,13 @@ public class Inventory implements DataIconList {
     private final ArrayList<Item> items = new ArrayList<>();
 
     private void update() {
+        /*
         for (InventoryListener listener : this.listeners) {
             listener.onChange(items.toArray(new Item[0]));
         }
+
+         */
+        GameEventManager.inventory.emit(items.toArray(new Item[0]));
     }
     public void addItems(Item... items) {
         for (Item i : items){

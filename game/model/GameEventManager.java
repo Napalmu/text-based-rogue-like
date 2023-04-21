@@ -1,9 +1,7 @@
 package game.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import game.model.rooms.Enterable;
 import game.model.rooms.IRoom;
 
 public class GameEventManager {
@@ -11,25 +9,7 @@ public class GameEventManager {
     private GameEventManager(){
 
     }
-    /*
-    //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
-    private abstract static class SmallEventManager<T> {
-        protected final ArrayList<T> listeners = new ArrayList<>();
-        public void register(T listener) {
-            listeners.add(listener);
-        }
-        public void unregister(T listener) {
-            listeners.remove(listener);
-        }
-    }
 
-    private static class RoomManager extends SmallEventManager<RoomEnteredListener> {
-        public void emit(IRoom room) {
-            this.listeners.forEach(l -> l.action(room));
-        }
-    }
-    public static RoomManager roomManager = new RoomManager()
-     */
     @FunctionalInterface public interface RoomEnteredListener{ void action(IRoom room,boolean success); }
 
     private static ArrayList<RoomEnteredListener> roomListeners = new ArrayList<>();
@@ -81,4 +61,22 @@ public class GameEventManager {
     public static void emitBattleStarted(IBattle item){
         battleListeners.forEach(listener -> listener.action(item));
     }
+
+    //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
+    private abstract static class BaseEventManager<T> {
+        protected final ArrayList<T> listeners = new ArrayList<>();
+        public void listen(T listener) {
+            listeners.add(listener);
+        }
+        public void unregister(T listener) {
+            listeners.remove(listener);
+        }
+    }
+    @FunctionalInterface public interface InventoryListener{ void action(Item[] items);}
+    public static class InventoryEventManager extends BaseEventManager<InventoryListener> {
+        public void emit(Item[] items) {
+            this.listeners.forEach(l -> l.action(items));
+        }
+    }
+    public static InventoryEventManager inventory = new InventoryEventManager();
 }

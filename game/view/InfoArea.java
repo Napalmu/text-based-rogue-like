@@ -19,8 +19,8 @@ public class InfoArea extends DrawArea{
         this.messages.addMessage("Saatiin tavara: " + item.getName());
     }
 
-    // @Override
-    // public Stream<CharacterPosition> getStream() {
-    //     return this.messages.getStream();
-    // }
+     @Override
+     public Stream<CharacterPosition> getStream() {
+         return this.messages.getStream();
+     }
 }
