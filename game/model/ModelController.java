@@ -25,7 +25,7 @@ public class ModelController {
             for (int i = 0; i < items.length; i++) {
                 itemNames[i+1] = items[i].getName();
             }
-            invText.setContent(itemNames);
+            // invText.setContent(itemNames);
         });
     }
 
