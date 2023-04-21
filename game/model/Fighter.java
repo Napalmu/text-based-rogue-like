@@ -11,4 +11,7 @@ interface Fighter {
     public Battle.Action getAction(ArrayList<Fighter> fighters);
     public void takeDamage(int dmg);
     public void die();
+    public int getHp();
+    ArrayList<Item> getItems();
+    void addItems(ArrayList<Item> items);
 }                                                                                                         

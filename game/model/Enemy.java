@@ -2,6 +2,8 @@ package game.model;
 
 import java.util.ArrayList;
 
+import game.controller.ItemType;
+
 public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     private final Inventory inventory = new Inventory();
     public Enemy(int hp, String name){
@@ -34,10 +36,19 @@ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     public void die() {
 
     }
-
+    @Override
+    public ArrayList<Item> getItems() {
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item(ItemType.BLUEBERRY));
+        return items;
+    }
+    public void addItems(ArrayList<Item> items) {
+        System.out.println("En ota lol!");
+    }
     @Override
     public void receiveItem(Item item) { inventory.addItems(item); }
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
+
 }
