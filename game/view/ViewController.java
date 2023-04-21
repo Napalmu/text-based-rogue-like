@@ -4,7 +4,6 @@ import game.controller.GameController;
 import game.controller.InputManager;
 import game.model.GameEventManager;
 import game.model.Item;
-import game.model.ModelController;
 import game.model.rooms.CompassPoints;
 import game.model.rooms.Direction;
 import game.model.rooms.Enterable;
@@ -39,22 +38,42 @@ public class ViewController {
         GameEventManager.registerListener((room, success) -> {
             this.drawMap();
         });
-        GameEventManager.registerListener(this::shopEntered);
+        //GameEventManager.registerListener(this::shopEntered);
     }
     private Item selectedItem;
-    private void shopEntered(ArrayList<Item> items) {
+    private ArrayList<InputManager.KeyPressedEvent> shopEvents;
+    public void shopEntered(ArrayList<Item> items, Runnable onExit) {
+        this.shopEvents = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            InputManager.registerListener(KeyEvent.VK_1+i,
+            InputManager.KeyPressedEvent event = new InputManager.KeyPressedEvent(KeyEvent.VK_1+i,
                     () -> selectItem(item));
+            shopEvents.add(event);
+            InputManager.registerListener(event);
         }
-        InputManager.registerListener(KeyEvent.VK_SPACE, this::buyItem);
+        InputManager.KeyPressedEvent close = new InputManager.KeyPressedEvent(KeyEvent.VK_SPACE,
+                this::buyItem);
+        InputManager.KeyPressedEvent exit = new InputManager.KeyPressedEvent(KeyEvent.VK_0,
+                ()-> exitShop(onExit));
+        shopEvents.add(close); shopEvents.add(exit);
+
+        InputManager.registerListener(close);
+        InputManager.registerListener(exit);
     }
+
+    private void exitShop(Runnable onExit) {
+        for (InputManager.KeyPressedEvent shopEvent : this.shopEvents) {
+            InputManager.unregisterListener(shopEvent);
+        }
+        onExit.run();
+    }
+
     private void selectItem(Item item) {
         this.selectedItem = item;
         this.infoDrawArea.setMessage(item.getType().getDescription());
     }
     private void buyItem() {
+        System.out.println("Lol");
         if (this.selectedItem == null) return;
         GameEventManager.emitBuyItem(this.selectedItem);
     }

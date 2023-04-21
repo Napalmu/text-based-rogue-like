@@ -29,6 +29,7 @@ public class ScrollingDrawArea extends DrawCommand{
             if (this.view[i].equals("")) {
                 this.view[i] = msg;
                 this.setContent(this.view);
+                System.out.println(Arrays.toString(this.view));
                 return;
             }
         }

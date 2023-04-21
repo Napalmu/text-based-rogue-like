@@ -1,5 +1,6 @@
 package game.model.rooms;
 
+import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.GameEventManager;
 import game.model.Item;
@@ -15,8 +16,9 @@ class ShopRoom extends Room{
 
     @Override
     protected void enterRoom() {
+        GameController.view.shopEntered(this.items, this::moveToNextRoom);
         GameEventManager.emitShopEntered(this.items);
-        //this.moveToNextRoom();
+
     }
 
     @Override

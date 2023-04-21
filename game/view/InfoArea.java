@@ -17,6 +17,7 @@ public class InfoArea extends ParentDrawCommand{
         GameEventManager.registerListener((GameEventManager.ItemReceivedListener) this::itemReceived);
     }
     private void itemReceived(Item item) {
+        System.out.println("Itemi tuli!");
         this.messages.addMessage("Saatiin tavara: " + item.getName());
     }
     public void setMessage(String msg) {
