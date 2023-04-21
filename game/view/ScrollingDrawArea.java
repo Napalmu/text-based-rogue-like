@@ -20,9 +20,11 @@ public class ScrollingDrawArea extends DrawCommand{
         }
     }
     public void clear() {
+        this.messages.clear();
         Arrays.fill(this.view,"");
     }
     public void addMessage(String msg) {
+        System.out.println("Jep");
         for (int i = 0; i < this.rows; i++) {
             if (this.view[i].equals("")) {
                 this.view[i] = msg;
@@ -38,4 +40,8 @@ public class ScrollingDrawArea extends DrawCommand{
         this.setContent(this.view);
     }
 
+    public void setMessage(String msg) {
+        this.clear();
+        this.addMessage(msg);
+    }
 }

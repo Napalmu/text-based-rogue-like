@@ -8,6 +8,9 @@ import game.model.DrawCommandInterfaces.DataIconList;
 public class Inventory implements DataIconList {
     private final ArrayList<Item> items = new ArrayList<>();
 
+    public Inventory() {
+        GameEventManager.registerListener((GameEventManager.BuyItemListener) this::addItems);
+    }
     private void update() {
         GameEventManager.inventory.emit(items.toArray(new Item[0]));
     }

@@ -31,6 +31,7 @@ public class ModelController {
     public void moveToDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
+
     public void startGame(){
         EntityManager.createPlayer(100, "Pekka");
         this.dungeon = new RoomFactory().createStartingRoom();

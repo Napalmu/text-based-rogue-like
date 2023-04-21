@@ -1,5 +1,6 @@
 package game.model.rooms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import game.model.Enemy;
@@ -28,5 +29,9 @@ public class RoomFactory {
 
     public Dungeon createStartingRoom(String... messages){
         return new Dungeon();
+    }
+
+    public Enterable createShopRoom(Item... items) {
+        return new ShopRoom(new ArrayList<>(Arrays.asList(items)));
     }
 }

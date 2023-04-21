@@ -31,7 +31,9 @@ public class Dungeon implements Enterable {
             case 'A':
                 return (Room) f.createAdventureRoom(AsciiDrawing.OUTSIDE);
             case 'S':
-                return new ShopRoom(); //TODO käytä factory
+                Item item = new Item(ItemType.BLUEBERRY);
+                Item item2 = new Item(ItemType.STRAWBERRY);
+                return (Room) f.createShopRoom(item,item2); //TODO käytä factory
             case '*':
                 this.startingRoom = (Room) f.createMessageRoom("Aloitushuone");
                 return this.startingRoom;
@@ -46,8 +48,8 @@ public class Dungeon implements Enterable {
 
     public void testDungeon() {
         String[] s = new String[]{
-                "T B S",
-                "EMEMA",
+                "T B  ",
+                "EMEMS",
                 "*"
         };
         RoomFactory f = new RoomFactory();

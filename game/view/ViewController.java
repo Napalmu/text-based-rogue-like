@@ -3,6 +3,8 @@ package game.view;
 import game.controller.GameController;
 import game.controller.InputManager;
 import game.model.GameEventManager;
+import game.model.Item;
+import game.model.ModelController;
 import game.model.rooms.CompassPoints;
 import game.model.rooms.Direction;
 import game.model.rooms.Enterable;
@@ -15,60 +17,17 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 
 public class ViewController {
-    private Terminal t = new Terminal(80,24);
+    private final Terminal t = new Terminal(80,24);
 
-    private InfoArea infoDrawArea;
+    private final InfoArea infoDrawArea;
 
-    private MainArea mainDrawArea;
+    private final MainArea mainDrawArea;
 
-    private TextArea dataDrawArea;
+    private final TextArea dataDrawArea;
 
-    private DrawCommand art;
+    private final DrawCommand art;
 
     private DrawMainMenu mainMenu;
-
-    public DrawCommand createAreaContent(DrawCommand drawCommand, Area area){
-        switch (area) {
-            case infoArea:
-                return infoDrawArea.createContent(drawCommand);
-            case mainArea:
-                return mainDrawArea.createContent(drawCommand);
-            case dataArea:
-                return dataDrawArea.createContent(drawCommand);
-            default:
-                return null;
-        }
-    }
-
-    public void clearArea(Area area){
-        switch (area) {
-            case infoArea:
-                infoDrawArea.clearArea();
-                break;
-            case mainArea:
-                mainDrawArea.clearArea();
-                break;
-            case dataArea:
-                dataDrawArea.clearArea();
-                break;
-            default:
-        }
-    }
-
-    public void removeContent(DrawCommand content, Area area){
-        switch (area) {
-            case infoArea:
-                infoDrawArea.removeContent(content);
-                break;
-            case mainArea:
-                mainDrawArea.removeContent(content);
-                break;
-            case dataArea:
-                dataDrawArea.removeContent(content);
-                break;
-            default:
-        }
-    }
 
     public ViewController(){
         this.infoDrawArea = new InfoArea(2, 16);
@@ -80,6 +39,24 @@ public class ViewController {
         GameEventManager.registerListener((room, success) -> {
             this.drawMap();
         });
+        GameEventManager.registerListener(this::shopEntered);
+    }
+    private Item selectedItem;
+    private void shopEntered(ArrayList<Item> items) {
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            InputManager.registerListener(KeyEvent.VK_1+i,
+                    () -> selectItem(item));
+        }
+        InputManager.registerListener(KeyEvent.VK_SPACE, this::buyItem);
+    }
+    private void selectItem(Item item) {
+        this.selectedItem = item;
+        this.infoDrawArea.setMessage(item.getType().getDescription());
+    }
+    private void buyItem() {
+        if (this.selectedItem == null) return;
+        GameEventManager.emitBuyItem(this.selectedItem);
     }
 
     public void startGame(){

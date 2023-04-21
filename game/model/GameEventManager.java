@@ -62,6 +62,24 @@ public class GameEventManager {
         battleListeners.forEach(listener -> listener.action(item));
     }
 
+    @FunctionalInterface public interface ShopEnteredListener {void action(ArrayList<Item> items);}
+    private static ArrayList<ShopEnteredListener> shoplisteners = new ArrayList<>();
+    public static void registerListener(ShopEnteredListener listener) {shoplisteners.add(listener);}
+    public static void emitShopEntered(ArrayList<Item> items) {
+        for (ShopEnteredListener shoplistener : shoplisteners) {
+            shoplistener.action(items);
+        }
+    }
+
+    private static final ArrayList<BuyItemListener> buyListeners = new ArrayList<>();
+    @FunctionalInterface public interface BuyItemListener {void action(Item item);}
+    public static void registerListener(BuyItemListener listener) {buyListeners.add(listener);}
+    public static void emitBuyItem(Item item) {
+        for (BuyItemListener buyListener : buyListeners) {
+            buyListener.action(item);
+        }
+    }
+
     //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
     private abstract static class BaseEventManager<T> {
         protected final ArrayList<T> listeners = new ArrayList<>();

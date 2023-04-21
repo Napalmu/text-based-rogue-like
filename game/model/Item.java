@@ -12,6 +12,10 @@ public class Item extends Entity implements DataIcon{
         this.type = type;
     }
 
+    public ItemType getType() {
+        return type;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
