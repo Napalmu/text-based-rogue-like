@@ -40,7 +40,63 @@ public enum ItemType implements GameConcept{
 
         @Override
         public String getDescription() {
-            return "Avain pomohuoneeseen";
+            return null;
+        }
+    },
+    SWORD {
+        @Override
+        public String getName() {return "Komea miekka";}
+
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    },
+    AXE {
+        @Override
+        public String getName() {return "Terävä kirves";}
+
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    },
+    LEATHER_CHESTPLATE {
+        @Override
+        public String getName() {return "Nätti nahkahaarniska";}
+
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    },
+    CHAINMAIL_CHESTPLATE{
+        @Override
+        public String getName() {return "Ketjuhaarniska";}
+
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
         }
     };
 
