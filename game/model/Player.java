@@ -3,9 +3,9 @@ import java.util.ArrayList;
 
 import game.controller.ItemType;
 
-public class Player extends Entity implements Fighter, InventoryHolder{
+ public class Player extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
-    public Player(int hp, String name){
+     Player(int hp, String name){
         super(hp, name);
         GameEventManager.registerListener((GameEventManager.BuyItemListener) inventory::addItems);
     }
@@ -39,12 +39,10 @@ public class Player extends Entity implements Fighter, InventoryHolder{
 
     @Override
     public void receiveItems(Item... items) { inventory.addItems(items); }
-
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
-
-
-
+    @Override
+    public boolean hasItem(Item item) { return inventory.containsItem(item); }
 
     @Override
     public ItemType getCurrentWeapon() {

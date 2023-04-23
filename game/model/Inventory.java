@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import game.controller.GameController;
 import game.model.DrawCommandInterfaces.DataIconList;
 
-public class Inventory implements DataIconList {
+ class Inventory implements DataIconList {
     private final ArrayList<Item> items = new ArrayList<>();
 
-    public Inventory() {
+     Inventory() {
 
     }
     private void update() {
         GameEventManager.inventory.emit(items.toArray(new Item[0]));
     }
-    public void addItems(Item... items) {
+     void addItems(Item... items) {
         for (Item i : items){
             this.items.add(i);
             GameEventManager.emitItemReceivedEvent(i);
@@ -22,11 +22,11 @@ public class Inventory implements DataIconList {
         update();
     }
 
-    public void removeItem(Item item) {
+     void removeItem(Item item) {
         items.remove(item);
         update();
     }
-    public boolean containsItem(Item item) {
+     boolean containsItem(Item item) {
         return items.contains(item);
     }
     @Override

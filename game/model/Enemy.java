@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import game.controller.ItemType;
 
-public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
+ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     private final Inventory inventory = new Inventory();
-    public Enemy(int hp, String name){
+     Enemy(int hp, String name){
         super(hp, name);
     }
 
@@ -38,11 +38,14 @@ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     }
 
     @Override
-    public void receiveItem(Item item) { inventory.addItems(item); }
+    public void receiveItems(Item... item) { inventory.addItems(item); }
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
 
+    @Override
+    public boolean hasItem(Item item) { return inventory.containsItem(item); }
+    
     @Override
     public ItemType getCurrentWeapon() {
         // TODO Auto-generated method stub
