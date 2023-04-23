@@ -6,8 +6,12 @@ import game.model.Item;
 import java.util.Arrays;
 
 public class InfoArea extends ParentDrawCommand{
+        
+
     private final ScrollingDrawArea messages;
-    public InfoArea(int x, int y) {
+
+    InfoArea(){ this(2,16); }
+    InfoArea(int x, int y) {
         super(x, y);
         String[] empty = new String[5];
         Arrays.fill(empty, "");
@@ -16,6 +20,7 @@ public class InfoArea extends ParentDrawCommand{
         this.addChildren(this.messages);
         GameEventManager.registerListener((GameEventManager.ItemReceivedListener) this::itemReceived);
     }
+    
     private void itemReceived(Item item) {
         this.messages.addMessage("Saatiin tavara: " + item.getName());
     }

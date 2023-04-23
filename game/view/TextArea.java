@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 public class TextArea extends DrawArea{
 
+    TextArea(){this(59,4);}
     public TextArea(int x, int y) {
         super(x, y, "Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
