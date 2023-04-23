@@ -1,6 +1,5 @@
 package game.model.rooms;
 
-import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.*;
 

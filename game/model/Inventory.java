@@ -2,7 +2,6 @@ package game.model;
 
 import java.util.ArrayList;
 
-import game.controller.GameController;
 import game.model.DrawCommandInterfaces.DataIconList;
 
  class Inventory implements DataIconList {
