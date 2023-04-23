@@ -7,15 +7,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 class Terminal extends JFrame{
     
     private JLabel[][] screen;
 
-    private ArrayList<DrawCommand> content = new ArrayList<>();
-
+    private Drawable screenBuffer;
      Terminal(int width, int height){    
         addWindowListener (new WindowAdapter() {    
              public void windowClosing (WindowEvent e) {    
@@ -46,11 +44,8 @@ class Terminal extends JFrame{
 
      void redraw(){        
         Stream<JLabel> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
-        labels.forEach(l -> l.setText(""));
-        for(int i=0; i<content.size(); i++){
-            drawContent(content.get(i));
-        }
-        repaint();
+        labels.forEach(l -> l.setText(""));        
+        drawContent();
     }
 
      void setChar(int x, int y, String c){
@@ -61,19 +56,18 @@ class Terminal extends JFrame{
         setChar(x,y,c+"");
     }
 
-     void addContent(DrawCommand content){
-        this.content.add(content);
-        drawContent(content);
+     void setContent(Drawable content){
+        this.screenBuffer = content;
+        drawContent();
     }
 
-     void removeContent(DrawCommand content){
-        this.content.remove(content);
-        redraw();
-    }
-
-     void drawContent(DrawCommand content){
-        content.getStream().forEach((c) -> {
-            setChar(c.x, c.y, c.c);
+     void drawContent(){
+        if (screenBuffer==null) return;
+        
+        DrawCommand dc = screenBuffer.getDrawCommand();
+        dc.activate();
+        dc.getStream().forEach((c) -> {
+             setChar(c.x, c.y, c.c);
         });
         repaint();
     }

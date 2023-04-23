@@ -1,77 +1,70 @@
 package game.view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
-
-import game.controller.GameController;
 
 /**
  * Yleinen piirtokomento DrawAreoiden ja yleisesti viewin käyttöön
  * Kannattaa tarkistaa periikö tämän joku käyttöön spesifimpi ja parempi komento
  */
-class DrawCommand {
+class DrawCommand implements Drawable{
 
     private int x;
     private int y;
 
-    private String[] content;
+    private ArrayList<DrawCommand> subCommands;
 
-    DrawCommand(int x, int y, String... content) {
+    DrawCommand(int x, int y) {
         this.x = x;
         this.y = y;
-        this.content = content;
+        this.subCommands = new ArrayList<>();
     }
 
-    int GetX(){
+    DrawCommand(int x, int y, DrawCommand... commands) {
+        this(x,y);
+        for(DrawCommand dc : commands){
+            subCommands.add(dc);
+        }
+    }
+
+    int getX(){
         return x;
     }
     
-    int GetY(){
+    int getY(){
         return y;
     }
 
-    void SetX(int x){
+    void setX(int x){
         this.x = x;
     }
 
-    void SetY(int y){
+    void setY(int y){
         this.y = y;
     }
 
-
-    String[] GetContent(){
-        return content;
-    }
-
-    void setContent(String... content) {
-        this.content = content;
-        GameController.view.refresh();
-    }
-
     //kun asetetaan piirrettäväksi
-    void Activate(){
+    void activate(){
         //
     }
+    
+    @Override
+    public DrawCommand getDrawCommand() {
+        return this;
+    }
 
-    //  char getAt(int x, int y){
-    //     return content[y].charAt(x);
-    // }
-
-    // void setXY(int x, int y){
-    //     this.x=x;
-    //     this.y=y;
-    //     GameController.view.refresh();
-    // }
-
-
-
+    void addCommands(DrawCommand... dc){
+        subCommands.addAll(Arrays.asList(dc));
+    }
 
     Stream<CharacterPosition> getStream(){
         Stream.Builder<CharacterPosition> c = Stream.builder();
-        for (int y=0;y<content.length; y++){
-            for (int x=0;x<content[y].length(); x++){
-                c.accept(new CharacterPosition(this.x+x, this.y+y, content[y].charAt(x)));
-            }
-        } 
+
+        for (DrawCommand dc : subCommands){
+            dc.getStream().forEach(c::accept);
+        }
+
         return c.build();
     }
 
@@ -86,5 +79,6 @@ class DrawCommand {
             this.c = c;
         }
     }
+
 
 }
