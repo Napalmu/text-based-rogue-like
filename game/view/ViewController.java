@@ -1,91 +1,27 @@
 package game.view;
 
-import game.controller.GameController;
 import game.controller.InputManager;
-import game.model.GameEventManager;
-import game.model.Item;
 import game.model.rooms.CompassPoints;
 import game.model.rooms.Direction;
 import game.model.rooms.Enterable;
-import game.view.ascii_art.AsciiDrawing;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
  public class ViewController {
     private final Terminal t = new Terminal(80,24);
 
-    private final InfoArea infoDrawArea;
-
-    private final MainArea mainDrawArea;
-
-    private final TextArea dataDrawArea;
-
-    private final DrawCommand art;
-
     private DrawMainMenu mainMenu;
-
-    private class Shop {
-        private Item selectedItem;
-         void shopEntered(ArrayList<Item> items, Runnable onExit) {
-            //tallennetaan näppäinkuuntelijat, jotta ne voidaan poistaa, kun kaupasta lähdetään
-            ArrayList<InputManager.KeyPressedEvent> shopEvents = new ArrayList<>();
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
-                InputManager.KeyPressedEvent event = new InputManager.KeyPressedEvent(KeyEvent.VK_1+i,
-                        () -> selectItem(item));
-                shopEvents.add(event);
-                InputManager.registerListener(event);
-            }
-            //välilyönnillä ostetaan
-            InputManager.KeyPressedEvent close = new InputManager.KeyPressedEvent(KeyEvent.VK_SPACE,
-                    this::buyItem);
-            //Painamalla nollaa lähdetään kaupasta
-            InputManager.KeyPressedEvent exit = new InputManager.KeyPressedEvent(KeyEvent.VK_0,
-                    ()-> exitShop(onExit, shopEvents));
-            shopEvents.add(close); shopEvents.add(exit);
-
-            InputManager.registerListener(close);
-            InputManager.registerListener(exit);
-
-            ViewController.this.mainDrawArea.drawShopItems(items);
-        }
-
-        private void exitShop(Runnable onExit, ArrayList<InputManager.KeyPressedEvent> events) {
-            //poistetaan kauppaan liittyvät kuuntelijat
-            for (InputManager.KeyPressedEvent shopEvent : events) {
-                InputManager.unregisterListener(shopEvent);
-            }
-            ViewController.this.mainDrawArea.drawMessages("Minne päin haluaisit painua?");
-            onExit.run();
-            //ViewController.this.moveToNextPlace();
-        }
-
-        private void selectItem(Item item) {
-            this.selectedItem = item;
-            String msg = item.getType().getDescription() + " (osta välilyönnillä)";
-            ViewController.this.infoDrawArea.setMessage(msg);
-        }
-        private void buyItem() {
-            if (this.selectedItem == null) return; //ei itemiä valittuna vielä
-            GameEventManager.emitBuyItem(this.selectedItem);
-        }
-    }
-    private final Shop shop = new Shop();
-     public ViewController(){
-        this.infoDrawArea = new InfoArea();
-        this.mainDrawArea = new MainArea();
-        this.dataDrawArea = new TextArea();
-        this.art = new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt());
-
-        //huone vaihtuu, joten kartta pitää piirtää uudestaan
-        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) (room, success) -> {
-            this.drawMap();
-        });
-        GameEventManager.registerListener(this.shop::shopEntered);
+    private Stack<Screen> uiStack;
+    
+    public ViewController(){        
+        uiStack = new Stack<>();
+        uiStack.add(new ScreenMessage());
+        //GameEventManager.registerListener(this.shop::shopEntered);
     }
 
 
@@ -128,32 +64,14 @@ import java.util.function.Consumer;
         t.dispose();
     }
 
-    private void drawMap() {
-        MapRoom[][] map = GameController.model.getMap();
-        String[] stringMap = new String[map.length];
-        for (int y = 0; y < map.length; y++) {
-            char[] chars = new char[map[y].length];
-            for (int x = 0; x < map[y].length; x++) {
-                if (map[y][x] == null) {
-                    chars[x] = ' ';
-                    continue;
-                }
-                chars[x] = map[y][x].getRoomType().symbol;
-                if (map[y][x].hasPlayerInside()) {
-                    chars[x] = '$';
-                }
-            }
-            stringMap[y] = new String(chars);
-        }
-        setContent(new DrawCommand(50, 16, stringMap));
-    }
+
 
      void onPlay() {
         clearContent(this.mainMenu);
-        setContent(this.art);
-        setContent(mainDrawArea);
-        setContent(dataDrawArea);
-        setContent(infoDrawArea);
+        setContent(uiStack.peek().getArt());
+        setContent(uiStack.peek().getMainArea());
+        setContent(uiStack.peek().getDataArea());
+        setContent(uiStack.peek().getInfoArea());
     }
 
     /**
@@ -195,7 +113,7 @@ import java.util.function.Consumer;
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }
-        this.mainDrawArea.drawOptions(rooms.toArray(new String[0]));
+        uiStack.peek().getMainArea().drawOptions(rooms.toArray(new String[0]));
         InputManager.registerListenerList(choices, true);
     }
 
