@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
- class TextArea extends DrawArea{
+ class TextArea extends ParentDrawCommand{
 
     TextArea(){this(59,4);}
      TextArea(int x, int y) {
