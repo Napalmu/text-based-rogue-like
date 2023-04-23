@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import game.controller.*;
 // Kaikille taisteluun osallistuville suunnattu rajapintaluokka. x
 
-interface Fighter {
+public interface Fighter {
      void proceed();
      int getSpeed();
      ItemType getCurrentWeapon();

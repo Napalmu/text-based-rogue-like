@@ -3,9 +3,9 @@ package game.model;
 
 import game.controller.GameController;
 import game.model.rooms.Dungeon;
+import game.model.rooms.IRoom;
 import game.model.rooms.RoomFactory;
 import game.view.MapRoom;
-import game.view.ViewController.Area;
 
  public class ModelController {
     private Dungeon dungeon;
@@ -18,9 +18,10 @@ import game.view.ViewController.Area;
      * Aloittaa taistelun vihollisia vastaan. Kertoo näkymälle taistelun alkamisesta.
      * @param enemies viholliset, joita vastaan taistella
      */
-     public void startBattle(Enemy... enemies) {
+     public void startBattle(IRoom room, Fighter... enemies) {
         IBattle battle = new Battle(EntityManager.getPlayer(), enemies);
         GameEventManager.emitBattleStarted(battle);
+        GameController.view.enterEnemyRoom(room, enemies);   
     }
 
     /**

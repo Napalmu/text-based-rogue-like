@@ -1,6 +1,7 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import game.model.rooms.IRoom;
 
@@ -38,19 +39,19 @@ import game.model.rooms.IRoom;
     public static void unregisterListener(BattleStartedListener listener){battleListeners.remove(listener);}
     public static void emitBattleStarted(IBattle item){battleListeners.forEach(listener -> listener.action(item));}
 
-    @FunctionalInterface public interface ShopEnteredListener {void action(ArrayList<Item> items, Runnable onExit);}
+    @FunctionalInterface public interface ShopEnteredListener {void action(List<Item> items, Runnable onExit);}
     private static ArrayList<ShopEnteredListener> shoplisteners = new ArrayList<>();
     public static void registerListener(ShopEnteredListener listener) {shoplisteners.add(listener);}
     public static void unregisterListener(ShopEnteredListener listener){shoplisteners.remove(listener);}
-    public static void emitShopEntered(ArrayList<Item> items, Runnable onExit) {shoplisteners.forEach(listener -> listener.action(items, onExit));}
+    public static void emitShopEntered(List<Item> items, Runnable onExit) {shoplisteners.forEach(listener -> listener.action(items, onExit));}
 
     @FunctionalInterface public interface BuyItemListener {void action(Item item);}
     private static final ArrayList<BuyItemListener> buyListeners = new ArrayList<>();
     public static void registerListener(BuyItemListener listener) {buyListeners.add(listener);}
     public static void unregisterListener(BuyItemListener listener){buyListeners.remove(listener);}
     public static void emitBuyItem(Item item) {buyListeners.forEach(listener -> listener.action(item));}
-
-    //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
+        
+     //Säätöä. Tällä tavalla ei olisi niin paljoa jaettua koodia, mutta kaikki olisi monimutkaisempaa
     private abstract static class BaseEventManager<T> {
         protected final ArrayList<T> listeners = new ArrayList<>();
          public void listen(T listener) {listeners.add(listener);}
@@ -58,9 +59,9 @@ import game.model.rooms.IRoom;
     }
 
     @FunctionalInterface public interface InventoryListener{ void action(Item[] items);}
+    public static final InventoryEventManager inventory = new InventoryEventManager();
     public static class InventoryEventManager extends BaseEventManager<InventoryListener> {
          void emit(Item[] items) {this.listeners.forEach(l -> l.action(items));}
     }
 
-    public static final InventoryEventManager inventory = new InventoryEventManager();
 }

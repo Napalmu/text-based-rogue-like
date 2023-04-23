@@ -43,6 +43,7 @@ import game.controller.ItemType;
     public void disposeItem(Item item) { inventory.removeItem(item); }
     @Override
     public boolean hasItem(Item item) { return inventory.containsItem(item); }
+    public Item[] getItems() {return inventory.getDataList().toArray(new Item[0]);}
 
     @Override
     public ItemType getCurrentWeapon() {
@@ -54,6 +55,7 @@ import game.controller.ItemType;
     public void changeWeapon(ItemType item) {
 
     }
+
 
 }
 

@@ -18,6 +18,7 @@ import game.model.DrawCommandInterfaces.DataIconList;
             this.items.add(i);
             GameEventManager.emitItemReceivedEvent(i);
         }
+        //TODO Kaksi eri eventtiä samalle eventille ei ole hyvä asia.        
         update();
     }
 
