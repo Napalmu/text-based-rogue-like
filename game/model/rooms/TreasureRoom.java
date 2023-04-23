@@ -18,7 +18,7 @@ class TreasureRoom extends Room{
             return;
         }
         Player player = EntityManager.getPlayer();
-        player.getInventory().addItems(this.items);
+        player.addItems(this.items);
 
         this.moveToNextRoom();
     }

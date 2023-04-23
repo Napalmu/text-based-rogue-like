@@ -10,10 +10,6 @@ public class Player extends Entity implements Fighter, InventoryHolder{
         GameEventManager.registerListener((GameEventManager.BuyItemListener) inventory::addItems);
     }
 
-    public Inventory getInventory() {
-        return inventory;
-    }
-
     @Override
     public void proceed() {
 
@@ -42,7 +38,7 @@ public class Player extends Entity implements Fighter, InventoryHolder{
     }
 
     @Override
-    public void receiveItem(Item item) { inventory.addItems(item); }
+    public void receiveItems(Item... items) { inventory.addItems(items); }
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }

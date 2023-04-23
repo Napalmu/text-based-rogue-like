@@ -14,7 +14,7 @@ class BossRoom extends EnemyRoom{
 
     @Override
     public void enterRoom() {
-        EntityManager.getPlayer().getInventory().removeItem(this.key);
+        EntityManager.getPlayer().removeItem(this.key);
         this.moveToNextRoom();
     }
 
@@ -24,7 +24,7 @@ class BossRoom extends EnemyRoom{
         if (hasBeenEntered()) return true;
         //tarkistetaan onko pelaajalla vaadittu avain
         Player player = EntityManager.getPlayer();
-        boolean hasKey = player.getInventory().containsItem(key);
+        boolean hasKey = player.containsItem(key);
         if (!hasKey) {
             GameEventManager.emitRoomEnteredEvent(this, false);
             //roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
