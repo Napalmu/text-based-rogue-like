@@ -62,7 +62,7 @@ class MainArea extends ParentDrawCommand {
         System.out.println(enemies);
         this.message.addMessage(enemies.toString());
     }
-    public void drawShopItems(ArrayList<Item> items) {
+     void drawShopItems(ArrayList<Item> items) {
         String[] strings = new String[items.size()+2];
         strings[0] = "Kaupan valikoima:";
         strings[1] = "0: Pois kaupasta";
@@ -74,10 +74,10 @@ class MainArea extends ParentDrawCommand {
     }
 
 
-    public void drawMessages(String... msgs) {
+     void drawMessages(String... msgs) {
         this.message.setContent(msgs);
     }
-    public void drawOptions(String... options) {
+     void drawOptions(String... options) {
         this.options.setContent(options);
     }
 }

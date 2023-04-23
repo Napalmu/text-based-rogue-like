@@ -5,7 +5,7 @@ import game.model.Item;
 
 import java.util.Arrays;
 
-public class InfoArea extends ParentDrawCommand{
+ class InfoArea extends ParentDrawCommand{
         
 
     private final ScrollingDrawArea messages;
@@ -24,7 +24,7 @@ public class InfoArea extends ParentDrawCommand{
     private void itemReceived(Item item) {
         this.messages.addMessage("Saatiin tavara: " + item.getName());
     }
-    public void setMessage(String msg) {
+     void setMessage(String msg) {
         this.messages.setMessage(msg);
     }
 }

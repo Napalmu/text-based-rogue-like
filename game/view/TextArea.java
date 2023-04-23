@@ -6,12 +6,11 @@ import game.model.Item;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 
-public class TextArea extends DrawArea{
+ class TextArea extends DrawArea{
 
     TextArea(){this(59,4);}
-    public TextArea(int x, int y) {
+     TextArea(int x, int y) {
         super(x, y, "Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
     }

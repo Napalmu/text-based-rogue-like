@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class Battle implements IBattle{
-    public abstract static class Action {
+     abstract static class Action {
         protected Fighter[] targets;
-        public Action(Fighter[] targets) {
+         Action(Fighter[] targets) {
             this.targets = targets;
         }
-        public Action(Fighter fighter) {
+         Action(Fighter fighter) {
             this.targets = new Fighter[] {fighter};
         }
-        public abstract void doAction();
+         abstract void doAction();
     }
-    public static class MeleeAction extends Action {
+     static class MeleeAction extends Action {
         private final int dmg;
-        public MeleeAction(Fighter target, int dmg) {
+         MeleeAction(Fighter target, int dmg) {
             super(target);
             this.dmg = dmg;
         }
 
         @Override
-        public void doAction() {
+         void doAction() {
             for (Fighter target : this.targets) {
                 target.takeDamage(this.dmg);
             }
@@ -31,15 +31,15 @@ class Battle implements IBattle{
     private final ArrayList<Fighter> fighters;
     private Fighter player;
 
-    public Battle(ArrayList<Fighter> fighters) {
+     Battle(ArrayList<Fighter> fighters) {
         this.fighters = fighters;        
     }
-    public Battle(Fighter player, Fighter... enemies) {
+     Battle(Fighter player, Fighter... enemies) {
         this.fighters = new ArrayList<>(Arrays.asList(enemies));
         this.fighters.add(player);
     }
 
-    public void StartBattle() {
+     void StartBattle() {
         // Tuloste: Taistelu fighter.nimeä vastaan!
 
         proceedBattle();
@@ -70,11 +70,11 @@ class Battle implements IBattle{
      * @param action action
     */
 
-    public void Attack(Action action) {
+     void Attack(Action action) {
         action.doAction();
     }
 
-    public void endBattle() {}
+     void endBattle() {}
 
     @Override
     public IEnemy[] getEnemies() {

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import game.controller.GameController;
 
 
-public abstract class DrawArea extends DrawCommand{
+ abstract class DrawArea extends DrawCommand{
 
     private ArrayList<DrawCommand> contentList = new ArrayList<>();
 
-    public DrawArea(int x, int y, String... content) {
+    DrawArea(int x, int y, String... content) {
         super(x, y, content);
     }
     DrawCommand createContent(DrawCommand drawCommand) {
@@ -26,12 +26,12 @@ public abstract class DrawArea extends DrawCommand{
     //     }
     // }
 
-    public void removeContent(DrawCommand content){
+    void removeContent(DrawCommand content){
         GameController.view.clearContent(content);
         contentList.remove(content);
     }
 
-    public void clearArea(){
+    void clearArea(){
         for (DrawCommand drawCommand : contentList) {
             GameController.view.clearContent(drawCommand);
         }

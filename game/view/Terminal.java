@@ -16,9 +16,9 @@ class Terminal extends JFrame{
 
     private ArrayList<DrawCommand> content = new ArrayList<>();
 
-    public Terminal(int width, int height){    
+     Terminal(int width, int height){    
         addWindowListener (new WindowAdapter() {    
-            public void windowClosing (WindowEvent e) {    
+             public void windowClosing (WindowEvent e) {    
                 dispose();    
             }    
         }); 
@@ -44,7 +44,7 @@ class Terminal extends JFrame{
         setVisible(true); 
     }
 
-    public void redraw(){        
+     void redraw(){        
         Stream<JLabel> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
         labels.forEach(l -> l.setText(""));
         for(int i=0; i<content.size(); i++){
@@ -53,25 +53,25 @@ class Terminal extends JFrame{
         repaint();
     }
 
-    public void setChar(int x, int y, String c){
+     void setChar(int x, int y, String c){
         screen[x][y].setText(c);
     }
     
-    public void setChar(int x, int y, char c){
+     void setChar(int x, int y, char c){
         setChar(x,y,c+"");
     }
 
-    public void addContent(DrawCommand content){
+     void addContent(DrawCommand content){
         this.content.add(content);
         drawContent(content);
     }
 
-    public void removeContent(DrawCommand content){
+     void removeContent(DrawCommand content){
         this.content.remove(content);
         redraw();
     }
 
-    public void drawContent(DrawCommand content){
+     void drawContent(DrawCommand content){
         content.getStream().forEach((c) -> {
             setChar(c.x, c.y, c.c);
         });

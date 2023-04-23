@@ -1,10 +1,10 @@
 package game.model;
 
-public abstract class Entity {
+ abstract class Entity {
     private int hp;
     private String name;
 
-    public Entity(int hp, String name){
+    Entity(int hp, String name){
         this.hp = hp;
         this.name = name;
     }

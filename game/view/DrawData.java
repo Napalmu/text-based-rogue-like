@@ -11,14 +11,14 @@ class DrawData extends DrawCommand{
 
     DrawData drawCommand;
 
-    public DrawData(int x, int y, DataIcon content) {
+     DrawData(int x, int y, DataIcon content) {
         super(x, y, content.getName());
     }
-    public DrawData(DataIcon content) {
+     DrawData(DataIcon content) {
         super(0, 0, content.getName());
     }
 
-    public void setContent(DataIcon content){
+     void setContent(DataIcon content){
         super.setContent(content.getName());
     }
     

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
-public class ViewController {
+ public class ViewController {
     private final Terminal t = new Terminal(80,24);
 
     private final InfoArea infoDrawArea;
@@ -30,7 +30,7 @@ public class ViewController {
 
     private class Shop {
         private Item selectedItem;
-        public void shopEntered(ArrayList<Item> items, Runnable onExit) {
+         void shopEntered(ArrayList<Item> items, Runnable onExit) {
             //tallennetaan näppäinkuuntelijat, jotta ne voidaan poistaa, kun kaupasta lähdetään
             ArrayList<InputManager.KeyPressedEvent> shopEvents = new ArrayList<>();
             for (int i = 0; i < items.size(); i++) {
@@ -75,10 +75,10 @@ public class ViewController {
         }
     }
     private final Shop shop = new Shop();
-    public ViewController(){
-        this.infoDrawArea = new InfoArea(2, 16);
-        this.mainDrawArea = new MainArea(2, 1);
-        this.dataDrawArea = new TextArea(59, 1);
+     public ViewController(){
+        this.infoDrawArea = new InfoArea();
+        this.mainDrawArea = new MainArea();
+        this.dataDrawArea = new TextArea();
         this.art = new DrawCommand(0, 0, AsciiDrawing.SCREEN.getArt());
 
         //huone vaihtuu, joten kartta pitää piirtää uudestaan
@@ -92,12 +92,12 @@ public class ViewController {
     /**
      * Näyttää mainMenun, eli näkymän, joka näkyy, kun peli avataan
      */
-    public void startGame(){
+     public void startGame(){
         this.mainMenu = new DrawMainMenu(0,0);
         this.setContent(this.mainMenu);
     }
 
-    public void refresh(){
+     void refresh(){
         t.redraw();
     }
 
@@ -106,7 +106,7 @@ public class ViewController {
      * 
      * @param content the content to draw
      */
-    public void drawContentOneShot(DrawCommand content){
+     void drawContentOneShot(DrawCommand content){
         t.drawContent(content);
     }
 
@@ -115,16 +115,16 @@ public class ViewController {
      * 
      * @param content the content to draw
      */
-    public void setContent(DrawCommand content){
+     void setContent(DrawCommand content){
         content.Activate();
         t.addContent(content);
     }
 
-    public void clearContent(DrawCommand content){
+     void clearContent(DrawCommand content){
         t.removeContent(content);
     }
 
-    public void shutDown(){
+     public void shutDown(){
         t.dispose();
     }
 
@@ -148,7 +148,7 @@ public class ViewController {
         setContent(new DrawCommand(50, 16, stringMap));
     }
 
-    public void onPlay() {
+     void onPlay() {
         clearContent(this.mainMenu);
         setContent(this.art);
         setContent(mainDrawArea);
@@ -161,7 +161,7 @@ public class ViewController {
      * @param nextPlaces Mahdolliset kohteet
      * @param onChoice kutsutaan, sillä kohteella, jonka käyttäjä valitsi
      */
-    public void moveToNextPlace(List<Direction> nextPlaces, Consumer<Enterable> onChoice) {
+     public void moveToNextPlace(List<Direction> nextPlaces, Consumer<Enterable> onChoice) {
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         ArrayList<String> rooms = new ArrayList<>();
         //seuraavan koodin idea on, että tietyille ilmansuunnille annetaan aina samat numerot:
@@ -199,7 +199,7 @@ public class ViewController {
         InputManager.registerListenerList(choices, true);
     }
 
-    public enum Area{
+     public enum Area{
         infoArea,
         mainArea,
         dataArea

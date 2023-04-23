@@ -31,9 +31,9 @@ public class Dungeon implements Enterable {
             case 'A':
                 return (Room) f.createAdventureRoom(AsciiDrawing.OUTSIDE);
             case 'S':
-                Item item = new Item(ItemType.BLUEBERRY);
-                Item item2 = new Item(ItemType.STRAWBERRY);
-                return (Room) f.createShopRoom(item,item2); //TODO käytä factory
+                Item item = EntityManager.createItem(ItemType.BLUEBERRY);
+                Item item2 = EntityManager.createItem(ItemType.STRAWBERRY);
+                return (Room) f.createShopRoom(item,item2); 
             case '*':
                 this.startingRoom = (Room) f.createMessageRoom("Aloitushuone");
                 return this.startingRoom;

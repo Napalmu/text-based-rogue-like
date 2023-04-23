@@ -3,27 +3,27 @@ package game.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ScrollingDrawArea extends DrawCommand{
+ class ScrollingDrawArea extends DrawCommand{
     private final int rows;
     private final String[] view;
     private final ArrayList<String> messages = new ArrayList<>();
 
-    public ScrollingDrawArea(int x, int y, String[] content) {
+     ScrollingDrawArea(int x, int y, String[] content) {
         super(x, y, "");
         this.view = content;
         this.clear();
         this.rows = content.length;
     }
-    public void addMessage(String... msgs) {
+     void addMessage(String... msgs) {
         for (String msg : msgs) {
             addMessage(msg);
         }
     }
-    public void clear() {
+     void clear() {
         this.messages.clear();
         Arrays.fill(this.view,"");
     }
-    public void addMessage(String msg) {
+     void addMessage(String msg) {
         System.out.println("Jep");
         for (int i = 0; i < this.rows; i++) {
             if (this.view[i].equals("")) {
@@ -41,7 +41,7 @@ public class ScrollingDrawArea extends DrawCommand{
         this.setContent(this.view);
     }
 
-    public void setMessage(String msg) {
+     void setMessage(String msg) {
         this.clear();
         this.addMessage(msg);
     }

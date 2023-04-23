@@ -7,10 +7,10 @@ import game.model.rooms.RoomFactory;
 import game.view.MapRoom;
 import game.view.ViewController.Area;
 
-public class ModelController {
+ public class ModelController {
     private Dungeon dungeon;
 
-    public ModelController(){
+     public ModelController(){
         
     }
 
@@ -18,7 +18,7 @@ public class ModelController {
      * Aloittaa taistelun vihollisia vastaan. Kertoo näkymälle taistelun alkamisesta.
      * @param enemies viholliset, joita vastaan taistella
      */
-    public void startBattle(Enemy... enemies) {
+     public void startBattle(Enemy... enemies) {
         IBattle battle = new Battle(EntityManager.getPlayer(), enemies);
         GameEventManager.emitBattleStarted(battle);
     }
@@ -28,16 +28,16 @@ public class ModelController {
      * Tarvitaan, jotta kartta voitaisiin piirtää siitä dungeonista, jossa ollaan
      * @param dungeon dungeon
      */
-    public void moveToDungeon(Dungeon dungeon) {
+     public void moveToDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
 
-    public void startGame(){
+     public void startGame(){
         EntityManager.createPlayer(100, "Pekka");
         this.dungeon = new RoomFactory().createStartingRoom();
         dungeon.enter();
     }
-    public MapRoom[][] getMap() {
+     public MapRoom[][] getMap() {
         return dungeon.getMap();
     }
 
