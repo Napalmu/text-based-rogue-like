@@ -1,5 +1,11 @@
 package game.model.rooms;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.EntityManager;
 import game.model.Item;
@@ -14,13 +20,25 @@ class TreasureRoom extends Room{
     @Override
     public void enterRoom() {
         if (hasBeenEntered()) {
-            this.moveToNextRoom();
+            GameController.view.enterMessageRoom(this, Arrays.asList(
+                "Saavut huoneeseen, jossa on arkku.",
+                "Epäonneksesi huomaat kuitenkin, että olet jo käynyt", 
+                "huoneessa."));
+                        
             return;
         }
         Player player = EntityManager.getPlayer();
         player.receiveItems(this.items);
 
-        this.moveToNextRoom();
+
+        List<String> itemNames = Stream.concat(
+            Stream.of(
+                "Löydät itsesi huoneesta, josta löytyy", "salaperäinen arkku","","Löysit arkusta:"),
+                Arrays.stream(items)
+                    .map(i->i.getName())
+            ).collect(Collectors.toList());
+        
+        GameController.view.enterMessageRoom(this, itemNames);
     }
 
     @Override

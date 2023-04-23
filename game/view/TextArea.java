@@ -1,5 +1,7 @@
 package game.view;
 
+import game.controller.GameController;
+import game.model.EntityManager;
 import game.model.GameEventManager;
 import game.model.Item;
 
@@ -7,13 +9,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
- class TextArea extends ParentDrawCommand{
+ class TextArea extends DrawTextCommand{
 
-    TextArea(){this(59,4);}
-     TextArea(int x, int y) {
-        super(x, y, "Inventory:");
+    TextArea(){this(59,1);}
+    TextArea(int x, int y) {
+        super(x, y);
+        setContent("Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
+        inventoryChanged(EntityManager.getPlayer().getItems());
+        GameController.view.refresh();
     }
+
     private void inventoryChanged(Item[] items) {
         HashSet<Item> set = new HashSet<>(Arrays.asList(items));
         String[] itemNames = new String[set.size()+1];
@@ -23,6 +29,8 @@ import java.util.HashSet;
             int freq = Collections.frequency(Arrays.asList(items), item);
             itemNames[index++] = item.getName() + " " + freq + " kpl";
         }
-        this.setContent(itemNames);
+        System.out.println(Arrays.toString(itemNames));
+        setContent(itemNames);
     }
+    
 }

@@ -2,6 +2,7 @@ package game.model.rooms;
 
 import java.util.List;
 
+import game.controller.GameController;
 import game.controller.RoomType;
 
 class MessageRoom extends Room{
@@ -13,10 +14,7 @@ class MessageRoom extends Room{
 
     @Override
     protected void enterRoom() {
-
-        //roomText.setContent(messages.toArray(new String[0]));
-
-        this.moveToNextRoom();
+        GameController.view.enterMessageRoom(this, messages);
     }
 
     @Override

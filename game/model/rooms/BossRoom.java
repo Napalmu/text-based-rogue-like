@@ -1,5 +1,8 @@
 package game.model.rooms;
 
+import java.util.Arrays;
+
+import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.*;
 
@@ -14,7 +17,7 @@ class BossRoom extends EnemyRoom{
     @Override
     public void enterRoom() {
         EntityManager.getPlayer().disposeItem(this.key);
-        this.moveToNextRoom();
+        GameController.view.enterBossRoom(this, enemy);
     }
 
     @Override
@@ -26,6 +29,8 @@ class BossRoom extends EnemyRoom{
         boolean hasKey = player.hasItem(key);
         if (!hasKey) {
             GameEventManager.emitRoomEnteredEvent(this, false);
+            GameController.view.enterMessageRoom(this, Arrays.asList("Höh, näyttää siltä, että tarvitset", "avaimen päästäksesi sisään"));
+             
             //roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
         }
         return hasKey;
