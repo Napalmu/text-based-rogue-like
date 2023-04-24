@@ -19,13 +19,6 @@ public class InputManager implements KeyListener{
     public static void registerListener(KeyPressedEvent keyEvent){
         registerListener(keyEvent.getEvent(), keyEvent.getKeyConsumer());
     }
-    // public static void registerListener(int event, KeyConsumer consumer, boolean unregister_after){
-    //     if (!instance.listeners.containsKey(event)) instance.listeners.put(event, new ArrayList<>());
-    //     instance.listeners.get(event).add(consumer);
-
-    //     if(unregister_after == true) instance.listeners.get(event).add(() -> {unregisterListener(event, consumer);});
-    // }
-
     public static void registerListenerList(ArrayList<KeyPressedEvent> keyList, boolean unregister_after){
         for (KeyPressedEvent kPressedEvent : keyList) {
             registerListener(kPressedEvent);
@@ -38,7 +31,6 @@ public class InputManager implements KeyListener{
             };
             registerListener(kPressedEvent.getEvent(), k);
         }
-
     }
 
     public static void unregisterListener(int event, KeyConsumer consumer){

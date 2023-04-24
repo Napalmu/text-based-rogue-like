@@ -36,7 +36,7 @@ class DrawTextCommand extends DrawCommand {
 
     Stream<CharacterPosition> getStream(){
         Stream.Builder<CharacterPosition> c = Stream.builder();
-        if (content==null) return c.build();
+        if (getContent()==null) return c.build();
 
         for (int y=0;y<getContent().length; y++){
             for (int x=0;x<getContent()[y].length(); x++){

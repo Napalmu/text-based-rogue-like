@@ -28,26 +28,8 @@ class DrawCommand implements Drawable{
         }
     }
 
-    int getX(){
-        return x;
-    }
-    
-    int getY(){
-        return y;
-    }
-
-    void setX(int x){
-        this.x = x;
-    }
-
-    void setY(int y){
-        this.y = y;
-    }
-
-    //kun asetetaan piirrettäväksi
-    void activate(){
-        //
-    }
+    int getX(){return x;}    
+    int getY(){return y;}
     
     @Override
     public DrawCommand getDrawCommand() {

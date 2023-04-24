@@ -48,19 +48,22 @@ public class ScreenShop extends ScreenThreePart{
         ArrayList<KeyPressedEvent> shopEvents = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            InputManager.KeyPressedEvent event = new InputManager.KeyPressedEvent(KeyEvent.VK_1+i,
+            KeyPressedEvent event = new KeyPressedEvent(
+                    KeyEvent.VK_1+i,
                     () -> selectItem(item));
             shopEvents.add(event);
         }
         //välilyönnillä ostetaan
-        InputManager.KeyPressedEvent close = new InputManager.KeyPressedEvent(KeyEvent.VK_SPACE,
+        KeyPressedEvent buy = new KeyPressedEvent(
+                KeyEvent.VK_SPACE,
                 this::buyItem);
         //Painamalla nollaa lähdetään kaupasta
-        InputManager.KeyPressedEvent exit = new InputManager.KeyPressedEvent(KeyEvent.VK_0,
+        KeyPressedEvent exit = new KeyPressedEvent(
+                KeyEvent.VK_0,
                 ()-> exit());
-        shopEvents.add(close); 
-        shopEvents.add(exit);
 
+        shopEvents.add(buy); 
+        shopEvents.add(exit);
         return shopEvents;
     }
 

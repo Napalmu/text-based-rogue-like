@@ -6,7 +6,6 @@ import game.controller.InputManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.*;
 import java.util.stream.Stream;
 
 class Terminal extends JFrame{
@@ -14,12 +13,8 @@ class Terminal extends JFrame{
     private JLabel[][] screen;
 
     private Drawable screenBuffer;
-     Terminal(int width, int height){    
-        addWindowListener (new WindowAdapter() {    
-             public void windowClosing (WindowEvent e) {    
-                dispose();    
-            }    
-        }); 
+     Terminal(int width, int height){ 
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.addKeyListener(InputManager.instance);
                 
         screen = new JLabel[width][height];
@@ -65,10 +60,13 @@ class Terminal extends JFrame{
         if (screenBuffer==null) return;
         
         DrawCommand dc = screenBuffer.getDrawCommand();
-        dc.activate();
         dc.getStream().forEach((c) -> {
              setChar(c.x, c.y, c.c);
         });
         repaint();
+    }
+
+    void close(){
+        dispose();
     }
 }

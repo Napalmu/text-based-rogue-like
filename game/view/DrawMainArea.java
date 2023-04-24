@@ -3,7 +3,6 @@ package game.view;
 import game.model.GameEventManager;
 import game.model.IBattle;
 import game.model.IEnemy;
-import game.model.rooms.IRoom;
 
 class DrawMainArea extends DrawScrollingArea{     
     
@@ -17,21 +16,6 @@ class DrawMainArea extends DrawScrollingArea{
         //GameEventManager.registerListener(this::shopEntered);
     }
 
-    private void roomEntered(IRoom room, boolean success) {
-        clear();
-        setContent("");
-        //TODO erilliset metodit
-        switch (room.getType()) {
-            case MSG:
-                addMessage("Tulit viestihuoneeseen!");
-                break;
-            case TREASURE:
-                //TODO pitkät lauseet hankalia
-                
-            case BOSS:
-                
-        }
-    }
     private void battleStarted(IBattle battle) {
         StringBuilder enemies = new StringBuilder();
         for (IEnemy enemy : battle.getEnemies()) {

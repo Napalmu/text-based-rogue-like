@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import javax.swing.text.html.parser.Entity;
-
  public class ViewController {
     private final Terminal t = new Terminal(80,24);
 
@@ -70,11 +68,4 @@ import javax.swing.text.html.parser.Entity;
     public void enterMainMenu() {
         changeRoom(new ScreenMainMenu());
     }
-
-     public enum Area{
-        infoArea,
-        mainArea,
-        dataArea
-    }
-
 }
