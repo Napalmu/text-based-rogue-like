@@ -16,7 +16,7 @@ import java.util.HashSet;
         super(x, y);
         setContent("Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
-        inventoryChanged(EntityManager.getPlayer().getItems());
+        inventoryChanged(EntityManager.getPlayer().getItems().toArray(new Item[0]));
         GameController.view.refresh();
     }
 

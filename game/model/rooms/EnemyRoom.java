@@ -3,6 +3,7 @@ package game.model.rooms;
 import game.controller.GameController;
 import game.controller.RoomType;
 import game.model.Enemy;
+import game.model.Fighter;
 
 class EnemyRoom extends Room{
     protected Enemy enemy;
@@ -13,7 +14,7 @@ class EnemyRoom extends Room{
 
     @Override
     public void enterRoom() {
-        GameController.model.startBattle(this, enemy);
+        GameController.model.startBattle(this, (Fighter)enemy);
         //TODO taistelun lopputuloski pitäis selvittää
     }
 
