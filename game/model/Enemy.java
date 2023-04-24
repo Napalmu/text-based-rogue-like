@@ -46,7 +46,7 @@ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
         System.out.println("En ota lol!");
     }
     @Override
-    public void receiveItem(Item item) { inventory.addItems(item); }
+    public void receiveItems(Item... item) { inventory.addItems(item); }
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
