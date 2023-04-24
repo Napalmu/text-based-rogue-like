@@ -68,7 +68,7 @@ class Battle implements IBattle{
             fighter.proceed();
         }
 
-        // Input continue -> proceedBattle()
+        proceedBattle();
     }   
 
     /** Work in progress varsinaiset aktiojutut
