@@ -1,15 +1,13 @@
 package game.model.rooms;
 
-import game.controller.GameController;
 import game.controller.InputManager;
 import game.controller.RoomType;
 import game.model.GameEventManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 abstract class Room implements Enterable, IRoom{
-    private final List<Direction> directions = new ArrayList<>();
+    private final ArrayList<Direction> directions = new ArrayList<>();
     private boolean playerInside = false;
     private boolean hasBeenEntered = false;
 
@@ -41,17 +39,7 @@ abstract class Room implements Enterable, IRoom{
             this.playerInside = false;
             this.hasBeenEntered = true;
             target.enter();
-        } else {
-            //kysytään uusi valinta
-            this.moveToNextRoom();
         }
-    }
-
-    /**
-     * Kysyy käyttäjältä minne siirrytään ja siirtyy sinne
-     */
-    protected void moveToNextRoom() {
-        GameController.view.moveToNextPlace(this.directions, this::exit);
     }
 
     /**
@@ -66,8 +54,7 @@ abstract class Room implements Enterable, IRoom{
      * todo remove
      * @return Lista kohteista
      */
-    protected ArrayList<Direction> getDestinations(){
-        return new ArrayList<>();}
+    public ArrayList<Direction> getDestinations(){return directions;}
 
     /**
      * Kutsutaan aina kun huoneeseen tullaan.

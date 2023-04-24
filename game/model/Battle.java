@@ -7,10 +7,10 @@ class Battle implements IBattle{
 
     public abstract static class Action {
         protected Fighter[] targets;
-        public Action(Fighter[] targets) {
+        Action(Fighter[] targets) {
             this.targets = targets;
         }
-        public Action(Fighter fighter) {
+        Action(Fighter fighter) {
             this.targets = new Fighter[] {fighter};
         }
         public abstract void doAction();
@@ -18,7 +18,7 @@ class Battle implements IBattle{
     
     //  note to self: tästä kohtaa alkaa
 
-    public static class MeleeAction extends Action {
+    static class MeleeAction extends Action {
         private final int dmg;
         public MeleeAction(Fighter target, int dmg) {
             super(target);
@@ -35,15 +35,15 @@ class Battle implements IBattle{
     private final ArrayList<Fighter> fighters;
     private Fighter player;
 
-    public Battle(ArrayList<Fighter> fighters) {
+    Battle(ArrayList<Fighter> fighters) {
         this.fighters = fighters;        
     }
-    public Battle(Fighter player, Fighter... enemies) {
+    Battle(Fighter player, Fighter... enemies) {
         this.fighters = new ArrayList<>(Arrays.asList(enemies));
         this.fighters.add(player);
     }
 
-    public void StartBattle() {
+    void StartBattle() {
         // Tuloste: Taistelu fighter.nimeä vastaan!
 
         proceedBattle();
@@ -75,7 +75,7 @@ class Battle implements IBattle{
      * @param action action
     */
 
-    public void Attack(Action action) {
+    void Attack(Action action) {
         action.doAction();
         for (Fighter fighter : fighters) {
             if (fighter.getHp() <= 0){
@@ -84,7 +84,7 @@ class Battle implements IBattle{
         }
     }
 
-    public void endBattle() {
+    void endBattle() {
         // player inputin jälkeen sulkeutuu taistelu ja tulee taas mappi esille
     }
 
@@ -100,7 +100,7 @@ class Battle implements IBattle{
         return enemies;
     }
 
-    public void RemoveFighter (Fighter fighter){
+    void RemoveFighter (Fighter fighter){
         ArrayList<Item> drops = fighter.getItems();
         fighter.die();
 

@@ -3,11 +3,11 @@ package game.model;
 import game.controller.ItemType;
 import game.model.DrawCommandInterfaces.DataIcon;
 
-public class Item extends Entity implements DataIcon{
+ public class Item extends Entity implements DataIcon{
     
     private ItemType type;
     
-    public Item(ItemType type) {
+    Item(ItemType type) {
         super(1,type.getName());
         this.type = type;
     }

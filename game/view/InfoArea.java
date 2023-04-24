@@ -3,23 +3,20 @@ package game.view;
 import game.model.GameEventManager;
 import game.model.Item;
 
-import java.util.Arrays;
+ class InfoArea extends ScrollingDrawArea{
+        
 
-public class InfoArea extends ParentDrawCommand{
-    private final ScrollingDrawArea messages;
-    public InfoArea(int x, int y) {
-        super(x, y);
-        String[] empty = new String[5];
-        Arrays.fill(empty, "");
+    InfoArea(){ this(2,16, new String[5]); }
+    InfoArea(int x, int y){ this(x,y, new String[5]); }
+    InfoArea(int x, int y, String[] content) {
+        super(x, y, 7, content);
 
-        this.messages = new ScrollingDrawArea(x+1,y+1,empty);
-        this.addChildren(this.messages);
         GameEventManager.registerListener((GameEventManager.ItemReceivedListener) this::itemReceived);
     }
+    
     private void itemReceived(Item item) {
-        this.messages.addMessage("Saatiin tavara: " + item.getName());
+        this.addMessage("Saatiin tavara: " + item.getName());
     }
-    public void setMessage(String msg) {
-        this.messages.setMessage(msg);
-    }
+
+    
 }

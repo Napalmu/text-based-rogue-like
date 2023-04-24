@@ -7,18 +7,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 class Terminal extends JFrame{
     
     private JLabel[][] screen;
 
-    private ArrayList<DrawCommand> content = new ArrayList<>();
-
-    public Terminal(int width, int height){    
+    private Drawable screenBuffer;
+     Terminal(int width, int height){    
         addWindowListener (new WindowAdapter() {    
-            public void windowClosing (WindowEvent e) {    
+             public void windowClosing (WindowEvent e) {    
                 dispose();    
             }    
         }); 
@@ -44,36 +42,32 @@ class Terminal extends JFrame{
         setVisible(true); 
     }
 
-    public void redraw(){        
+     void redraw(){        
         Stream<JLabel> labels = Stream.of(screen).flatMap(s -> Stream.of(s));
-        labels.forEach(l -> l.setText(""));
-        for(int i=0; i<content.size(); i++){
-            drawContent(content.get(i));
-        }
-        repaint();
+        labels.forEach(l -> l.setText(""));        
+        drawContent();
     }
 
-    public void setChar(int x, int y, String c){
+     void setChar(int x, int y, String c){
         screen[x][y].setText(c);
     }
     
-    public void setChar(int x, int y, char c){
+     void setChar(int x, int y, char c){
         setChar(x,y,c+"");
     }
 
-    public void addContent(DrawCommand content){
-        this.content.add(content);
-        drawContent(content);
+     void setContent(Drawable content){
+        this.screenBuffer = content;
+        drawContent();
     }
 
-    public void removeContent(DrawCommand content){
-        this.content.remove(content);
-        redraw();
-    }
-
-    public void drawContent(DrawCommand content){
-        content.getStream().forEach((c) -> {
-            setChar(c.x, c.y, c.c);
+     void drawContent(){
+        if (screenBuffer==null) return;
+        
+        DrawCommand dc = screenBuffer.getDrawCommand();
+        dc.activate();
+        dc.getStream().forEach((c) -> {
+             setChar(c.x, c.y, c.c);
         });
         repaint();
     }

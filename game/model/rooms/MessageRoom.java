@@ -4,7 +4,7 @@ import java.util.List;
 
 import game.controller.GameController;
 import game.controller.RoomType;
-//TODO poista koko huone, koska turha
+
 class MessageRoom extends Room{
     private final List<String> messages;
 
@@ -14,10 +14,7 @@ class MessageRoom extends Room{
 
     @Override
     protected void enterRoom() {
-
-        //roomText.setContent(messages.toArray(new String[0]));
-
-        this.moveToNextRoom();
+        GameController.view.enterMessageRoom(this, messages);
     }
 
     @Override

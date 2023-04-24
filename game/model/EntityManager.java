@@ -13,7 +13,7 @@ public class EntityManager {
      * Metodin avulla pääsee käsiksi pelaaja-olioon. 
      * @return palauttaa pelaaja-olion luomalla sellaisen tarvittaesssa. Pelaaja-oliolle annetaan oletusarvot, jos sitä ei ole vielä olemassa.
      */
-    public static Player getPlayer() {
+     public static Player getPlayer() {
         if (!entities.containsKey(EntityTypes.PLAYER)) {
             return (Player) createPlayer(100, "Pekka");
         }
@@ -34,7 +34,7 @@ public class EntityManager {
      * @param name Vihollisen nimi.
      * @return Vihollis-olio.
      */
-    public static Entity createEnemy(int hp, String name){
+     public static Entity createEnemy(int hp, String name){
         Entity e = new Enemy(hp, name);
         if (!entities.containsKey(EntityTypes.ENEMY)){
             ArrayList<Entity> l = new ArrayList<>();
@@ -51,7 +51,7 @@ public class EntityManager {
      * @param type
      * @return
      */
-    public static Item createItem(ItemType type) {
+     public static Item createItem(ItemType type) {
         Item i = new Item(type);
         ArrayList<Entity> list = entities.getOrDefault(type, new ArrayList<>());
         entities.putIfAbsent(type, list);

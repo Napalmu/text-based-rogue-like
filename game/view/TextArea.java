@@ -1,24 +1,36 @@
 package game.view;
 
+import game.controller.GameController;
+import game.model.EntityManager;
 import game.model.GameEventManager;
 import game.model.Item;
 
-public class TextArea extends DrawArea{
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
-    public TextArea(int x, int y) {
-        super(x, y, "Inventory:");
+ class TextArea extends DrawTextCommand{
+
+    TextArea(){this(59,1);}
+    TextArea(int x, int y) {
+        super(x, y);
+        setContent("Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);
+        inventoryChanged(EntityManager.getPlayer().getItems());
+        GameController.view.refresh();
     }
+
     private void inventoryChanged(Item[] items) {
-        String[] itemNames = new String[items.length+1];
+        HashSet<Item> set = new HashSet<>(Arrays.asList(items));
+        String[] itemNames = new String[set.size()+1];
         itemNames[0] = "Inventory:";
-        for (int i = 0; i < items.length; i++) {
-            itemNames[i+1] = items[i].getName();
+        int index = 1;
+        for (Item item : set) {
+            int freq = Collections.frequency(Arrays.asList(items), item);
+            itemNames[index++] = item.getName() + " " + freq + " kpl";
         }
-        this.setContent(itemNames);
-    }
-    public void itemReceived(Item i){
-        System.out.println("Saatiin tavara "+i.getName());
+        System.out.println(Arrays.toString(itemNames));
+        setContent(itemNames);
     }
     
 }

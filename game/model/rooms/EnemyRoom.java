@@ -13,9 +13,8 @@ class EnemyRoom extends Room{
 
     @Override
     public void enterRoom() {
-        GameController.model.startBattle(enemy);
+        GameController.model.startBattle(this, enemy);
         //TODO taistelun lopputuloski pitäis selvittää
-        this.moveToNextRoom();
     }
 
     @Override

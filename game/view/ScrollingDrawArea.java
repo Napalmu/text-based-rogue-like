@@ -1,47 +1,45 @@
 package game.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class ScrollingDrawArea extends DrawCommand{
+import game.controller.GameController;
+
+ class ScrollingDrawArea extends DrawTextCommand{
     private final int rows;
-    private final String[] view;
     private final ArrayList<String> messages = new ArrayList<>();
 
-    public ScrollingDrawArea(int x, int y, String[] content) {
+     ScrollingDrawArea(int x, int y, int rows, String... content) {
         super(x, y, "");
-        this.view = content;
         this.clear();
-        this.rows = content.length;
+        this.rows = rows;
     }
-    public void addMessage(String... msgs) {
+
+     void addMessage(String... msgs) {
         for (String msg : msgs) {
             addMessage(msg);
         }
     }
-    public void clear() {
+
+     void clear() {
         this.messages.clear();
-        Arrays.fill(this.view,"");
-    }
-    public void addMessage(String msg) {
-        System.out.println("Jep");
-        for (int i = 0; i < this.rows; i++) {
-            if (this.view[i].equals("")) {
-                this.view[i] = msg;
-                this.setContent(this.view);
-                return;
-            }
-        }
-        this.messages.add(msg);
-        for (int i = 1; i < this.rows; i++) {
-            this.view[i-1] = this.view[i];
-        }
-        this.view[this.rows-1] = msg;
-        this.setContent(this.view);
     }
 
-    public void setMessage(String msg) {
+     void addMessage(String msg) {
+        System.out.println("Jep:"+msg);
+        this.messages.add(msg);
+        GameController.view.refresh();
+    }
+
+     void setMessage(String msg) {
         this.clear();
         this.addMessage(msg);
     }
+
+    @Override
+    String[] getContent() {
+        int from = Math.max(0,messages.size()-rows);
+        int to = messages.size();
+        return messages.subList(from, to).toArray(new String[0]);
+    }
+    
 }

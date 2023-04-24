@@ -7,13 +7,12 @@ package game.controller;
 public class GameController {
     private static GameController main;
 
-    public static final game.view.ViewController view = new game.view.ViewController();
-
     public static final game.model.ModelController model = new game.model.ModelController();
 
+    public static final game.view.ViewController view = new game.view.ViewController();
 
     private GameController(){
-        view.startGame();
+        view.enterMainMenu();
     }
     public static GameController startGame() {
         if (main== null) {

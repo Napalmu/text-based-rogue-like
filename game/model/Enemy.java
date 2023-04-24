@@ -50,5 +50,18 @@ public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
+    @Override
+    public boolean hasItem(Item item) { return inventory.containsItem(item); }
+    
+    @Override
+    public ItemType getCurrentWeapon() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCurrentWeapon'");
+    }
+
+    @Override
+    public void changeWeapon(ItemType item) {
+
+    }
 
 }
