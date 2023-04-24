@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import game.controller.ItemType;
 
- public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
+public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
     private final Inventory inventory = new Inventory();
-     Enemy(int hp, String name){
+    public Enemy(int hp, String name){
         super(hp, name);
     }
 
@@ -36,13 +36,20 @@ import game.controller.ItemType;
     public void die() {
 
     }
-
+    @Override
+    public ArrayList<Item> getItems() {
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item(ItemType.BLUEBERRY));
+        return items;
+    }
+    public void addItems(ArrayList<Item> items) {
+        System.out.println("En ota lol!");
+    }
     @Override
     public void receiveItems(Item... item) { inventory.addItems(item); }
 
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
-
     @Override
     public boolean hasItem(Item item) { return inventory.containsItem(item); }
     

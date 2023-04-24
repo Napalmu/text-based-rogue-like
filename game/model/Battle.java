@@ -4,25 +4,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class Battle implements IBattle{
-     abstract static class Action {
+
+    public abstract static class Action {
         protected Fighter[] targets;
-         Action(Fighter[] targets) {
+        Action(Fighter[] targets) {
             this.targets = targets;
         }
-         Action(Fighter fighter) {
+        Action(Fighter fighter) {
             this.targets = new Fighter[] {fighter};
         }
-         abstract void doAction();
+        public abstract void doAction();
     }
-     static class MeleeAction extends Action {
+    
+    //  note to self: tästä kohtaa alkaa
+
+    static class MeleeAction extends Action {
         private final int dmg;
-         MeleeAction(Fighter target, int dmg) {
+        public MeleeAction(Fighter target, int dmg) {
             super(target);
             this.dmg = dmg;
         }
 
         @Override
-         void doAction() {
+        public void doAction() {
             for (Fighter target : this.targets) {
                 target.takeDamage(this.dmg);
             }
@@ -31,15 +35,15 @@ class Battle implements IBattle{
     private final ArrayList<Fighter> fighters;
     private Fighter player;
 
-     Battle(ArrayList<Fighter> fighters) {
+    Battle(ArrayList<Fighter> fighters) {
         this.fighters = fighters;        
     }
-     Battle(Fighter player, Fighter... enemies) {
+    Battle(Fighter player, Fighter... enemies) {
         this.fighters = new ArrayList<>(Arrays.asList(enemies));
         this.fighters.add(player);
     }
 
-     void StartBattle() {
+    void StartBattle() {
         // Tuloste: Taistelu fighter.nimeä vastaan!
 
         proceedBattle();
@@ -52,6 +56,7 @@ class Battle implements IBattle{
      */
 
     private void proceedBattle(){
+
         for (Fighter fighter : fighters) {
             if (fighters.size() <= 1){
                 endBattle();
@@ -63,22 +68,29 @@ class Battle implements IBattle{
             fighter.proceed();
         }
 
-        // Input continue -> proceedBattle()
+        proceedBattle();
     }   
 
     /** Work in progress varsinaiset aktiojutut
      * @param action action
     */
 
-     void Attack(Action action) {
+    void Attack(Action action) {
         action.doAction();
+        for (Fighter fighter : fighters) {
+            if (fighter.getHp() <= 0){
+                RemoveFighter(fighter);
+            }
+        }
     }
 
-     void endBattle() {}
+    void endBattle() {
+        // player inputin jälkeen sulkeutuu taistelu ja tulee taas mappi esille
+    }
 
     @Override
     public IEnemy[] getEnemies() {
-        IEnemy[] enemies = new IEnemy[this.fighters.size()-1]; //ei pelaajaa
+        IEnemy[] enemies = new IEnemy[this.fighters.size() - 1]; //ei pelaajaa
         int i = -1;
         for (Fighter fighter : this.fighters) {
             i++;
@@ -88,5 +100,10 @@ class Battle implements IBattle{
         return enemies;
     }
 
+    void RemoveFighter (Fighter fighter){
+        ArrayList<Item> drops = fighter.getItems();
+        fighter.die();
 
+        player.addItems(drops);
+    }
 }

@@ -3,11 +3,14 @@ import java.util.ArrayList;
 
 import game.controller.ItemType;
 
- public class Player extends Entity implements Fighter, InventoryHolder{
+public class Player extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
-     Player(int hp, String name){
+    public Player(int hp, String name){
         super(hp, name);
-        GameEventManager.registerListener((GameEventManager.BuyItemListener) inventory::addItems);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     @Override
@@ -28,22 +31,29 @@ import game.controller.ItemType;
 
     @Override
     public void takeDamage(int dmg) {
-        this.setHp(this.getHp()-dmg);
-
+        this.setHp(this.getHp() - dmg);
     }
 
     @Override
     public void die() {
 
     }
+    @Override
+    public ArrayList<Item> getItems() {
+        return this.inventory.getDataList();
+    }
+    @Override
+    public void addItems(ArrayList<Item> items) {
+        this.inventory.addItems(items.toArray(new Item[0]));
+    }
 
     @Override
-    public void receiveItems(Item... items) { inventory.addItems(items); }
+    public void receiveItems(Item... item) { inventory.addItems(item); }
+
     @Override
     public void disposeItem(Item item) { inventory.removeItem(item); }
     @Override
     public boolean hasItem(Item item) { return inventory.containsItem(item); }
-    public Item[] getItems() {return inventory.getDataList().toArray(new Item[0]);}
 
     @Override
     public ItemType getCurrentWeapon() {
@@ -53,9 +63,12 @@ import game.controller.ItemType;
 
     @Override
     public void changeWeapon(ItemType item) {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'changeWeapon'");
     }
 
 
 }
+
+
 

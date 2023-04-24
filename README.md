@@ -7,4 +7,4 @@ Ingman: Input. Monisäikeisyys. <br />
 Andrei: Dungeon -logiikka. <br />
 Tipu: Grafiikkakoodi, grafiikka. <br />
 Arrow6th: Kauppa. <br />
-Monninen: Taistelusysteetmi. <br />
+Monninen: Taistelusysteemi. <br />
