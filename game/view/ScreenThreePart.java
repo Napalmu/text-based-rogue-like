@@ -15,16 +15,16 @@ import game.model.rooms.IRoom;
 import game.view.ascii_art.AsciiDrawing;
 
 abstract class ScreenThreePart extends Screen{
-    private final InfoArea infoDrawArea;
-    private final MainArea mainDrawArea;
-    private final TextArea dataDrawArea;
+    private final DrawInfoArea infoDrawArea;
+    private final DrawMainArea mainDrawArea;
+    private final DrawTextArea dataDrawArea;
     private final DrawCommand art;
     
 
     ScreenThreePart(IRoom room){
-        this.infoDrawArea = new InfoArea();
-        this.mainDrawArea = new MainArea();
-        this.dataDrawArea = new TextArea();
+        this.infoDrawArea = new DrawInfoArea();
+        this.mainDrawArea = new DrawMainArea();
+        this.dataDrawArea = new DrawTextArea();
         this.art = new DrawTextCommand(0, 0, AsciiDrawing.SCREEN.getArt());
 
         //huone vaihtuu, joten kartta pitää piirtää uudestaan
@@ -34,9 +34,9 @@ abstract class ScreenThreePart extends Screen{
         registerDirections(room);
     }
 
-    final InfoArea getInfoArea(){return infoDrawArea; }
-    final MainArea getMainArea(){return mainDrawArea;}
-    final TextArea getDataArea(){return dataDrawArea;}    
+    final DrawInfoArea getInfoArea(){return infoDrawArea; }
+    final DrawMainArea getMainArea(){return mainDrawArea;}
+    final DrawTextArea getDataArea(){return dataDrawArea;}    
     final DrawCommand getArt() {return art;}
 
     @Override

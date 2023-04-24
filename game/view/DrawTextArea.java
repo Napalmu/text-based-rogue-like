@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
- class TextArea extends DrawTextCommand{
+ class DrawTextArea extends DrawTextCommand{
 
-    TextArea(){this(59,1);}
-    TextArea(int x, int y) {
+    DrawTextArea(){this(59,1);}
+    DrawTextArea(int x, int y) {
         super(x, y);
         setContent("Inventory:");
         GameEventManager.inventory.listen(this::inventoryChanged);

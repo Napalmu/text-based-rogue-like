@@ -5,11 +5,11 @@ import game.model.IBattle;
 import game.model.IEnemy;
 import game.model.rooms.IRoom;
 
-class MainArea extends ScrollingDrawArea{     
+class DrawMainArea extends DrawScrollingArea{     
     
-    MainArea(){this(2,1);}
-    MainArea(int x, int y){this(x,y, "");}
-    MainArea(int x, int y, String... content) {
+    DrawMainArea(){this(2,1);}
+    DrawMainArea(int x, int y){this(x,y, "");}
+    DrawMainArea(int x, int y, String... content) {
         super(x, y, 10, content);
 
         GameEventManager.registerListener(this::battleStarted);

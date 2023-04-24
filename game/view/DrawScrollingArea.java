@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import game.controller.GameController;
 
- class ScrollingDrawArea extends DrawTextCommand{
+ class DrawScrollingArea extends DrawTextCommand{
     private final int rows;
     private final ArrayList<String> messages = new ArrayList<>();
 
-     ScrollingDrawArea(int x, int y, int rows, String... content) {
+     DrawScrollingArea(int x, int y, int rows, String... content) {
         super(x, y, "");
         this.clear();
         this.rows = rows;
