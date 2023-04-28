@@ -7,6 +7,7 @@ public class Player extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
     public Player(int hp, String name){
         super(hp, name);
+        GameEventManager.registerListener((GameEventManager.BuyItemListener)this::receiveItems);
     }
 
     public Inventory getInventory() {
