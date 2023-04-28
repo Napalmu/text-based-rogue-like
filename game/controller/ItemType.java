@@ -54,7 +54,7 @@ public enum ItemType implements GameConcept{
 
         @Override
         public String getDescription() {
-            return null;
+            return "kevyt ja hyvän näköinen miekka";
         }
     },
     HALBERG {
@@ -82,12 +82,14 @@ public enum ItemType implements GameConcept{
 
         @Override
         public String getDescription() {
-            return null;
+            return "jotenkin tehokas teräaseita vastaan, mukava levypanssarin alla";
         }
     },
-    CHAINMAIL_ARMOR{
+    CHAINMAIL_ARMOR {
         @Override
-        public String getName() {return "Ketjuhaarniska";}
+        public String getName() {
+            return "Ketjuhaarniska";
+        }
 
         @Override
         public int price() {
@@ -96,7 +98,39 @@ public enum ItemType implements GameConcept{
 
         @Override
         public String getDescription() {
-            return null;
+            return "tehokas teräaseita vastaan, tärkeä osa levyketjupanssaria";
+        }
+    },
+    FIREBALL_SPELL{
+        @Override
+        public String getName() {
+            return "Tulipallo";
+        }
+
+        @Override
+        public int price() {
+            return 40;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Maaginen käärö, joka opetta sinulle tulipallo-loitsun";
+        }
+    },
+    BOW{
+        @Override
+        public String getName() {
+            return "Jousipyssy";
+        }
+
+        @Override
+        public int price() {
+            return 10;
+        }
+
+        @Override
+        public String getDescription() {
+            return "yksinkertainen pitkänmatkanase, käyttää nuolia ammuksinaan";
         }
     };
 
