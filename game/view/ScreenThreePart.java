@@ -107,4 +107,7 @@ abstract class ScreenThreePart extends Screen{
         infoDrawArea.addMessage(rooms.toArray(new String[0]));
         InputManager.registerListenerList(choices, true);
     }
+
+    @Override
+    void exitScreen() {}
 }

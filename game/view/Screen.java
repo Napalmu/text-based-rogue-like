@@ -12,6 +12,7 @@ public abstract class Screen implements Drawable{
 
     abstract List<KeyPressedEvent> getListenersForScreen();
     abstract void enterScreen();
+    abstract void exitScreen();
     
     Screen(){}
 
@@ -27,5 +28,6 @@ public abstract class Screen implements Drawable{
         if (listeners!=null) {
             listeners.forEach(l -> InputManager.unregisterListener(l));
         }
+        exitScreen();
     }    
 }

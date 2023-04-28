@@ -14,6 +14,7 @@ import game.model.rooms.IRoom;
 public class ScreenShop extends ScreenThreePart{
     List<Item> items;
     IRoom room;
+    List<KeyPressedEvent> shopKeys;
     ArrayList <KeyPressedEvent> enterShop = new ArrayList<>();
     ScreenShop(IRoom room, List<Item> items){
         super(room);
@@ -38,6 +39,15 @@ public class ScreenShop extends ScreenThreePart{
     @Override
     void enterScreen() {
         getMainArea().drawMessages("köysit kaupan", "astu sisään painamalla välilyöntiä");
+    }
+    @Override
+    void exitScreen(){
+        for (int i= 0; i<enterShop.size(); i++) {
+            InputManager.unregisterListener(enterShop.get(i));
+        }
+        for (int i= 0; i<shopKeys.size(); i++) {
+            InputManager.unregisterListener(shopKeys.get(i));
+        }
 
     }
     void enterShop(){
@@ -47,7 +57,7 @@ public class ScreenShop extends ScreenThreePart{
 
         ShopInside shop = new ShopInside();
         shop.enterScreen();
-        List<KeyPressedEvent> shopKeys = shop.getListenersForScreen();
+        shopKeys = shop.getListenersForScreen();
         for (int i= 0; i<shopKeys.size(); i++) {
             InputManager.registerListener(shopKeys.get(i));
         }
@@ -79,7 +89,15 @@ public class ScreenShop extends ScreenThreePart{
             if (this.selectedItem == null) return; //ei itemiä valittuna vielä
             GameEventManager.emitBuyItem(this.selectedItem);
         }
-
+        private void exit(){
+            for (int i= 0; i<enterShop.size(); i++) {
+                InputManager.unregisterListener(enterShop.get(i));
+            }
+            for (int i= 0; i<shopKeys.size(); i++) {
+                InputManager.unregisterListener(shopKeys.get(i));
+            }
+            GameController.view.enterShopRoom(room, items);
+        }
         List<KeyPressedEvent> getListenersForScreen () {
             ArrayList<KeyPressedEvent> shopEvents = new ArrayList<>();
             for (int i = 0; i < items.size(); i++) {
@@ -89,6 +107,7 @@ public class ScreenShop extends ScreenThreePart{
                         () -> selectItem(item));
                 shopEvents.add(event);
             }
+
             //välilyönnillä ostetaan
             KeyPressedEvent buy = new KeyPressedEvent(
                     KeyEvent.VK_SPACE,
@@ -96,7 +115,7 @@ public class ScreenShop extends ScreenThreePart{
             //Painamalla nollaa lähdetään kaupasta
             KeyPressedEvent exit = new KeyPressedEvent(
                     KeyEvent.VK_0,
-                    () -> GameController.view.enterShopRoom(room, items));
+                    this::exit);
 
             shopEvents.add(buy);
             shopEvents.add(exit);
