@@ -24,6 +24,8 @@ public abstract class Screen implements Drawable{
         GameController.view.refresh();
     }
     final void exit(){
-        listeners.forEach(l->InputManager.unregisterListener(l));
+        if (listeners!=null) {
+            listeners.forEach(l -> InputManager.unregisterListener(l));
+        }
     }    
 }
