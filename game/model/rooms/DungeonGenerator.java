@@ -11,7 +11,7 @@ import java.util.Random;
 
 import static game.model.rooms.CompassPoints.*;
 
-public class DungeonGenerator2 {
+class DungeonGenerator {
     private final Room[][] rooms;
     private final int width, height;
     private final Random random = new Random();
@@ -41,7 +41,7 @@ public class DungeonGenerator2 {
                     '}';
         }
     }
-    public DungeonGenerator2(int width, int height) {
+    public DungeonGenerator(int width, int height) {
         this.rooms = new Room[height][width];
         this.width = width;
         this.height = height;
@@ -130,22 +130,32 @@ public class DungeonGenerator2 {
             int xDif = this.end.x - this.current.x;
             int yDif = this.end.y - this.current.y;
             double sum = Math.abs(xDif) + Math.abs(yDif);
-            //vaaka vai pysty suunnassa:
-            double d = random.nextDouble();
-            //väärään vai oikeaan suuntaan
-            boolean wrong = !safe && random.nextDouble() < 0.2;
+            //x:n ja y:n muutokset nykyiseen tilanteeseen
             int x = 0; int y = 0;
-            double horizontalChance = Math.abs(xDif) / sum;
-            //min 0.1 ja max 0.9, koska muuten saatetaan jäädä jumiin
-            horizontalChance = Math.max(horizontalChance, 0.1);
-            horizontalChance = Math.min(horizontalChance, 0.9);
-            if (d < horizontalChance) { //vaaka
-                int i = xDif < 0 ? -1 : 1;
-                x = wrong ? -i : i;
-            } else { //pysty
-                int i = yDif < 0 ? -1 : 1;
-                y = wrong ? -i : i;
+            if (safe) { //haetaan lyhin reitti
+                if (Math.abs(xDif) >= Math.abs(yDif)) {
+                    x = xDif < 0 ? 1 : -1;
+                } else {
+                    y = yDif < 0 ? 1 : -1;
+                }
+            } else {
+                //vaaka vai pysty suunnassa:
+                double d = random.nextDouble();
+                //väärään vai oikeaan suuntaan
+                boolean wrong = random.nextDouble() < 0.2;
+                double horizontalChance = Math.abs(xDif) / sum;
+                //min 0.1 ja max 0.9, koska muuten saatetaan jäädä jumiin
+                horizontalChance = Math.max(horizontalChance, 0.1);
+                horizontalChance = Math.min(horizontalChance, 0.9);
+                if (d < horizontalChance) { //vaaka
+                    int i = xDif < 0 ? -1 : 1;
+                    x = wrong ? -i : i;
+                } else { //pysty
+                    int i = yDif < 0 ? -1 : 1;
+                    y = wrong ? -i : i;
+                }
             }
+
             return new Node(current.x+x,current.y+y);
         }
     }
@@ -255,7 +265,7 @@ public class DungeonGenerator2 {
         for (int i = 0; i < 10000; i++) {
             int w = new Random().nextInt(5, 30);
             int h = new Random().nextInt(5, 20);
-            DungeonGenerator2 g = new DungeonGenerator2(w,h);
+            DungeonGenerator g = new DungeonGenerator(w,h);
             g.generate();
         }
     }

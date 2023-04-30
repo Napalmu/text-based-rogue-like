@@ -35,7 +35,7 @@ public class RoomFactory {
     }
 
     public Dungeon createStartingDungeon() {
-        DungeonGenerator2 generator = new DungeonGenerator2(10,7);
+        DungeonGenerator generator = new DungeonGenerator(10,7);
         return generator.generate();
     }
 }
