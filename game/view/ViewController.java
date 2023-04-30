@@ -11,7 +11,7 @@ import java.util.Stack;
  public class ViewController {
     private final Terminal t = new Terminal(80,24);
 
-    private Stack<Screen> uiStack;
+    private final Stack<Screen> uiStack;
     
     public ViewController(){        
         uiStack = new Stack<>();        

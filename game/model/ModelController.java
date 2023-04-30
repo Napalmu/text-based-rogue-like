@@ -38,6 +38,12 @@ import game.view.MapRoom;
         this.dungeon = new RoomFactory().createStartingRoom();
         dungeon.enter();
     }
+    //tää on tässä väliaikaisesti, jotta ihmiset voi testaa proseduraalista generaatiota
+    public void startGame2() {
+         EntityManager.createPlayer(100, "Pekka");
+         this.dungeon = new RoomFactory().createStartingDungeon();
+         dungeon.enter();
+    }
      public MapRoom[][] getMap() {
         return dungeon.getMap();
     }

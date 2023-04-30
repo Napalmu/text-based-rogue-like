@@ -33,4 +33,9 @@ public class RoomFactory {
     public Enterable createShopRoom(Item... items) {
         return new ShopRoom(Arrays.asList(items));
     }
+
+    public Dungeon createStartingDungeon() {
+        DungeonGenerator2 generator = new DungeonGenerator2(10,7);
+        return generator.generate();
+    }
 }

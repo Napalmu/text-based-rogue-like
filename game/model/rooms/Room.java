@@ -30,16 +30,10 @@ abstract class Room implements Enterable, IRoom{
 
     /**
      * Tätä metodia täytyy kutsua, kun huoneesta lähdetään
-     * @param target kohde, johon seuraavaksi mennään
      */
-    protected final void exit(Enterable target) {
-        if (target.canEnter()) {
-            //ei tarvita enään, koska näkymä kuuntelee RoomEnter tapahtumia
-            //GameController.view.clearArea(Area.mainArea);
-            this.playerInside = false;
-            this.hasBeenEntered = true;
-            target.enter();
-        }
+    public void exit() {
+        this.playerInside = false;
+        this.hasBeenEntered = true;
     }
 
     /**
@@ -62,7 +56,6 @@ abstract class Room implements Enterable, IRoom{
      * varmistaen että täällä olevaa koodia ei ylikirjoiteta
      */
     public final void enter() {
-        //roomText = (DrawText)GameController.view.createAreaContent(new DrawText(4, 0), Area.mainArea);
         this.playerInside = true;
         GameEventManager.emitRoomEnteredEvent(this);
         this.enterRoom();

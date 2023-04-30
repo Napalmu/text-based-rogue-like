@@ -18,6 +18,7 @@ abstract class ScreenThreePart extends Screen{
     private final DrawInfoArea infoDrawArea;
     private final DrawMainArea mainDrawArea;
     private final DrawTextArea dataDrawArea;
+    private final DrawMapArea mapDrawArea;
     private final DrawCommand art;
     
 
@@ -25,6 +26,7 @@ abstract class ScreenThreePart extends Screen{
         this.infoDrawArea = new DrawInfoArea();
         this.mainDrawArea = new DrawMainArea();
         this.dataDrawArea = new DrawTextArea();
+        this.mapDrawArea = new DrawMapArea();
         this.art = new DrawTextCommand(0, 0, AsciiDrawing.SCREEN.getArt());
 
         //huone vaihtuu, joten kartta pitää piirtää uudestaan
@@ -41,7 +43,7 @@ abstract class ScreenThreePart extends Screen{
 
     @Override
     public DrawCommand getDrawCommand(){
-        return new DrawCommand(0, 0, art, infoDrawArea, mainDrawArea, dataDrawArea);
+        return new DrawCommand(0, 0, art, infoDrawArea, mainDrawArea, dataDrawArea, mapDrawArea);
     }
 
     private void drawMap() {
@@ -99,8 +101,10 @@ abstract class ScreenThreePart extends Screen{
             usedKeys.add(key);
             rooms.add(key + ": " + nextRoom.getLabel());
             InputManager.KeyConsumer consumer = () -> {
-                if (onChoice.canEnter())
+                if (onChoice.canEnter()) {
+                    room.exit();
                     onChoice.enter();
+                }
             };
             choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
         }

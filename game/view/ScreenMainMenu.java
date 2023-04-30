@@ -21,11 +21,15 @@ import java.util.List;
                 "                  ",
                 " 1: Pelaa         ",
                 " 2: Poistu        ",
-                "                  ");
+                " 3: Testaa proseduraalinen");
         
     }
      void onPlay(){
         GameController.model.startGame();
+    }
+    //väliaikainen
+    void onPlayProcedural() {
+        GameController.model.startGame2();
     }
      void onExit(){
         GameController.exitGame();
@@ -37,10 +41,10 @@ import java.util.List;
     }
     @Override
     List<KeyPressedEvent> getListenersForScreen() {
-        return Arrays.asList(new KeyPressedEvent[]{
-            new InputManager.KeyPressedEvent(KeyEvent.VK_1, this::onPlay),
-            new InputManager.KeyPressedEvent(KeyEvent.VK_2, this::onExit)
-        });
+        return Arrays.asList(
+                new KeyPressedEvent(KeyEvent.VK_1, this::onPlay),
+                new KeyPressedEvent(KeyEvent.VK_2, this::onExit),
+                new KeyPressedEvent(KeyEvent.VK_3, this::onPlayProcedural));
         
     }
     @Override

@@ -19,6 +19,10 @@ public class Dungeon implements Enterable {
     public Dungeon() {
         testDungeon();
     }
+    public Dungeon(Room[][] rooms, Room startingRoom) {
+        this.rooms = rooms;
+        this.startingRoom = startingRoom;
+    }
 
     private Room room(RoomFactory f, char c) {        
         switch (c) {
