@@ -5,10 +5,10 @@ import game.model.DrawCommandInterfaces.DataIcon;
 
  public class Item extends Entity implements DataIcon{
     
-    private ItemType type;
+    private final ItemType type;
     
     Item(ItemType type) {
-        super(1,type.getName());
+        super(type.getName());
         this.type = type;
     }
 

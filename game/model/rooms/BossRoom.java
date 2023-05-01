@@ -1,13 +1,15 @@
 package game.model.rooms;
 
-import java.util.Arrays;
-
 import game.controller.GameController;
 import game.controller.RoomType;
-import game.model.*;
+import game.model.Enemy;
+import game.model.EntityManager;
+import game.model.Item;
+import game.model.Player;
 
 class BossRoom extends EnemyRoom{
     private final Item key;
+    private boolean keyUsed = false;
 
     public BossRoom(Enemy enemy, Item key) {
         super(enemy);
@@ -16,24 +18,15 @@ class BossRoom extends EnemyRoom{
 
     @Override
     public void enterRoom() {
-        EntityManager.getPlayer().disposeItem(this.key);
+        Player player = EntityManager.getPlayer();
+        if (player.hasItem(this.key)) keyUsed = true;
+        player.disposeItem(this.key);
         GameController.view.enterBossRoom(this, enemy);
     }
 
     @Override
     public boolean canEnter() {
-        //jos huoneessa on jo aiemmin käyty, avainta ei tarvita
-        if (hasBeenEntered()) return true;
-        //tarkistetaan onko pelaajalla vaadittu avain
-        Player player = EntityManager.getPlayer();
-        boolean hasKey = player.hasItem(key);
-        if (!hasKey) {
-            GameEventManager.emitRoomEnteredEvent(this, false);
-            GameController.view.enterMessageRoom(this, Arrays.asList("Höh, näyttää siltä, että tarvitset", "avaimen päästäksesi sisään"));
-             
-            //roomText.setContent("Et voi mennä bossi huoneeseen ilman avainta");
-        }
-        return hasKey;
+        return keyUsed;
     }
 
     @Override

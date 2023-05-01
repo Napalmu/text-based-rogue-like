@@ -1,74 +1,45 @@
 package game.model;
-import java.util.ArrayList;
 
+import game.controller.GameController;
 import game.controller.ItemType;
 
-public class Player extends Entity implements Fighter, InventoryHolder{
-    private final Inventory inventory = new Inventory();
-    public Player(int hp, String name){
-        super(hp, name);
-        GameEventManager.registerListener((GameEventManager.BuyItemListener)this::receiveItems);
-    }
-
-    public Inventory getInventory() {
-        return inventory;
+public class Player extends LivingEntity implements Fighter, InventoryHolder{
+    public Player(int hp, String name, int speed){
+        super(hp, name, speed);
     }
 
     @Override
-    public void proceed() {
-
+    protected void setHp(int hp) {
+        super.setHp(hp);
+        GameEventManager.emitPlayerStateChanged(getState());
     }
 
     @Override
-    public int getSpeed() {
-        return 0;
+    protected void setStamina(int newValue) {
+        super.setStamina(newValue);
+        GameEventManager.emitPlayerStateChanged(getState());
     }
 
     @Override
-    public Battle.Action getAction(ArrayList<Fighter> fighters) {
-        //todo kysy ui:lta
-        return new Battle.MeleeAction(fighters.get(1), 10);
-    }
-
-    @Override
-    public void takeDamage(int dmg) {
-        this.setHp(this.getHp() - dmg);
-    }
-
-    @Override
-    public void die() {
-
+    public void receiveItems(Item... items) {
+        super.receiveItems(items);
+        for (Item item : items) {
+            GameEventManager.emitItemReceivedEvent(item);
+        }
+        GameEventManager.emitPlayerStateChanged(getState());
     }
     @Override
-    public ArrayList<Item> getItems() {
-        return this.inventory.getDataList();
+    public void disposeItem(Item item) {
+        super.disposeItem(item);
+        GameEventManager.emitPlayerStateChanged(getState());
     }
-    @Override
-    public void addItems(ArrayList<Item> items) {
-        this.inventory.addItems(items.toArray(new Item[0]));
-    }
-
-    @Override
-    public void receiveItems(Item... item) { inventory.addItems(item); }
-
-    @Override
-    public void disposeItem(Item item) { inventory.removeItem(item); }
-    @Override
-    public boolean hasItem(Item item) { return inventory.containsItem(item); }
-
-    @Override
-    public ItemType getCurrentWeapon() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCurrentWeapon'");
+    public PlayerState getState() {
+        return new PlayerState(this.getHp(), this.getItems().toArray(new Item[0]), getStamina(), getSpeed());
     }
 
-    @Override
-    public void changeWeapon(ItemType item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changeWeapon'");
+    public boolean canAfford(int price) {
+        return hasItem(EntityManager.createItem(ItemType.COIN), price);
     }
-
-
 }
 
 

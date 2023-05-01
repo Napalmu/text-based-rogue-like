@@ -12,6 +12,7 @@ import game.model.Item;
         super(x, y, 7, content);
 
         GameEventManager.registerListener((GameEventManager.ItemReceivedListener) this::itemReceived);
+        GameEventManager.registerListener((GameEventManager.BattleActionListener) this::addMessage);
     }
     
     private void itemReceived(Item item) {

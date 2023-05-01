@@ -1,6 +1,7 @@
 package game.view;
 
 import game.model.Fighter;
+import game.model.IBattle;
 import game.model.Item;
 import game.model.rooms.IRoom;
 
@@ -56,8 +57,8 @@ import java.util.Stack;
     public void enterBossRoom(IRoom room, Fighter boss){
         changeRoom(new ScreenBossroom(room, boss));
     }
-    public void enterEnemyRoom(IRoom room, Fighter... enemies){
-        changeRoom(new ScreenEnemy(room, enemies));
+    public void enterEnemyRoom(IRoom room, IBattle battle, Fighter... enemies){
+        changeRoom(new ScreenEnemy(room, battle,enemies));
     }
     public void enterAdventureRoom(IRoom room){
         changeRoom(new ScreenMessage(room, Arrays.asList(new String[]{"Seikkailuhuone"})));

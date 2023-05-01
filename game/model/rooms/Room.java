@@ -33,7 +33,9 @@ abstract class Room implements Enterable, IRoom{
      */
     public void exit() {
         this.playerInside = false;
-        this.hasBeenEntered = true;
+        if (this.canEnter()) {
+            this.hasBeenEntered = true;
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
 import game.model.GameEventManager;
 import game.model.Item;
+import game.model.ModelController;
 import game.model.rooms.IRoom;
 
 public class ScreenShop extends ScreenThreePart{
@@ -20,15 +21,6 @@ public class ScreenShop extends ScreenThreePart{
         super(room);
         this.items = items;
         this.room = room;
-        System.out.println("Shop constructor");
-        KeyPressedEvent event = new KeyPressedEvent(
-                KeyEvent.VK_SPACE,
-                () -> enterShop());
-        enterShop.add(event);
-        for (int i= 0; i<enterShop.size(); i++) {
-            InputManager.registerListener(enterShop.get(i));
-        }
-
     }
 
     @Override
@@ -39,6 +31,14 @@ public class ScreenShop extends ScreenThreePart{
     @Override
     void enterScreen() {
         getMainArea().drawMessages("köysit kaupan", "astu sisään painamalla välilyöntiä");
+        this.registerDirections();
+        KeyPressedEvent event = new KeyPressedEvent(
+                KeyEvent.VK_SPACE,
+                this::enterShop);
+        enterShop.add(event);
+        for (KeyPressedEvent keyPressedEvent : enterShop) {
+            InputManager.registerListener(keyPressedEvent);
+        }
     }
     @Override
     void exitScreen(){
@@ -54,6 +54,7 @@ public class ScreenShop extends ScreenThreePart{
         for (int i= 0; i<enterShop.size(); i++) {
             InputManager.unregisterListener(enterShop.get(i));
         }
+        this.unregisterDirections();
 
         ShopInside shop = new ShopInside();
         shop.enterScreen();
@@ -87,7 +88,12 @@ public class ScreenShop extends ScreenThreePart{
         }
         private void buyItem () {
             if (this.selectedItem == null) return; //ei itemiä valittuna vielä
-            GameEventManager.emitBuyItem(this.selectedItem);
+
+            boolean success = GameController.model.buyItem(this.selectedItem);
+            if (!success) {
+                getInfoArea().addMessage("Ei ole varaa!");
+            }
+            //GameEventManager.emitBuyItem(this.selectedItem);
         }
         private void exit(){
             for (int i= 0; i<enterShop.size(); i++) {

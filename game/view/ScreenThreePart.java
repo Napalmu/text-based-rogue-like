@@ -20,20 +20,17 @@ abstract class ScreenThreePart extends Screen{
     private final DrawTextArea dataDrawArea;
     private final DrawMapArea mapDrawArea;
     private final DrawCommand art;
+    private final IRoom room;
+    private ArrayList<InputManager.KeyPressedEvent> directionEvents;
     
 
     ScreenThreePart(IRoom room){
+        this.room = room;
         this.infoDrawArea = new DrawInfoArea();
         this.mainDrawArea = new DrawMainArea();
         this.dataDrawArea = new DrawTextArea();
         this.mapDrawArea = new DrawMapArea();
         this.art = new DrawTextCommand(0, 0, AsciiDrawing.SCREEN.getArt());
-
-        //huone vaihtuu, joten kartta pitää piirtää uudestaan
-        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) (r, success) -> {
-            this.drawMap();
-        });
-        registerDirections(room);
     }
 
     final DrawInfoArea getInfoArea(){return infoDrawArea; }
@@ -45,31 +42,17 @@ abstract class ScreenThreePart extends Screen{
     public DrawCommand getDrawCommand(){
         return new DrawCommand(0, 0, art, infoDrawArea, mainDrawArea, dataDrawArea, mapDrawArea);
     }
-
-    private void drawMap() {
-        MapRoom[][] map = GameController.model.getMap();
-        String[] stringMap = new String[map.length];
-        for (int y = 0; y < map.length; y++) {
-            char[] chars = new char[map[y].length];
-            for (int x = 0; x < map[y].length; x++) {
-                if (map[y][x] == null) {
-                    chars[x] = ' ';
-                    continue;
-                }
-                chars[x] = map[y][x].getRoomType().symbol;
-                if (map[y][x].hasPlayerInside()) {
-                    chars[x] = '$';
-                }
-            }
-            stringMap[y] = new String(chars);
+    protected void unregisterDirections() {
+        if (this.directionEvents == null) {
+            return; //eventtejä ei olla rekisteröity vielä
         }
-        //Tälle pitää keksiä jokin toinen paikka
-        //setContent(new DrawCommand(50, 16, stringMap));
+        for (InputManager.KeyPressedEvent directionEvent : this.directionEvents) {
+            InputManager.unregisterListener(directionEvent);
+        }
+        infoDrawArea.setMessage("");
     }
-
-    private void registerDirections(IRoom room){
-        List<Direction> nextPlaces = room.getDestinations();
-        
+    protected void registerDirections(){
+        List<Direction> nextPlaces = this.room.getDestinations();
 
         ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
         ArrayList<String> rooms = new ArrayList<>();
@@ -91,9 +74,8 @@ abstract class ScreenThreePart extends Screen{
             int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
             usedKeys.add(key);
         }
-        for (int i = 0; i < nextPlaces.size(); i++) {
-            Direction nextRoom = nextPlaces.get(i);
-            Enterable onChoice = nextPlaces.get(i).getDestination();
+        for (Direction nextRoom : nextPlaces) {
+            Enterable onChoice = nextRoom.getDestination();
             //esim pohjoista vastaa numero 1
             int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
             if (key == -1) //ei ilmansuunta
@@ -101,17 +83,24 @@ abstract class ScreenThreePart extends Screen{
             usedKeys.add(key);
             rooms.add(key + ": " + nextRoom.getLabel());
             InputManager.KeyConsumer consumer = () -> {
-                if (onChoice.canEnter()) {
-                    room.exit();
-                    onChoice.enter();
+                for (InputManager.KeyPressedEvent choice : choices) {
+                    InputManager.unregisterListener(choice);
                 }
+                room.exit();
+                onChoice.enter();
             };
-            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key-1), consumer));
+            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key - 1), consumer));
         }
         infoDrawArea.addMessage(rooms.toArray(new String[0]));
-        InputManager.registerListenerList(choices, true);
+        this.directionEvents = choices;
+        for (InputManager.KeyPressedEvent choice : choices) {
+            InputManager.registerListener(choice);
+        }
+        //InputManager.registerListenerList(choices, true);
     }
-
+    protected IRoom getRoom() {
+        return this.room;
+    }
     @Override
     void exitScreen() {}
 }

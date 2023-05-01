@@ -1,27 +1,37 @@
 package game.model;
 
+import game.controller.AttackType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class Battle implements IBattle{
-
+    //Actionit kuvaavat tiettyä hyökkäystä, jolla on kohteita
     public abstract static class Action {
         protected Fighter[] targets;
-        Action(Fighter[] targets) {
+        private final AttackType type;
+        Action(Fighter[] targets, AttackType type) {
             this.targets = targets;
+            this.type = type;
         }
-        Action(Fighter fighter) {
+        Action(Fighter fighter, AttackType type) {
             this.targets = new Fighter[] {fighter};
+            this.type = type;
         }
         public abstract void doAction();
+
+        public AttackType getType() {
+            return type;
+        }
+
+        public abstract String toString(Fighter source);
     }
-    
-    //  note to self: tästä kohtaa alkaa
 
     static class MeleeAction extends Action {
         private final int dmg;
-        public MeleeAction(Fighter target, int dmg) {
-            super(target);
+        public MeleeAction(Fighter target, int dmg, AttackType type) {
+            super(target, type);
             this.dmg = dmg;
         }
 
@@ -31,79 +41,128 @@ class Battle implements IBattle{
                 target.takeDamage(this.dmg);
             }
         }
+
+        @Override
+        public String toString(Fighter source) {
+            return source.getName() + " löi " + this.targets[0].getName() + " (-"+dmg+"hp) -"+getType().getStaminaCost()+"st";
+        }
     }
-    private final ArrayList<Fighter> fighters;
-    private Fighter player;
-
-    Battle(ArrayList<Fighter> fighters) {
-        this.fighters = fighters;        
-    }
-    Battle(Fighter player, Fighter... enemies) {
-        this.fighters = new ArrayList<>(Arrays.asList(enemies));
-        this.fighters.add(player);
-    }
-
-    void StartBattle() {
-        // Tuloste: Taistelu fighter.nimeä vastaan!
-
-        proceedBattle();
-    }
-
-
-    /* Tarkastetaan onko taistelijoita jäljellä, yli yksi,
-     * Tarkastetaan onko jonkun vuoro toimia ja tehdään (work in progress)
-     * Vähennetään taistelijoiden odotusaikaa.
-     */
-
-    private void proceedBattle(){
-
-        for (Fighter fighter : fighters) {
-            if (fighters.size() <= 1){
-                endBattle();
-            }
-            if (fighter.getSpeed() == 0){
-                Attack(fighter.getAction(fighters));
-            }
-
-            fighter.proceed();
+    //Action, jossa taistelija ei tee mitään vaan odottaa
+    //Silloin nousee stamina
+    static class NoneAction extends Action {
+        private int before;
+        NoneAction(Fighter fighter, AttackType type) {
+            super(fighter, type);
         }
 
-        proceedBattle();
+        @Override
+        public void doAction() {
+            this.before = this.targets[0].getStamina();
+            this.targets[0].recover(1);
+        }
+
+        @Override
+        public String toString(Fighter source) {
+            if (this.before < source.getStamina()) {
+                return source.getName() + " ei tehnyt mitään (+1st)";
+            }
+            return source.getName() + " ei tehnyt mitään (+0st)";
+        }
+    }
+
+    private final ArrayList<EnemyFighter> enemies;
+    private final Fighter player;
+
+    private boolean isOnGoing = true;
+
+    Battle(Fighter player, EnemyFighter... enemies) {
+        this.player = player;
+        this.enemies = new ArrayList<>(Arrays.asList(enemies));
+    }
+    //Palauttaa hyökkäystyyppiä vastaavan toiminnon
+    private Action getAction(AttackType type,Fighter caster, Fighter... targets) {
+        //HUOM toimii vain väliaikaisesti näin
+        //tulevaisuudessa katsotaan mikä ase tekijällä on
+        int meleeDmg = caster instanceof Player ? 30 : 10;
+        switch (type) {
+            case NONE:
+                return new NoneAction(caster, AttackType.NONE);
+            case MELEE:
+                return new MeleeAction(targets[0],meleeDmg, AttackType.MELEE);
+            case RANGED:
+                return new MeleeAction(targets[0], 15, AttackType.RANGED);
+        }
+        throw new IllegalArgumentException("Unknown attack type!");
+    }
+    //kutsutaan, kun pelaaja on valinnut siirtonsa ja peli voi edetä
+    @Override
+    public void move(AttackType type) {
+        //pelaaja hyökkää tällä hetkellä aina kaikkia vihollisia vastaan kerralla
+        Action action = getAction(type, this.player, this.enemies.toArray(new Fighter[0]));
+        Attack(action, this.player);
+
+        enemyMoves();
+    }
+
+    @Override
+    public boolean isOnGoing() {
+        return isOnGoing;
+    }
+
+    @Override
+    public List<AttackType> getPossibleAttackTypesForPlayer() {
+        AttackType[] types = new AttackType[] {AttackType.NONE, AttackType.MELEE, AttackType.RANGED};
+        ArrayList<AttackType> result = new ArrayList<>();
+        int stamina = this.player.getStamina();
+        for (AttackType type : types) {
+            if (type.getStaminaCost() <= stamina) result.add(type);
+        }
+        return result;
+    }
+
+
+    //Suoritetaan vihollisten siirrot
+    private void enemyMoves(){
+        //kopio listasta, jotta sitä voi muokata
+        for (EnemyFighter enemy : new ArrayList<>(enemies)) {
+            AttackType type = enemy.getAttackType(enemy.getStamina());
+            Attack(getAction(type, enemy, this.player), enemy);
+        }
+        if (enemies.isEmpty()){
+            endBattle();
+        }
     }   
 
     /** Work in progress varsinaiset aktiojutut
      * @param action action
     */
 
-    void Attack(Action action) {
+    void Attack(Action action, Fighter source) {
+        source.decreaseStamina(action.getType().getStaminaCost());
         action.doAction();
-        for (Fighter fighter : fighters) {
+        //tarkistetaan kuoliko vihollisia (tehdään kopio, jotta listasta voi poistaa)
+        for (EnemyFighter fighter : new ArrayList<>(enemies)) {
             if (fighter.getHp() <= 0){
-                RemoveFighter(fighter);
+                removeFighter(fighter);
             }
         }
+        GameEventManager.emitBattleAction(action.toString(source));
     }
 
     void endBattle() {
-        // player inputin jälkeen sulkeutuu taistelu ja tulee taas mappi esille
+        this.isOnGoing = false;
+        this.player.recover(100000);
     }
 
     @Override
-    public IEnemy[] getEnemies() {
-        IEnemy[] enemies = new IEnemy[this.fighters.size() - 1]; //ei pelaajaa
-        int i = -1;
-        for (Fighter fighter : this.fighters) {
-            i++;
-            if (fighter instanceof Player) continue;
-            enemies[i] = (IEnemy) fighter; //todo fix hack
-        }
-        return enemies;
+    public EnemyFighter[] getEnemies() {
+        return this.enemies.toArray(new EnemyFighter[0]);
     }
 
-    void RemoveFighter (Fighter fighter){
+    void removeFighter(EnemyFighter fighter){
         ArrayList<Item> drops = fighter.getItems();
-        fighter.die();
-
-        player.addItems(drops);
+        //fighter.die();
+        this.enemies.remove(fighter);
+        player.receiveItems(drops.toArray(new Item[0]));
     }
 }

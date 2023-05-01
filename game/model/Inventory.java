@@ -1,6 +1,7 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import game.model.DrawCommandInterfaces.DataIconList;
 
@@ -9,26 +10,25 @@ import game.model.DrawCommandInterfaces.DataIconList;
 
      Inventory() {
 
-    }
-    private void update() {
-        GameEventManager.inventory.emit(items.toArray(new Item[0]));
-    }
+     }
      void addItems(Item... items) {
-        for (Item i : items){
-            this.items.add(i);
-            GameEventManager.emitItemReceivedEvent(i);
-        }
-        //TODO Kaksi eri eventtiä samalle eventille ei ole hyvä asia.        
-        update();
+         this.items.addAll(Arrays.asList(items));
     }
 
      void removeItem(Item item) {
         items.remove(item);
-        update();
     }
      boolean containsItem(Item item) {
         return items.contains(item);
     }
+
+     public boolean containsItem(Item item, int amount) {
+         int n = 0;
+         for (Item i : items) {
+             if (i.equals(item)) n++;
+         }
+         return n >= amount;
+     }
     @Override
     public String getHeader() {
         return "Inventory";
@@ -37,4 +37,6 @@ import game.model.DrawCommandInterfaces.DataIconList;
     public ArrayList<Item> getDataList() {
         return items;
     }
-}
+
+
+ }

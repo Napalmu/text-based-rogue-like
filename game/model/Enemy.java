@@ -1,67 +1,50 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
+import game.controller.AttackType;
 import game.controller.ItemType;
 
-public class Enemy extends Entity implements Fighter, IEnemy, InventoryHolder{
-    private final Inventory inventory = new Inventory();
-    public Enemy(int hp, String name){
-        super(hp, name);
-    }
+public class Enemy extends LivingEntity implements EnemyFighter, InventoryHolder{
+    private final ArrayList<Consumer<Integer>> hpListeners = new ArrayList<>();
+    private final ArrayList<Consumer<Integer>> staminaListeners = new ArrayList<>();
 
-    //TODO implement
-    @Override
-    public void proceed() {
-
+    public Enemy(int hp, String name, int speed){
+        super(hp, name, speed);
     }
 
     @Override
-    public int getSpeed() {
-        return 0;
+    public AttackType getAttackType(int stamina) {
+        if (stamina >= 3) {
+            return AttackType.MELEE;
+        }
+        return AttackType.NONE;
     }
 
     @Override
-    public Battle.Action getAction(ArrayList<Fighter> fighters) {
-        //todo ottaa tällä hetkellä vain ekan
-        return new Battle.MeleeAction(fighters.get(0), 10);
+    protected void setStamina(int newValue) {
+        super.setStamina(newValue);
+        for (Consumer<Integer> staminaListener : this.staminaListeners) {
+            staminaListener.accept(this.getStamina());
+        }
     }
 
     @Override
-    public void takeDamage(int dmg) {
-
+    protected void setHp(int hp) {
+        super.setHp(hp);
+        for (Consumer<Integer> hpListener : hpListeners) {
+            hpListener.accept(this.getHp());
+        }
     }
 
-    @Override
-    public void die() {
-
+    public void registerHpListener(Consumer<Integer> hpConsumer) {
+        hpListeners.add(hpConsumer);
     }
-    @Override
-    public ArrayList<Item> getItems() {
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item(ItemType.BLUEBERRY));
-        return items;
-    }
-    public void addItems(ArrayList<Item> items) {
-        System.out.println("En ota lol!");
-    }
-    @Override
-    public void receiveItems(Item... item) { inventory.addItems(item); }
-
-    @Override
-    public void disposeItem(Item item) { inventory.removeItem(item); }
-    @Override
-    public boolean hasItem(Item item) { return inventory.containsItem(item); }
-    
-    @Override
-    public ItemType getCurrentWeapon() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCurrentWeapon'");
+    public void unregisterHpListener(Consumer<Integer> hpConsumer) {
+        hpListeners.remove(hpConsumer);
     }
 
-    @Override
-    public void changeWeapon(ItemType item) {
-
-    }
-
+    public void registerStaminaListener(Consumer<Integer> staminaConsumer) {staminaListeners.add(staminaConsumer);}
+    public void unregisterStaminaListener(Consumer<Integer> staminaConsumer) {staminaListeners.remove(staminaConsumer);}
 }

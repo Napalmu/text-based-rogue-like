@@ -132,6 +132,22 @@ public enum ItemType implements GameConcept{
         public String getDescription() {
             return "yksinkertainen pitkänmatkanase, käyttää nuolia ammuksinaan";
         }
+    },
+    COIN {
+        @Override
+        public String getName() {
+            return "Kolikko";
+        }
+
+        @Override
+        public int price() {
+            return 1;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Kovaa valuuttaa";
+        }
     };
 
     public abstract String getName();

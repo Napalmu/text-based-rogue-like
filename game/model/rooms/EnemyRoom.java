@@ -5,6 +5,9 @@ import game.controller.RoomType;
 import game.model.Enemy;
 import game.model.Fighter;
 
+import java.util.Arrays;
+import java.util.List;
+
 class EnemyRoom extends Room{
     protected Enemy enemy;
 
@@ -14,8 +17,11 @@ class EnemyRoom extends Room{
 
     @Override
     public void enterRoom() {
-        GameController.model.startBattle(this, (Fighter)enemy);
-        //TODO taistelun lopputuloski pitäis selvittää
+        if (!hasBeenEntered()) {
+            GameController.model.startBattle(this, enemy);
+        } else {
+            GameController.view.enterMessageRoom(this, List.of("Olet jo tuhonnut vihollisen!"));
+        }
     }
 
     @Override
