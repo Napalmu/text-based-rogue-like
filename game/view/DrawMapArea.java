@@ -2,17 +2,23 @@ package game.view;
 
 import game.controller.GameController;
 import game.model.GameEventManager;
+import game.model.rooms.IRoom;
 
 import java.util.Arrays;
 
-public class DrawMapArea extends DrawTextCommand{
+/**
+ * Alue, joka piirtää kartan tarvittaessa
+ */
+class DrawMapArea extends DrawTextCommand {
     public DrawMapArea() {
         super(50, 16);
-        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) (room, success) -> {
+        GameEventManager.registerListener((GameEventManager.RoomEnteredListener) room -> {
             this.drawMap();
+
         });
         this.drawMap();
     }
+
     private void drawMap() {
         MapRoom[][] map = GameController.model.getMap();
         String[] stringMap = new String[map.length];
@@ -29,10 +35,6 @@ public class DrawMapArea extends DrawTextCommand{
                 }
             }
             stringMap[y] = new String(chars);
-        }
-        System.out.println(stringMap.length);
-        for (String s : stringMap) {
-            System.out.println(s);
         }
         this.setContent(stringMap);
     }

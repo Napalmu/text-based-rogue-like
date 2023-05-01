@@ -9,28 +9,36 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
- class DrawTextArea extends DrawTextCommand{
+/**
+ * Alue ruudun oikeassa reunassa. Käytetään pelaajan ominaisuuksien näyttämiseen.
+ */
+class DrawTextArea extends DrawTextCommand {
 
-    DrawTextArea(){this(59,1);}
+    DrawTextArea() {
+        this(59, 1);
+    }
+
     DrawTextArea(int x, int y) {
         super(x, y);
 
         GameEventManager.registerListener(this::updateState);
         this.updateState(GameController.model.getPlayerState());
     }
+
     private void updateState(PlayerState state) {
         HashSet<Item> itemSet = new HashSet<>(Arrays.asList(state.getItems()));
-        //inventoryn lisäksi on elämäpisteet, kestävyys ja repun otsikko
-        String[] stats = new String[itemSet.size()+3];
+        //inventoryn lisäksi on elämäpisteet, kestävyys ja reppu-otsikko
+        String[] stats = new String[itemSet.size() + 3];
         stats[0] = "Elämäpisteitä: " + state.getHp();
         stats[1] = "Kestävyys: " + state.getStamina() + " / " + state.getMaxStamina();
         stats[2] = "Reppu:";
         int index = 3;
         for (Item item : itemSet) {
+            //jos samaa tavaraa on monta, tavara näytetään muodossa tavara x kpl
             int freq = Collections.frequency(Arrays.asList(state.getItems()), item);
             stats[index++] = item.getName() + " " + freq + " kpl";
         }
         setContent(stats);
     }
-    
+
 }

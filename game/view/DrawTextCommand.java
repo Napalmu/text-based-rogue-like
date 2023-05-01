@@ -5,9 +5,7 @@ import java.util.stream.Stream;
 import game.controller.GameController;
 
 /**
- * Luokka helpontamaan KIRJOITTAMISTA eli esim lauseiden lähettämistä drawcommandin avulla.
- * Ei vielä tarjoa hirveästi etuja drawcommandin yli.
- * Vain viewin (ja siten) draw areoiden pääasiallisessa käytössä
+ * Luokka, jonka avulla voi piirtää tekstiä
  */
 class DrawTextCommand extends DrawCommand {
     private String[] content;
@@ -15,10 +13,6 @@ class DrawTextCommand extends DrawCommand {
      DrawTextCommand(int x, int y, String... content) {
         super(x, y);
         setContent(content);
-    }
-     DrawTextCommand(String... content) {
-        super(0, 0);
-        this.content = content;
     }
 
      void setContent(String... content) {
@@ -40,7 +34,7 @@ class DrawTextCommand extends DrawCommand {
 
         for (int y=0;y<getContent().length; y++){
             for (int x=0;x<getContent()[y].length(); x++){
-                c.accept(new CharacterPosition(getX()+x, getY()+y, getContent()[y].charAt(x)));
+                c.accept(new CharacterPosition(getX() + x, getY() + y, getContent()[y].charAt(x)));
             }
         } 
         return c.build();

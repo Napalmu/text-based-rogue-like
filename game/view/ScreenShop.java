@@ -12,26 +12,25 @@ import game.model.Item;
 import game.model.ModelController;
 import game.model.rooms.IRoom;
 
-public class ScreenShop extends ScreenThreePart{
-    List<Item> items;
-    IRoom room;
-    List<KeyPressedEvent> shopKeys;
-    ArrayList <KeyPressedEvent> enterShop = new ArrayList<>();
-    ScreenShop(IRoom room, List<Item> items){
+class ScreenShop extends ScreenThreePart {
+    private final List<Item> items;
+    private List<KeyPressedEvent> shopKeys;
+    private final ArrayList<KeyPressedEvent> enterShop = new ArrayList<>();
+
+    ScreenShop(IRoom room, List<Item> items) {
         super(room);
         this.items = items;
-        this.room = room;
     }
 
     @Override
-    List<KeyPressedEvent> getListenersForScreen() {
+    protected List<KeyPressedEvent> getListenersForScreen() {
         return null;
     }
 
     @Override
-    void enterScreen() {
-        getMainArea().drawMessages("köysit kaupan", "astu sisään painamalla välilyöntiä");
-        this.registerDirections();
+    protected void enterScreen() {
+        getMainArea().drawMessages("Löysit kaupan", "astu sisään painamalla välilyöntiä");
+        //kauppaan mennään välilyönnillä
         KeyPressedEvent event = new KeyPressedEvent(
                 KeyEvent.VK_SPACE,
                 this::enterShop);
@@ -39,38 +38,43 @@ public class ScreenShop extends ScreenThreePart{
         for (KeyPressedEvent keyPressedEvent : enterShop) {
             InputManager.registerListener(keyPressedEvent);
         }
+        //ennen välilyönnin painamista on mahdollista vielä yksinkertaisesti ohittaa kauppa
+        this.registerDirections();
+
     }
+
     @Override
-    void exitScreen(){
-        for (int i= 0; i<enterShop.size(); i++) {
-            InputManager.unregisterListener(enterShop.get(i));
+    protected void exitScreen() {
+        for (KeyPressedEvent keyPressedEvent : enterShop) {
+            InputManager.unregisterListener(keyPressedEvent);
         }
-        for (int i= 0; i<shopKeys.size(); i++) {
-            InputManager.unregisterListener(shopKeys.get(i));
+        for (KeyPressedEvent shopKey : shopKeys) {
+            InputManager.unregisterListener(shopKey);
         }
 
     }
-    void enterShop(){
-        for (int i= 0; i<enterShop.size(); i++) {
-            InputManager.unregisterListener(enterShop.get(i));
+
+    private void enterShop() {
+        //välilyönti ynnä muut eventit pois
+        for (KeyPressedEvent keyPressedEvent : enterShop) {
+            InputManager.unregisterListener(keyPressedEvent);
         }
+        //kaupasta ei voi enään suoraan lähteä toiseen huoneeseen
+        //vaan käyttäjän pitää lähteä tavaranäkymästä painamalla nollaa
         this.unregisterDirections();
 
         ShopInside shop = new ShopInside();
         shop.enterScreen();
         shopKeys = shop.getListenersForScreen();
-        for (int i= 0; i<shopKeys.size(); i++) {
-            InputManager.registerListener(shopKeys.get(i));
+        for (KeyPressedEvent shopKey : shopKeys) {
+            InputManager.registerListener(shopKey);
         }
     }
 
-    class ShopInside{
-    private Item selectedItem;
+    private class ShopInside {
+        private Item selectedItem;
 
-    ShopInside() {
-    }
-
-        void enterScreen () {
+        private void enterScreen() {
             String[] strings = new String[items.size() + 2];
             strings[0] = "Kaupan valikoima:";
             strings[1] = "0: Pois kaupasta";
@@ -81,30 +85,33 @@ public class ScreenShop extends ScreenThreePart{
             getMainArea().addMessage(strings);
         }
 
-        private void selectItem (Item item){
+        private void selectItem(Item item) {
             this.selectedItem = item;
             String msg = item.getType().getDescription() + " (osta välilyönnillä)";
             getInfoArea().setMessage(msg);
         }
-        private void buyItem () {
-            if (this.selectedItem == null) return; //ei itemiä valittuna vielä
 
-            boolean success = GameController.model.buyItem(this.selectedItem);
-            if (!success) {
+        private void buyItem() {
+            if (this.selectedItem == null) return; //ei itemiä valittuna vielä
+            boolean canAfford = GameController.model.canBuyItem(this.selectedItem);
+            if (canAfford) {
+                GameController.model.buyItem(this.selectedItem);
+            } else {
                 getInfoArea().addMessage("Ei ole varaa!");
             }
-            //GameEventManager.emitBuyItem(this.selectedItem);
         }
-        private void exit(){
-            for (int i= 0; i<enterShop.size(); i++) {
-                InputManager.unregisterListener(enterShop.get(i));
+
+        private void exit() {
+            for (KeyPressedEvent keyPressedEvent : enterShop) {
+                InputManager.unregisterListener(keyPressedEvent);
             }
-            for (int i= 0; i<shopKeys.size(); i++) {
-                InputManager.unregisterListener(shopKeys.get(i));
+            for (KeyPressedEvent shopKey : shopKeys) {
+                InputManager.unregisterListener(shopKey);
             }
             GameController.view.enterShopRoom(room, items);
         }
-        List<KeyPressedEvent> getListenersForScreen () {
+
+        private List<KeyPressedEvent> getListenersForScreen() {
             ArrayList<KeyPressedEvent> shopEvents = new ArrayList<>();
             for (int i = 0; i < items.size(); i++) {
                 Item item = items.get(i);
@@ -128,5 +135,5 @@ public class ScreenShop extends ScreenThreePart{
             return shopEvents;
         }
 
-}
+    }
 }

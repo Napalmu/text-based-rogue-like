@@ -1,10 +1,5 @@
 package game.view;
 
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import game.controller.AttackType;
 import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
@@ -14,7 +9,11 @@ import game.model.IBattle;
 import game.model.Item;
 import game.model.rooms.IRoom;
 
-public class ScreenEnemy extends ScreenThreePart{
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+class ScreenEnemy extends ScreenThreePart{
 
     private final Fighter[] enemies;
     private final IBattle battle;
@@ -26,21 +25,22 @@ public class ScreenEnemy extends ScreenThreePart{
     }
 
     @Override
-    List<KeyPressedEvent> getListenersForScreen() {
+    protected List<KeyPressedEvent> getListenersForScreen() {
         return null;
     }
 
     @Override
-    void enterScreen() {
+    protected void enterScreen() {
         for (EnemyFighter enemy : battle.getEnemies()) {
+            //päivitetään näkymä aina, kun jokin vihollisten ominaisuus muuttuu
             enemy.registerHpListener((hp)-> update());
             enemy.registerStaminaListener((st) -> update());
         }
         update();
-
+        //tehdään ensimmäinen siirto
         chooseAttack();
     }
-    private String attackTypeString(AttackType type) {
+    private String attackTypeToString(AttackType type) {
         switch (type) {
             case MELEE:
                 return "Lyö";
@@ -52,17 +52,21 @@ public class ScreenEnemy extends ScreenThreePart{
                 return "Hyökkäys";
         }
     }
+    //kun käyttäjä on päättänyt mitä hyökkäystä käyttää:
     private void onAttack(AttackType type) {
         this.battle.move(type);
-        if (battle.isOnGoing()) chooseAttack();
+        //jos kaikki viholliset ovat kuolleet, lopetetaan taistelu
+        if (battle.isOnGoing()) chooseAttack(); //rekursiivinen kutsu
         else endBattle();
     }
     private void chooseAttack() {
+        //näytetään vain hyökkäykset, joihin pelaajalla on tarpeeksi kestävyyttä
         List<AttackType> types = this.battle.getPossibleAttackTypesForPlayer();
         ArrayList<KeyPressedEvent> events = new ArrayList<>();
         for (int i = 0; i < types.size(); i++) {
             AttackType type = types.get(i);
             KeyPressedEvent event = new KeyPressedEvent(KeyEvent.VK_1 + i, () -> {
+                //poistetaan myös toisten vaihtoehtojen rekisteröinti
                 for (KeyPressedEvent e : events) {
                     InputManager.unregisterListener(e);
                 }
@@ -70,18 +74,18 @@ public class ScreenEnemy extends ScreenThreePart{
             });
             events.add(event);
             InputManager.registerListener(event);
-            getInfoArea().addMessage((i+1) + ": " + attackTypeString(type));
+            getInfoArea().addMessage((i+1) + ": " + attackTypeToString(type));
         }
     }
 
     private void endBattle() {
-        StringBuilder winMessage = new StringBuilder("Voitit taistelun! Sait tavaroita:");
+        this.getMainArea().setMessage("Voitit taistelun! Sait tavaroita:");
         for (Fighter enemy : this.enemies) {
             for (Item item : enemy.getItems()) {
-                winMessage.append("\n").append(item.getName());
+                this.getMainArea().addMessage(item.getName());
             }
         }
-        this.getMainArea().setMessage(winMessage.toString());
+        //siirrytään seuraavaan huoneeseen
         this.registerDirections();
     }
 
@@ -93,7 +97,7 @@ public class ScreenEnemy extends ScreenThreePart{
                     .append("kestävyys: ").append(enemy.getStamina());
             builder.append("\t");
         }
-        //todo vihollisten kuvat
+        //todo vihollisten ascii-grafiikka kuvat
         this.getMainArea().setMessage(builder.toString());
     }
 }

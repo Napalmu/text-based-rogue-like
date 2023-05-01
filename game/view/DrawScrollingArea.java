@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import game.controller.GameController;
 
+/**
+ * Sellainen tekstialue, joka näyttää vain x viimeisintä riviä.
+ */
  class DrawScrollingArea extends DrawTextCommand{
     private final int rows;
     private final ArrayList<String> messages = new ArrayList<>();
@@ -25,7 +28,6 @@ import game.controller.GameController;
     }
 
      void addMessage(String msg) {
-        System.out.println("Jep:"+msg);
         this.messages.add(msg);
         GameController.view.refresh();
     }

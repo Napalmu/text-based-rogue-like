@@ -6,27 +6,27 @@ import game.controller.GameController;
 import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
 
-public abstract class Screen implements Drawable{
+abstract class Screen implements Drawable{
     
     List<KeyPressedEvent> listeners;
 
-    abstract List<KeyPressedEvent> getListenersForScreen();
-    abstract void enterScreen();
-    abstract void exitScreen();
+    protected abstract List<KeyPressedEvent> getListenersForScreen();
+    protected abstract void enterScreen();
+    protected abstract void exitScreen();
     
     Screen(){}
 
     final void enter(){
         listeners = getListenersForScreen();
         if (listeners!=null){
-            listeners.forEach(l->InputManager.registerListener(l));
+            listeners.forEach(InputManager::registerListener);
         }
         enterScreen();
         GameController.view.refresh();
     }
     final void exit(){
         if (listeners!=null) {
-            listeners.forEach(l -> InputManager.unregisterListener(l));
+            listeners.forEach(InputManager::unregisterListener);
         }
         exitScreen();
     }    

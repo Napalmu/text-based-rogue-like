@@ -8,12 +8,12 @@ import java.util.stream.Stream;
  * Yleinen piirtokomento DrawAreoiden ja yleisesti viewin käyttöön
  * Kannattaa tarkistaa periikö tämän joku käyttöön spesifimpi ja parempi komento
  */
-class DrawCommand implements Drawable{
+class DrawCommand implements Drawable {
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
-    private ArrayList<DrawCommand> subCommands;
+    private final ArrayList<DrawCommand> subCommands;
 
     DrawCommand(int x, int y) {
         this.x = x;
@@ -22,40 +22,40 @@ class DrawCommand implements Drawable{
     }
 
     DrawCommand(int x, int y, DrawCommand... commands) {
-        this(x,y);
-        for(DrawCommand dc : commands){
-            subCommands.add(dc);
-        }
+        this(x, y);
+        subCommands.addAll(Arrays.asList(commands));
     }
 
-    int getX(){return x;}    
-    int getY(){return y;}
-    
+    int getX() {
+        return x;
+    }
+
+    int getY() {
+        return y;
+    }
+
     @Override
     public DrawCommand getDrawCommand() {
         return this;
     }
 
-    void addCommands(DrawCommand... dc){
-        subCommands.addAll(Arrays.asList(dc));
-    }
 
-    Stream<CharacterPosition> getStream(){
+    Stream<CharacterPosition> getStream() {
         Stream.Builder<CharacterPosition> c = Stream.builder();
 
-        for (DrawCommand dc : subCommands){
+        for (DrawCommand dc : subCommands) {
             dc.getStream().forEach(c::accept);
         }
 
         return c.build();
     }
 
-    class CharacterPosition{
-         final char c;
-         final int x;
-         final int y;
+    protected static class CharacterPosition {
+        final char c;
+        final int x;
+        final int y;
 
-        CharacterPosition(int x, int y, char c){
+        CharacterPosition(int x, int y, char c) {
             this.x = x;
             this.y = y;
             this.c = c;
