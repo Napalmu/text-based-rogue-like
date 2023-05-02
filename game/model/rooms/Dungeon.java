@@ -3,6 +3,7 @@ package game.model.rooms;
 import static game.model.rooms.CompassPoints.*;
 
 import game.controller.GameController;
+import game.model.Item_Weapon;
 import game.controller.ItemType;
 import game.controller.RoomType;
 import game.model.Enemy;
@@ -29,7 +30,7 @@ public class Dungeon implements Enterable {
             case 'T':
                 return (Room) f.createTreasureRoom(this.keyToBossRoom);
             case 'E':
-                return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki",3));
+                return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki",3, new Item_Weapon(game.controller.ItemType.NYRKIT)));
             case 'M':
                 return (Room) f.createMessageRoom("Viesti huone...");
             case 'A':
@@ -43,7 +44,7 @@ public class Dungeon implements Enterable {
                 return this.startingRoom;
             case 'B':
                 return (Room) f.createBossRoom(
-                        (Enemy) EntityManager.createEnemy(100, "Bossi", 5)
+                        (Enemy) EntityManager.createEnemy(100, "Bossi", 5, new Item_Weapon(game.controller.ItemType.NYRKIT))
                         , this.keyToBossRoom);
             default:
                 return null;

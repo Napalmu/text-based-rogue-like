@@ -3,9 +3,9 @@ package game.model;
 import game.controller.GameController;
 import game.controller.ItemType;
 
-public class Player extends LivingEntity implements Fighter, InventoryHolder{
-    public Player(int hp, String name, int speed){
-        super(hp, name, speed);
+public class Player extends LivingEntity{
+    public Player(int hp, String name, int speed, Item_Weapon weapon){
+        super(hp, name, speed, weapon);
     }
 
     @Override
@@ -19,6 +19,12 @@ public class Player extends LivingEntity implements Fighter, InventoryHolder{
         super.setStamina(newValue);
         GameEventManager.emitPlayerStateChanged(getState());
     }
+
+    protected void setWeapon(Item_Weapon weapon){
+        super.changeWeapon(weapon);
+        GameEventManager.emitPlayerStateChanged(getState());
+    }
+
 
     @Override
     public void receiveItems(Item... items) {
@@ -34,7 +40,7 @@ public class Player extends LivingEntity implements Fighter, InventoryHolder{
         GameEventManager.emitPlayerStateChanged(getState());
     }
     public PlayerState getState() {
-        return new PlayerState(this.getHp(), this.getItems().toArray(new Item[0]), getStamina(), getSpeed());
+        return new PlayerState(this.getHp(), this.getItems().toArray(new Item[0]), getStamina(), getSpeed(), getCurrentWeapon());
     }
 
     public boolean canAfford(int price) {

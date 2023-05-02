@@ -31,13 +31,15 @@ class DrawTextArea extends DrawTextCommand {
         String[] stats = new String[itemSet.size() + 3];
         stats[0] = "Elämäpisteitä: " + state.getHp();
         stats[1] = "Kestävyys: " + state.getStamina() + " / " + state.getMaxStamina();
-        stats[2] = "Reppu:";
+        stats[2] = "Ase: " + state.getcurrentWeapon().getName();
+        stats[3] = "Reppu:";
         int index = 3;
         for (Item item : itemSet) {
             //jos samaa tavaraa on monta, tavara näytetään muodossa tavara x kpl
             int freq = Collections.frequency(Arrays.asList(state.getItems()), item);
             stats[index++] = item.getName() + " " + freq + " kpl";
         }
+        
         setContent(stats);
     }
 

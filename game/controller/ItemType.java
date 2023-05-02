@@ -1,6 +1,36 @@
 package game.controller;
 
 public enum ItemType implements GameConcept{
+    NYRKIT {
+        @Override
+        public String getName() {return "Nyrkit";}
+        
+        @Override
+        public int price() {
+            return 0;
+        }
+        public int dmg(){
+            return 5;
+        }
+        @Override
+        public String getDescription() {
+            return "Perushyökkäys";
+        }
+    },
+    STICK {
+        @Override
+        public String getName() {return "Tikku";}
+        
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Tikku";
+        }
+    },
     BLUEBERRY {
         @Override
         public String getName() {return "Mustikka";}

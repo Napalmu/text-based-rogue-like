@@ -8,12 +8,17 @@ public class PlayerState {
     private final Item[] inventory;
     private final int stamina;
     private final int maxStamina;
+    private final Item_Weapon currentWeapon;
 
-    public PlayerState(int hp, Item[] inventory, int stamina, int maxStamina) {
+    public PlayerState(int hp, Item[] inventory, int stamina, int maxStamina, Item_Weapon currentWeapon) {
         this.hp = hp;
         this.inventory = inventory;
         this.stamina = stamina;
         this.maxStamina = maxStamina;
+        this.currentWeapon = currentWeapon;
+    }
+    public Item_Weapon getcurrentWeapon(){
+        return currentWeapon;
     }
 
     public int getStamina() {

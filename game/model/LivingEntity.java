@@ -1,12 +1,14 @@
 package game.model;
 
 import game.controller.AttackType;
+import game.controller.ItemType;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class LivingEntity extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
+    private Item_Weapon weapon = new Item_Weapon(game.controller.ItemType.NYRKIT);
     private int hp;
     private final int speed;
     private int stamina;
@@ -27,11 +29,12 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
         return inventory.containsItem(item, amount);
     }
 
-    LivingEntity(int hp, String name, int speed){
+    LivingEntity(int hp, String name, int speed, Item_Weapon weapon){
         super(name);
         this.hp = hp;
         this.speed = speed;
         this.stamina = speed;
+        this.weapon = weapon;
     }
     protected void setStamina(int newValue) {
         this.stamina = newValue;
@@ -50,12 +53,12 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
 
     @Override
     public Item_Weapon getCurrentWeapon() {
-        return null;
+        return weapon;
     }
 
     @Override
     public void changeWeapon(Item_Weapon item) {
-
+        this.weapon = item;
     }
     @Override
     public ArrayList<Item> getItems() {

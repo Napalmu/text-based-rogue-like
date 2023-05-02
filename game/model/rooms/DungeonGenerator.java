@@ -5,6 +5,7 @@ import game.model.Enemy;
 import game.model.EntityManager;
 import game.model.Item;
 import game.view.MapRoom;
+import game.model.Item_Weapon;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -231,7 +232,7 @@ class DungeonGenerator {
     public Dungeon generate() {
         //luodaan tärkeät huoneet
         Room start = (Room) roomFactory.createMessageRoom("Aloitushuone!");
-        Room boss = (Room) roomFactory.createBossRoom((Enemy)EntityManager.createEnemy(100, "Mörkö", 3), this.key);
+        Room boss = (Room) roomFactory.createBossRoom((Enemy)EntityManager.createEnemy(100, "Mörkö", 3, new Item_Weapon(game.controller.ItemType.NYRKIT)), this.key);
         Room key = (Room) roomFactory.createTreasureRoom(this.key);
 
         PathBuilder pathBuilder = new PathBuilder();

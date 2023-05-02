@@ -16,14 +16,14 @@ public class EntityManager {
      */
      public static Player getPlayer() {
         if (!entities.containsKey(EntityTypes.PLAYER)) {
-            return (Player) createPlayer(100, 0, 2);
+            return (Player) createPlayer(100, 0, 2, new Item_Weapon(game.controller.ItemType.NYRKIT));
         }
         return (Player) entities.get(EntityTypes.PLAYER).get(0);
     }
 
-    static Entity createPlayer(int hp, int money, int speed){
+    static Entity createPlayer(int hp, int money, int speed, Item_Weapon weapon){
          String name = "Pelaaja";
-        Player e = new Player(hp, name, speed);
+        Player e = new Player(hp, name, speed, weapon);
         Item[] moneys = new Item[money];
         Arrays.fill(moneys, createItem(ItemType.COIN));
         e.receiveItems(moneys);
@@ -40,8 +40,8 @@ public class EntityManager {
      * @param name Vihollisen nimi.
      * @return Vihollis-olio.
      */
-     public static Entity createEnemy(int hp, String name, int speed){
-        Enemy e = new Enemy(hp, name, speed);
+     public static Entity createEnemy(int hp, String name, int speed, Item_Weapon weapon){
+        Enemy e = new Enemy(hp, name, speed, weapon);
         e.receiveItems(createItem(ItemType.BLUEBERRY));
         if (!entities.containsKey(EntityTypes.ENEMY)){
             ArrayList<Entity> l = new ArrayList<>();
