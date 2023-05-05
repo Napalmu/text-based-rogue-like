@@ -48,8 +48,10 @@ class ScreenShop extends ScreenThreePart {
         for (KeyPressedEvent keyPressedEvent : enterShop) {
             InputManager.unregisterListener(keyPressedEvent);
         }
-        for (KeyPressedEvent shopKey : shopKeys) {
-            InputManager.unregisterListener(shopKey);
+        if (shopKeys != null) {
+            for (KeyPressedEvent shopKey : shopKeys) {
+                InputManager.unregisterListener(shopKey);
+            }
         }
 
     }

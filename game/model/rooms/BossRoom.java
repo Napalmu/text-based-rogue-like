@@ -7,6 +7,9 @@ import game.model.EntityManager;
 import game.model.Item;
 import game.model.Player;
 
+import java.util.Arrays;
+import java.util.List;
+
 class BossRoom extends EnemyRoom{
     private final Item key;
     private boolean keyUsed = false;
@@ -21,7 +24,11 @@ class BossRoom extends EnemyRoom{
         Player player = EntityManager.getPlayer();
         if (player.hasItem(this.key)) keyUsed = true;
         player.disposeItem(this.key);
-        GameController.view.enterBossRoom(this, enemy);
+        if (hasBeenEntered()) {
+            GameController.view.enterMessageRoom(this, Arrays.asList("Olet jo tuhonnut pomon!"));
+        } else {
+            GameController.model.startBattle(this, enemy);
+        }
     }
 
     @Override

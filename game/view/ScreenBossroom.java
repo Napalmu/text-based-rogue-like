@@ -1,17 +1,19 @@
 package game.view;
 
 import game.controller.InputManager.KeyPressedEvent;
+import game.model.EnemyFighter;
 import game.model.Fighter;
+import game.model.IBattle;
 import game.model.rooms.IRoom;
 
 import java.util.List;
 //todo käytä samaa logiikkaa kuin ScreenEnemy
-class ScreenBossroom extends ScreenThreePart {
+class ScreenBossroom extends ScreenEnemy {
 
     Fighter boss;
 
-    ScreenBossroom(IRoom room, Fighter boss) {
-        super(room);
+    ScreenBossroom(IRoom room, IBattle battle, Fighter boss) {
+        super(room, battle, boss);
         this.boss = boss;
     }
 
@@ -23,23 +25,27 @@ class ScreenBossroom extends ScreenThreePart {
     @Override
     protected void enterScreen() {
         if (!getRoom().canEnter()) {
-            System.out.println("Bruh");
             getMainArea().addMessage("Höh, näyttää siltä, että tarvitset", "avaimen päästäksesi sisään");
             this.registerDirections();
             return;
         }
-        System.out.println("Jou?");
         if (getRoom().hasBeenEntered()) {
             getMainArea().addMessage(
                     "Tässä huoneessa asui aikoinaan hirveä mörkö",
                     "onneksi tapoit hänet jo");
+            registerDirections();
         } else {
             getMainArea().addMessage("Tässä huoneessa asuu hirveä mörkö");
+            for (EnemyFighter enemy : battle.getEnemies()) {
+                //päivitetään näkymä aina, kun jokin vihollisten ominaisuus muuttuu
+                enemy.registerHpListener((hp)-> update());
+                enemy.registerStaminaListener((st) -> update());
+            }
+            update();
+            //tehdään ensimmäinen siirto
+            chooseAttack();
         }
-        //BossScreen ja EnemyScreen todennäköisesti tulevat jakamaan toiminnallisuutta, joten voisi harkita
-        //jonkinlaista perintä suhdetta
-        //todo tee tämä vasta, kun taistelu loppu.
-        this.registerDirections();
     }
+
 
 }

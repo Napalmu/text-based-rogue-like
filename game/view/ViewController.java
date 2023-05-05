@@ -49,8 +49,8 @@ public class ViewController {
         changeRoom(new ScreenMessage(room, messages));
     }
 
-    public void enterBossRoom(IRoom room, Fighter boss) {
-        changeRoom(new ScreenBossroom(room, boss));
+    public void enterBossRoom(IRoom room, IBattle battle, Fighter boss) {
+        changeRoom(new ScreenBossroom(room, battle, boss));
     }
 
     public void enterEnemyRoom(IRoom room, IBattle battle, Fighter... enemies) {

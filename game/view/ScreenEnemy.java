@@ -3,10 +3,7 @@ package game.view;
 import game.controller.AttackType;
 import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
-import game.model.EnemyFighter;
-import game.model.Fighter;
-import game.model.IBattle;
-import game.model.Item;
+import game.model.*;
 import game.model.rooms.IRoom;
 
 import java.awt.event.KeyEvent;
@@ -16,7 +13,7 @@ import java.util.List;
 class ScreenEnemy extends ScreenThreePart{
 
     private final Fighter[] enemies;
-    private final IBattle battle;
+    protected final IBattle battle;
 
     ScreenEnemy(IRoom room, IBattle battle, Fighter... enemies) {
         super(room);
@@ -48,18 +45,29 @@ class ScreenEnemy extends ScreenThreePart{
                 return "Ammu";
             case NONE:
                 return "Odota";
+            case INSTAKILL:
+                return "INSTAKILL!";
             default:
                 return "Hyökkäys";
         }
     }
     //kun käyttäjä on päättänyt mitä hyökkäystä käyttää:
     private void onAttack(AttackType type) {
-        this.battle.move(type);
+        switch (type) {
+            case MELEE:
+                this.battle.meleeAttack(battle.getEnemies()[0]);
+                break;
+            case INSTAKILL:
+                this.battle.instaKill(battle.getEnemies()[0]);
+                break;
+        }
+        //Battle.Action meleeAction = ActionFactory.createMeleeAction(battle.getEnemies()[0], battle.getPlayer());
+        //this.battle.move(type);
         //jos kaikki viholliset ovat kuolleet, lopetetaan taistelu
         if (battle.isOnGoing()) chooseAttack(); //rekursiivinen kutsu
         else endBattle();
     }
-    private void chooseAttack() {
+    protected void chooseAttack() {
         //näytetään vain hyökkäykset, joihin pelaajalla on tarpeeksi kestävyyttä
         List<AttackType> types = this.battle.getPossibleAttackTypesForPlayer();
         ArrayList<KeyPressedEvent> events = new ArrayList<>();
@@ -89,7 +97,7 @@ class ScreenEnemy extends ScreenThreePart{
         this.registerDirections();
     }
 
-    private void update() {
+    protected void update() {
         StringBuilder builder = new StringBuilder();
         for (EnemyFighter enemy : battle.getEnemies()) {
             builder.append(enemy.getName()).append(" ")

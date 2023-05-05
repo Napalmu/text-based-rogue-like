@@ -19,6 +19,11 @@ public enum AttackType {
         public int getStaminaCost() {
             return 0;
         }
+    }, INSTAKILL {
+        @Override
+        public int getStaminaCost() {
+            return 0;
+        }
     };
 
     public abstract int getStaminaCost();

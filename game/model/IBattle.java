@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface IBattle {
     EnemyFighter[] getEnemies();
-    void move(AttackType type);
     boolean isOnGoing();
-
     List<AttackType> getPossibleAttackTypesForPlayer();
+
+    void meleeAttack(EnemyFighter enemy);
+
+    void instaKill(EnemyFighter enemy);
 }

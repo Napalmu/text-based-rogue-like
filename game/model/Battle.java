@@ -91,19 +91,11 @@ class Battle implements IBattle{
                 return new MeleeAction(targets[0],meleeDmg, AttackType.MELEE);
             case RANGED:
                 return new MeleeAction(targets[0], 15, AttackType.RANGED);
+            case INSTAKILL:
+                return new MeleeAction(targets[0], 1000, AttackType.INSTAKILL);
         }
         throw new IllegalArgumentException("Unknown attack type!");
     }
-    //kutsutaan, kun pelaaja on valinnut siirtonsa ja peli voi edetä
-    @Override
-    public void move(AttackType type) {
-        //pelaaja hyökkää tällä hetkellä aina kaikkia vihollisia vastaan kerralla
-        Action action = getAction(type, this.player, this.enemies.toArray(new Fighter[0]));
-        Attack(action, this.player);
-
-        enemyMoves();
-    }
-
     @Override
     public boolean isOnGoing() {
         return isOnGoing;
@@ -111,7 +103,7 @@ class Battle implements IBattle{
 
     @Override
     public List<AttackType> getPossibleAttackTypesForPlayer() {
-        AttackType[] types = new AttackType[] {AttackType.NONE, AttackType.MELEE, AttackType.RANGED};
+        AttackType[] types = new AttackType[] {AttackType.NONE, AttackType.MELEE, AttackType.RANGED, AttackType.INSTAKILL};
         ArrayList<AttackType> result = new ArrayList<>();
         int stamina = this.player.getStamina();
         for (AttackType type : types) {
@@ -120,6 +112,20 @@ class Battle implements IBattle{
         return result;
     }
 
+    @Override
+    public void meleeAttack(EnemyFighter enemy) {
+        int weaponDmg = this.player.getCurrentWeapon().getWeaponDmg();
+        MeleeAction meleeAction = new MeleeAction(enemy, weaponDmg, AttackType.MELEE);
+        Attack(meleeAction, this.player);
+        this.enemyMoves();
+    }
+
+    @Override
+    public void instaKill(EnemyFighter enemy) {
+        MeleeAction meleeAction = new MeleeAction(enemy, 10000, AttackType.MELEE);
+        Attack(meleeAction, this.player);
+        this.enemyMoves();
+    }
 
     //Suoritetaan vihollisten siirrot
     private void enemyMoves(){
