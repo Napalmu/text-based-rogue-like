@@ -136,7 +136,7 @@ class Battle implements IBattle{
             Attack(getAction(type, enemy, this.player), enemy);
         }
         
-        //Peli sammuu, kun pelaaja kuolee
+        //game over
         if (this.player.getHp() <= 0) {GameController.deathGame();}
         
         if (enemies.isEmpty()){
