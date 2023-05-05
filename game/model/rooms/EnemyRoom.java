@@ -20,7 +20,7 @@ class EnemyRoom extends Room{
         if (!hasBeenEntered()) {
             GameController.model.startBattle(this, enemy);
         } else {
-            GameController.view.enterMessageRoom(this, List.of("Olet jo tuhonnut vihollisen!"));
+            GameController.view.enterMessageRoom(this, Arrays.asList("Olet jo tuhonnut vihollisen!"));
         }
     }
 

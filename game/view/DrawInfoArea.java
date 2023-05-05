@@ -1,3 +1,4 @@
+
 package game.view;
 
 import game.model.GameEventManager;

@@ -2,6 +2,9 @@ package game.model.rooms;
 
 import static game.model.rooms.CompassPoints.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import game.controller.GameController;
 import game.model.Item_Weapon;
 import game.controller.ItemType;
@@ -97,6 +100,9 @@ public class Dungeon implements Enterable {
 
                     @Override
                     public boolean hasPlayerInside() {return r.hasPlayerInside();}
+
+                    @Override
+                    public ArrayList<Direction> neighbours() {return r.getDestinations();}
                 };
             }
         }

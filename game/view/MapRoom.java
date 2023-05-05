@@ -1,6 +1,8 @@
 package game.view;
 
 import game.controller.RoomType;
+import game.model.rooms.Direction;
+import java.util.ArrayList;
 
 /**
  * Käytetään kartan piirtämiseen. Model lähettää taulukon tämän tyyppisiä olioita
@@ -9,4 +11,5 @@ import game.controller.RoomType;
  public interface MapRoom {
     RoomType getRoomType();
     boolean hasPlayerInside();
+    ArrayList<Direction> neighbours();
 }
