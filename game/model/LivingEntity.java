@@ -29,12 +29,11 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
         return inventory.containsItem(item, amount);
     }
 
-    LivingEntity(int hp, String name, int speed, Item_Weapon weapon){
+    LivingEntity(int hp, String name, int speed){
         super(name);
         this.hp = hp;
         this.speed = speed;
         this.stamina = speed;
-        this.weapon = weapon;
     }
     protected void setStamina(int newValue) {
         this.stamina = newValue;

@@ -9,7 +9,9 @@ public enum ItemType implements GameConcept{
         public int price() {
             return 0;
         }
-        public int dmg(){
+
+        @Override
+        public int getDmg(){
             return 5;
         }
         @Override
@@ -24,6 +26,16 @@ public enum ItemType implements GameConcept{
         @Override
         public int price() {
             return 0;
+        }
+
+        @Override
+        public int getDurability(){
+            return 5;
+        }
+
+        @Override
+        public int getDmg() {
+            return 1;
         }
 
         @Override
@@ -183,4 +195,10 @@ public enum ItemType implements GameConcept{
     public abstract String getName();
     public abstract int price();
     public abstract String getDescription();
+    public int getDurability() {
+        return 0;
+    }
+    public int getDmg(){
+        return 0;
+    }
 }

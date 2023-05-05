@@ -39,14 +39,14 @@ public class ModelController {
     }
 
     public void startGame() {
-        EntityManager.createPlayer(100, 100, 2, new Item_Weapon(game.controller.ItemType.NYRKIT));
+        EntityManager.createPlayer(100, 100, 2);
         this.dungeon = new RoomFactory().createStartingRoom();
         dungeon.enter();
     }
 
     //tää on tässä väliaikaisesti, jotta ihmiset voi testaa proseduraalista generaatiota
     public void startGame2() {
-        EntityManager.createPlayer(100, 100, 2, new Item_Weapon(game.controller.ItemType.NYRKIT));
+        EntityManager.createPlayer(100, 100, 2);
         this.dungeon = new RoomFactory().createStartingDungeon();
         dungeon.enter();
     }

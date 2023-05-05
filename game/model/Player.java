@@ -4,8 +4,8 @@ import game.controller.GameController;
 import game.controller.ItemType;
 
 public class Player extends LivingEntity{
-    public Player(int hp, String name, int speed, Item_Weapon weapon){
-        super(hp, name, speed, weapon);
+    public Player(int hp, String name, int speed){
+        super(hp, name, speed);
     }
 
     @Override

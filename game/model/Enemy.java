@@ -10,8 +10,8 @@ public class Enemy extends LivingEntity implements EnemyFighter, InventoryHolder
     private final ArrayList<Consumer<Integer>> hpListeners = new ArrayList<>();
     private final ArrayList<Consumer<Integer>> staminaListeners = new ArrayList<>();
 
-    public Enemy(int hp, String name, int speed, Item_Weapon weapon){
-        super(hp, name, speed, weapon);
+    public Enemy(int hp, String name, int speed){
+        super(hp, name, speed);
     }
 
     @Override

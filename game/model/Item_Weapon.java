@@ -7,8 +7,7 @@ import game.controller.ItemType;
 
      public Item_Weapon(ItemType type) {
         super(type);
-        this.dmg = 5;
-        //TODO Auto-generated constructor stub
+        this.dmg = type.getDmg();
     }
 
     public int getWeaponDmg(){

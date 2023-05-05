@@ -30,7 +30,7 @@ public class Dungeon implements Enterable {
             case 'T':
                 return (Room) f.createTreasureRoom(this.keyToBossRoom);
             case 'E':
-                return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki",3, new Item_Weapon(game.controller.ItemType.NYRKIT)));
+                return (Room) f.createEnemyRoom((Enemy) EntityManager.createEnemy(100, "Örkki",3));
             case 'M':
                 return (Room) f.createMessageRoom("Viesti huone...");
             case 'A':
@@ -44,7 +44,7 @@ public class Dungeon implements Enterable {
                 return this.startingRoom;
             case 'B':
                 return (Room) f.createBossRoom(
-                        (Enemy) EntityManager.createEnemy(100, "Bossi", 5, new Item_Weapon(game.controller.ItemType.NYRKIT))
+                        (Enemy) EntityManager.createEnemy(100, "Bossi", 5)
                         , this.keyToBossRoom);
             default:
                 return null;
