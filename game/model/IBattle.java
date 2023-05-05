@@ -9,7 +9,8 @@ public interface IBattle {
     boolean isOnGoing();
     List<AttackType> getPossibleAttackTypesForPlayer();
 
-    void meleeAttack(EnemyFighter enemy);
-
-    void instaKill(EnemyFighter enemy);
+    void meleeAttack(Fighter enemy);
+    void instaKill(Fighter enemy);
+    void recoverStamina(Fighter player);
+    void rangedAttack(Fighter enemyFighter);
 }

@@ -114,7 +114,7 @@ class Battle implements IBattle{
     }
 
     @Override
-    public void meleeAttack(EnemyFighter enemy) {
+    public void meleeAttack(Fighter enemy) {
         int weaponDmg = this.player.getCurrentWeapon().getWeaponDmg();
         MeleeAction meleeAction = new MeleeAction(enemy, weaponDmg, AttackType.MELEE);
         Attack(meleeAction, this.player);
@@ -122,12 +122,23 @@ class Battle implements IBattle{
     }
 
     @Override
-    public void instaKill(EnemyFighter enemy) {
+    public void instaKill(Fighter enemy) {
         MeleeAction meleeAction = new MeleeAction(enemy, 10000, AttackType.MELEE);
         Attack(meleeAction, this.player);
         this.enemyMoves();
     }
-
+    @Override
+    public void rangedAttack(Fighter enemy) {
+        int weaponDmg = this.player.getCurrentWeapon().getWeaponDmg();
+        MeleeAction meleeAction = new MeleeAction(enemy, weaponDmg, AttackType.MELEE);
+        Attack(meleeAction, this.player);
+        this.enemyMoves();
+    }
+    @Override
+    public void recoverStamina(Fighter player) {
+        player.recover(1);
+        this.enemyMoves();
+    }
     //Suoritetaan vihollisten siirrot
     private void enemyMoves(){
         //kopio listasta, jotta sitä voi muokata

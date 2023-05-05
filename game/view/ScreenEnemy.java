@@ -53,12 +53,21 @@ class ScreenEnemy extends ScreenThreePart{
     }
     //kun käyttäjä on päättänyt mitä hyökkäystä käyttää:
     private void onAttack(AttackType type) {
+        getInfoArea().clear();
         switch (type) {
             case MELEE:
                 this.battle.meleeAttack(battle.getEnemies()[0]);
                 break;
             case INSTAKILL:
                 this.battle.instaKill(battle.getEnemies()[0]);
+                break;
+            case NONE:
+                this.battle.recoverStamina(EntityManager.getPlayer());
+                break;
+            case RANGED:
+                this.battle.rangedAttack(battle.getEnemies()[0]);
+                break;
+            default:
                 break;
         }
         //Battle.Action meleeAction = ActionFactory.createMeleeAction(battle.getEnemies()[0], battle.getPlayer());
