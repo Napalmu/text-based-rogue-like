@@ -134,6 +134,10 @@ class Battle implements IBattle{
             AttackType type = enemy.getAttackType(enemy.getStamina());
             Attack(getAction(type, enemy, this.player), enemy);
         }
+        
+        //Peli sammuu, kun pelaaja kuolee
+        if (this.player.getHp() <= 0) {System.exit(0);}
+        
         if (enemies.isEmpty()){
             endBattle();
         }
