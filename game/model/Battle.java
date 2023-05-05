@@ -1,6 +1,7 @@
 package game.model;
 
 import game.controller.AttackType;
+import game.controller.GameController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,7 +137,7 @@ class Battle implements IBattle{
         }
         
         //Peli sammuu, kun pelaaja kuolee
-        if (this.player.getHp() <= 0) {System.exit(0);}
+        if (this.player.getHp() <= 0) {GameController.deathGame();}
         
         if (enemies.isEmpty()){
             endBattle();

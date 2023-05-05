@@ -23,4 +23,8 @@ public class GameController {
     public static void exitGame(){
         view.shutDown();
     }
+
+    public static void deathGame(){
+        view.enterGameOver();
+    }
 }

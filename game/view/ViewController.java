@@ -68,4 +68,8 @@ public class ViewController {
     public void enterMainMenu() {
         changeRoom(new ScreenMainMenu());
     }
+
+    public void enterGameOver() {
+        changeRoom(new ScreenGameOver());
+    }
 }
