@@ -2,8 +2,6 @@ package game.view;
 
 import game.controller.GameController;
 import game.model.GameEventManager;
-import game.model.rooms.IRoom;
-import javafx.util.Pair;
 
 import static game.model.rooms.CompassPoints.*;
 
