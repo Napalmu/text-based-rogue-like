@@ -46,9 +46,10 @@ public class Dungeon implements Enterable {
                 this.startingRoom = (Room) f.createMessageRoom("Aloitushuone");
                 return this.startingRoom;
             case 'B':
+                Enterable winRoom = f.createMessageRoom("Voitit pelin!");
                 return (Room) f.createBossRoom(
                         (Enemy) EntityManager.createEnemy(100, "Bossi", 5)
-                        , this.keyToBossRoom);
+                        , this.keyToBossRoom,new Direction("Win", winRoom));
             default:
                 return null;
         }

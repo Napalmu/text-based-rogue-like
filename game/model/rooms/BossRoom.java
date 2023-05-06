@@ -7,16 +7,18 @@ import game.model.EntityManager;
 import game.model.Item;
 import game.model.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class BossRoom extends EnemyRoom{
     private final Item key;
     private boolean keyUsed = false;
+    private Direction destinationAfterWin;
 
-    public BossRoom(Enemy enemy, Item key) {
+    public BossRoom(Enemy enemy, Item key, Direction destinationAfterWin) {
         super(enemy);
         this.key = key;
+        this.destinationAfterWin = destinationAfterWin;
     }
 
     @Override
@@ -34,6 +36,16 @@ class BossRoom extends EnemyRoom{
     @Override
     public boolean canEnter() {
         return keyUsed;
+    }
+
+    @Override
+    public ArrayList<Direction> getDestinations() {
+        if (this.enemy.getHp() <= 0) {
+            ArrayList<Direction> destinations = new ArrayList<>(super.getDestinations());
+            destinations.add(this.destinationAfterWin);
+            return destinations;
+        }
+        return super.getDestinations();
     }
 
     @Override

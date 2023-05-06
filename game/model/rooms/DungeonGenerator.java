@@ -232,9 +232,16 @@ class DungeonGenerator {
         }
     }
     public Dungeon generate() {
+        if (this.level == 10) {
+            Room win = (Room) roomFactory.createMessageRoom("Voitit pelin!");
+            return new Dungeon(new Room[][] {new Room[] {win}},win);
+        }
+        Dungeon next = new DungeonGenerator(10,10, this.level+1).generate();
+
         //luodaan tärkeät huoneet
         Room start = (Room) roomFactory.createMessageRoom("Aloitushuone!");
-        Room boss = (Room) roomFactory.createBossRoom((Enemy)EntityManager.createEnemy(100, "Mörkö", 3), this.key);
+        Room boss = (Room) roomFactory.createBossRoom((Enemy)EntityManager.createEnemy(100, "Mörkö", 3), this.key,
+                new Direction("Seuraava kerros", next));
         Room key = (Room) roomFactory.createTreasureRoom(this.key);
 
         PathBuilder pathBuilder = new PathBuilder();
@@ -266,8 +273,10 @@ class DungeonGenerator {
         for (int i = 0; i < number; i++) {
             pathBuilder.buildPath(startCell, randomNode(), start, randomRoom());
         }
-
-        return new Dungeon(rooms, start);
+        Dungeon dungeon = new Dungeon(rooms, start);
+        System.out.println("Dungeon level: " + this.level);
+        debugMap(dungeon);
+        return dungeon;
     }
 
     private Room randomRoom() {

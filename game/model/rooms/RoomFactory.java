@@ -1,6 +1,5 @@
 package game.model.rooms;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -43,8 +42,8 @@ public class RoomFactory {
         }
         return new TreasureRoom(new Item[] {item});
     }
-    public Enterable createBossRoom(Enemy enemy, Item key) {
-        return new BossRoom(enemy,key);
+    public Enterable createBossRoom(Enemy enemy, Item key, Direction destinationAfterWin) {
+        return new BossRoom(enemy,key, destinationAfterWin);
     }
 
     public Enterable createEnemyRoom(Enemy enemy) {
