@@ -3,7 +3,6 @@ package game.view;
 import game.controller.InputManager;
 import game.model.EntityManager;
 import game.model.Item;
-import game.model.Item_Weapon;
 import game.model.Player;
 import game.model.rooms.CompassPoints;
 import game.model.rooms.Direction;
@@ -76,7 +75,19 @@ abstract class ScreenThreePart extends Screen {
         //tyhjennetään alue
         infoDrawArea.setMessage("");
     }
-
+    private int arrowKeys(int i) {
+        switch (i) {
+            case KeyEvent.VK_1:
+                return KeyEvent.VK_UP;
+            case KeyEvent.VK_2:
+                return KeyEvent.VK_RIGHT;
+            case KeyEvent.VK_3:
+                return KeyEvent.VK_DOWN;
+            case KeyEvent.VK_4:
+                return KeyEvent.VK_LEFT;
+        }
+        return i;
+    }
     //kysyy käyttäjältä suunnan, johon käyttäjä haluaa siirtyä tästä huoneesta
     protected void registerDirections() {
         List<Direction> nextPlaces = this.room.getDestinations();
@@ -87,8 +98,8 @@ abstract class ScreenThreePart extends Screen {
         //eli esim. pohjoisen numero on 1 ja etelän 3.
         //jos kohde ei ole ilmansuunta, se laitetaan ilmansuuntien jälkeen
         nextPlaces.sort((o1, o2) -> {
-            int key1 = CompassPoints.getKeyMatchingDirection(o1.getLabel());
-            int key2 = CompassPoints.getKeyMatchingDirection(o2.getLabel());
+            int key1 = CompassPoints.getMatchingInteger(o1.getLabel());
+            int key2 = CompassPoints.getMatchingInteger(o2.getLabel());
             if (key1 == -1) return 1;
             if (key2 == -1) return -1;
             return Integer.compare(key1, key2);
@@ -96,20 +107,22 @@ abstract class ScreenThreePart extends Screen {
         //numerot, jotka on jo asetettu johonkin toimintoon
         TreeSet<Integer> usedKeys = new TreeSet<>();
         for (Direction nextRoom : nextPlaces) {
-            int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
+            int key = CompassPoints.getMatchingInteger(nextRoom.getLabel());
             usedKeys.add(key);
         }
         for (Direction nextRoom : nextPlaces) {
             Enterable onChoice = nextRoom.getDestination();
+            //kun nappia painetaan
+            Runnable run = () -> {
+                room.exit();
+                onChoice.enter();
+            };
             //esim pohjoista vastaa numero 1
-            int key = CompassPoints.getKeyMatchingDirection(nextRoom.getLabel());
+            int key = CompassPoints.getMatchingInteger(nextRoom.getLabel());
             if (key == -1) //ei ilmansuunta
                 key = usedKeys.isEmpty() ? 1 : usedKeys.last() + 1;//etsitään seuraava vapaa numero
             usedKeys.add(key);
-            options.add(new Option(nextRoom.getLabel(), ()-> {
-                room.exit();
-                onChoice.enter();
-            }, KeyEvent.VK_1+(key-1)));
+            options.add(new Option(nextRoom.getLabel(), run, KeyEvent.VK_1+(key-1)));
         }
         chooseFromOptions(options, "Valitse suunta:");
     }
@@ -194,14 +207,25 @@ abstract class ScreenThreePart extends Screen {
             int key = option.getKey();
             String keyText = KeyEvent.getKeyText(key);
             infoDrawArea.addMessage(keyText + ": " + option.getLabel());
-            InputManager.KeyPressedEvent e = new InputManager.KeyPressedEvent(key, () -> {
+            InputManager.KeyConsumer consumer = () -> {
                 for (InputManager.KeyPressedEvent op : choices) {
                     InputManager.unregisterListener(op);
                 }
                 option.run();
-            });
+            };
+            InputManager.KeyPressedEvent e = new InputManager.KeyPressedEvent(key, consumer);
+            //Numero ykkösen painnallusta vastaa myös ylöspäin oleva nuoli
+            //Samoin muille ilmansuunnille 1-4
+            InputManager.KeyPressedEvent e2 = null;
+            if (arrowKeys(key) != key) {
+                e2 = new InputManager.KeyPressedEvent(arrowKeys(key), consumer);
+            }
             choices.add(e);
             InputManager.registerListener(e);
+            if (e2 != null) {
+                choices.add(e2);
+                InputManager.registerListener(e2);
+            }
         }
         if (this.events != null) {
             for (InputManager.KeyPressedEvent event : this.events) {

@@ -6,7 +6,7 @@ public class CompassPoints {
     public static String WEST = "Länteen";
     public static String EAST = "Itään";
 
-    public static int getKeyMatchingDirection(String dir) {
+    public static int getMatchingInteger(String dir) {
         if (dir.equals(NORTH)) return 1;
         if (dir.equals(EAST)) return 2;
         if (dir.equals(SOUTH)) return 3;
