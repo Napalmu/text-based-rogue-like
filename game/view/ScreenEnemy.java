@@ -79,20 +79,15 @@ class ScreenEnemy extends ScreenThreePart{
     protected void chooseAttack() {
         //näytetään vain hyökkäykset, joihin pelaajalla on tarpeeksi kestävyyttä
         List<AttackType> types = this.battle.getPossibleAttackTypesForPlayer();
-        ArrayList<KeyPressedEvent> events = new ArrayList<>();
+        ArrayList<Option> options = new ArrayList<>();
+
         for (int i = 0; i < types.size(); i++) {
             AttackType type = types.get(i);
-            KeyPressedEvent event = new KeyPressedEvent(KeyEvent.VK_1 + i, () -> {
-                //poistetaan myös toisten vaihtoehtojen rekisteröinti
-                for (KeyPressedEvent e : events) {
-                    InputManager.unregisterListener(e);
-                }
+            options.add(new Option(attackTypeToString(type), ()-> {
                 this.onAttack(type);
-            });
-            events.add(event);
-            InputManager.registerListener(event);
-            getInfoArea().addMessage((i+1) + ": " + attackTypeToString(type));
+            }, KeyEvent.VK_1+i));
         }
+        this.chooseFromOptions(options, "Valitse hyökkäystapa: ");
     }
 
     private void endBattle() {

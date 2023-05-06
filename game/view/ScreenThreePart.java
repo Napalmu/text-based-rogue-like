@@ -1,6 +1,10 @@
 package game.view;
 
 import game.controller.InputManager;
+import game.model.EntityManager;
+import game.model.Item;
+import game.model.Item_Weapon;
+import game.model.Player;
 import game.model.rooms.CompassPoints;
 import game.model.rooms.Direction;
 import game.model.rooms.Enterable;
@@ -8,9 +12,7 @@ import game.model.rooms.IRoom;
 import game.view.ascii_art.AsciiDrawing;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -26,7 +28,8 @@ abstract class ScreenThreePart extends Screen {
     private final DrawCommand art;
     protected final IRoom room;
     //näppäinkuuntelijat, jotka liittyvät huoneesta pois lähtemiseen
-    private ArrayList<InputManager.KeyPressedEvent> directionEvents;
+    private ArrayList<InputManager.KeyPressedEvent> events;
+
 
 
     ScreenThreePart(IRoom room) {
@@ -36,6 +39,10 @@ abstract class ScreenThreePart extends Screen {
         this.textDrawArea = new DrawTextArea();
         this.mapDrawArea = new DrawMapArea();
         this.art = new DrawTextCommand(0, 0, AsciiDrawing.SCREEN.getArt());
+
+        InputManager.registerListener(new InputManager.KeyPressedEvent(KeyEvent.VK_I, ()-> {
+            new InventoryView().accessInventory();
+        }));
     }
 
     final DrawInfoArea getInfoArea() {
@@ -60,10 +67,10 @@ abstract class ScreenThreePart extends Screen {
     }
 
     protected void unregisterDirections() {
-        if (this.directionEvents == null) {
+        if (this.events == null) {
             return; //eventtejä ei olla rekisteröity vielä
         }
-        for (InputManager.KeyPressedEvent directionEvent : this.directionEvents) {
+        for (InputManager.KeyPressedEvent directionEvent : this.events) {
             InputManager.unregisterListener(directionEvent);
         }
         //tyhjennetään alue
@@ -73,9 +80,7 @@ abstract class ScreenThreePart extends Screen {
     //kysyy käyttäjältä suunnan, johon käyttäjä haluaa siirtyä tästä huoneesta
     protected void registerDirections() {
         List<Direction> nextPlaces = this.room.getDestinations();
-
-        ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
-        ArrayList<String> rooms = new ArrayList<>();
+        ArrayList<Option> options = new ArrayList<>();
         //seuraavan koodin idea on, että tietyille ilmansuunnille annetaan aina samat numerot:
         //(hyvin kyseenalaista koodia)
         //järjestetään kohteen, niin että pienemmät numerot tulevat ensin.
@@ -101,24 +106,110 @@ abstract class ScreenThreePart extends Screen {
             if (key == -1) //ei ilmansuunta
                 key = usedKeys.isEmpty() ? 1 : usedKeys.last() + 1;//etsitään seuraava vapaa numero
             usedKeys.add(key);
-            rooms.add(key + ": " + nextRoom.getLabel());
-            InputManager.KeyConsumer consumer = () -> {
-                for (InputManager.KeyPressedEvent choice : choices) {
-                    InputManager.unregisterListener(choice);
-                }
+            options.add(new Option(nextRoom.getLabel(), ()-> {
                 room.exit();
                 onChoice.enter();
-            };
-            choices.add(new InputManager.KeyPressedEvent(KeyEvent.VK_1 + (key - 1), consumer));
+            }, KeyEvent.VK_1+(key-1)));
         }
-        infoDrawArea.addMessage(rooms.toArray(new String[0]));
-        this.directionEvents = choices;
-        for (InputManager.KeyPressedEvent choice : choices) {
-            InputManager.registerListener(choice);
+        chooseFromOptions(options, "Valitse suunta:");
+    }
+    protected static class Option {
+        private String text;
+        private Runnable event;
+        private int key;
+
+        public Option(String text, Runnable event, int key) {
+            this.text = text;
+            this.event = event;
+            this.key = key;
         }
-        //InputManager.registerListenerList(choices, true);
+
+        public String getLabel() {
+            return text;
+        }
+
+        public int getKey() {
+            return key;
+        }
+
+        public void run() {
+            this.event.run();
+        }
     }
 
+
+    private class InventoryView {
+        private final String[] prevContent;
+        private final String[] prevInfoContent;
+        private final ArrayList<InputManager.KeyPressedEvent> prevEvents;
+        public InventoryView() {
+            //tallennetaan mitä ruuduilla oli ennen tähän näkymään tulemista
+            this.prevContent = getMainArea().getContent();
+            this.prevInfoContent = getInfoArea().getContent();
+            this.prevEvents = events;
+        }
+        //käyttäjä valitsee tietyn itemin
+        private void item(Item item) {
+            ArrayList<Option> options = new ArrayList<>();
+            getMainArea().setMessage(item.getName());
+            options.add(new Option("Lähde", this::accessInventory, KeyEvent.VK_0));
+            //TODO asioita mitä itemillä voi tehdä. Esim. aseeksi valitseminen
+            chooseFromOptions(options, "Valitse toiminto: ");
+        }
+        private void exit() {
+            //palautetaan vanhat tiedot
+            getMainArea().setMessage(this.prevContent);
+            getInfoArea().setMessage(this.prevInfoContent);
+            events = prevEvents;
+            for (InputManager.KeyPressedEvent event : events) {
+                InputManager.registerListener(event);
+            }
+        }
+        private void accessInventory() {
+            getMainArea().setMessage("Reppusi:");
+            Player player = EntityManager.getPlayer();
+            ArrayList<Option> options = new ArrayList<>();
+            ArrayList<Item> items = player.getItems();
+            HashSet<Item> set = new HashSet<>(items);
+            int i = 0;
+            //TODO sama koodi ku DrawTextArea
+            for (Item item : set) {
+                int freq = Collections.frequency(items, item);
+                getMainArea().addMessage((i+1) + ": " + item.getName() + " " + freq+" kpl");
+                options.add(new Option(item.getName(),()-> {
+                    item(item);
+                }, KeyEvent.VK_1+i));
+            }
+            options.add(new Option("Lähde", this::exit, KeyEvent.VK_0));
+            getInfoArea().clear();
+            chooseFromOptions(options, "Valitse tavara:");
+        }
+
+    }
+
+    protected void chooseFromOptions(ArrayList<Option> options, String title) {
+        infoDrawArea.addMessage(title);
+        ArrayList<InputManager.KeyPressedEvent> choices = new ArrayList<>();
+        for (Option option : options) {
+            int key = option.getKey();
+            String keyText = KeyEvent.getKeyText(key);
+            infoDrawArea.addMessage(keyText + ": " + option.getLabel());
+            InputManager.KeyPressedEvent e = new InputManager.KeyPressedEvent(key, () -> {
+                for (InputManager.KeyPressedEvent op : choices) {
+                    InputManager.unregisterListener(op);
+                }
+                option.run();
+            });
+            choices.add(e);
+            InputManager.registerListener(e);
+        }
+        if (this.events != null) {
+            for (InputManager.KeyPressedEvent event : this.events) {
+                InputManager.unregisterListener(event);
+            }
+        }
+        this.events = choices;
+    }
     protected IRoom getRoom() {
         return this.room;
     }

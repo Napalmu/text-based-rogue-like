@@ -1,16 +1,14 @@
 package game.view;
 
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import game.controller.GameController;
 import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
-import game.model.GameEventManager;
 import game.model.Item;
-import game.model.ModelController;
 import game.model.rooms.IRoom;
+
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 class ScreenShop extends ScreenThreePart {
     private final List<Item> items;

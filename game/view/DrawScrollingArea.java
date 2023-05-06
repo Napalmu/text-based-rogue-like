@@ -36,6 +36,10 @@ import game.controller.GameController;
         this.clear();
         this.addMessage(msg);
     }
+    void setMessage(String... msgs) {
+         this.clear();
+         this.addMessage(msgs);
+    }
 
     @Override
     String[] getContent() {

@@ -183,7 +183,6 @@ class Battle implements IBattle{
 
     void removeFighter(EnemyFighter fighter){
         ArrayList<Item> drops = fighter.getItems();
-        //fighter.die();
         this.enemies.remove(fighter);
         player.receiveItems(drops.toArray(new Item[0]));
     }
