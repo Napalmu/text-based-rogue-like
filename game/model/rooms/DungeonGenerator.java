@@ -5,7 +5,6 @@ import game.model.Enemy;
 import game.model.EntityManager;
 import game.model.Item;
 import game.view.MapRoom;
-import game.model.Item_Weapon;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,11 +17,13 @@ class DungeonGenerator {
     private final Random random = new Random();
     private final RoomFactory roomFactory;
     private final Item key;
-    private class Node {
+    private final int level;
+
+    private class Cell {
         private final int x;
         private final int y;
 
-        public Node(int x, int y) {
+        public Cell(int x, int y) {
             this.x = x;
             this.y = y;
         }
@@ -42,18 +43,19 @@ class DungeonGenerator {
                     '}';
         }
     }
-    public DungeonGenerator(int width, int height) {
+    public DungeonGenerator(int width, int height, int level) {
+        this.level = level;
         this.rooms = new Room[height][width];
         this.width = width;
         this.height = height;
-        this.roomFactory = new RoomFactory();
+        this.roomFactory = new RoomFactory(level);
         this.key = EntityManager.createItem(ItemType.KEY);
     }
     //rakentaa reittejä läpi ruudukon yhdestä ruudusta toiseen
     private class PathBuilder {
-        private Node start, end, current;
-        private ArrayList<Node> editedNodes;
-        public boolean buildPath(Node from, Node to, Room start, Room end) {
+        private Cell start, end, current;
+        private ArrayList<Cell> editedCells;
+        public boolean buildPath(Cell from, Cell to, Room start, Room end) {
             this.start = from;
             this.end = to;
             //yritetään ensin tehdä reitti, joka mutkittelee ja tekee muuta jännää
@@ -70,11 +72,11 @@ class DungeonGenerator {
             this.current = this.start;
             //tallennetaan kaikki ruudut, joita muokattiin, jotta ne voidaan
             //poistaa jos reitin rakennus ei onnistu
-            this.editedNodes = new ArrayList<>();
+            this.editedCells = new ArrayList<>();
             boolean b = setRoomIfEmpty(start.x, start.y, startR);
-            if (b) editedNodes.add(start);
+            if (b) editedCells.add(start);
             b = setRoomIfEmpty(end.x, end.y, endR);
-            if (b) editedNodes.add(end);
+            if (b) editedCells.add(end);
 
             int limit = 0;
             while (!isComplete() && limit < 1000) {
@@ -82,7 +84,7 @@ class DungeonGenerator {
                 limit++;
             }
             if (limit == 1000) { //reitin rakentaminen ei onnistunut
-                for (Node n : this.editedNodes) {
+                for (Cell n : this.editedCells) {
                     rooms[n.y][n.x] = null; //poistetaan muutokset
                 }
             }
@@ -100,27 +102,27 @@ class DungeonGenerator {
             //yritetään sata kertaa löytää sopiva seuraava ruutu naapureista
             int limit = 0;
             while (limit++ < 100) {
-                Node node = nextNode(safe);
+                Cell node = nextNode(safe);
                 if (node.x == end.x && node.y == end.y) {
                     //loppu saavutettu
                     this.current = node;
                     return;
                 }
                 //ruudun pitää olla kartan alueella ja se ei saa luoda 2*2 huoneruudukkoa
-                if (node.inBounds() && !formsSquare(node)) {
+                //jos reitti menee suoraan kohteeseen, 2*2 ruudukko saa syntyä
+                if (node.inBounds() && (safe || !formsSquare(node))) {
                     this.current = node;
                     break;
                 }
             }
-            //TODO valitse huone älykkäämmin
-            Room room = (Room) roomFactory.createMessageRoom("Lol");
+            Room room = randomRoom();
             boolean b = setRoomIfEmpty(current.x, current.y, room);
-            if (b) editedNodes.add(current);
+            if (b) editedCells.add(current);
         }
         //yrittää siirtyä kohti loppuruutua nykyisestä ruudusta
         //jos safe argumentti on true, valitaan lähin ruutu loppua
         //jos safe argumentti on false, saatetaan valita "huono" ruutu, jolla ei päästä lähemmäs ruutua
-        private Node nextNode(boolean safe) {
+        private Cell nextNode(boolean safe) {
             //valitaan siirrytäänkö vaaka vai pystysuuntaan
             //siirrytään todennäköisemmin siihen suuntaan, mihin on pidempi matka
             //esim:
@@ -157,7 +159,7 @@ class DungeonGenerator {
                 }
             }
 
-            return new Node(current.x+x,current.y+y);
+            return new Cell(current.x+x,current.y+y);
         }
     }
     //asettaa huoneen koordinaatteihin ja palauttaa false, jos ruudussa oli jo huone
@@ -184,8 +186,8 @@ class DungeonGenerator {
         room.addDirection(new Direction(dir, this.rooms[y][x]));
     }
     //kaikki parametreina annetut ruudut sisältävät huoneen
-    private boolean allHaveRooms(Node... nodes) {
-        for (Node node : nodes) {
+    private boolean allHaveRooms(Cell... nodes) {
+        for (Cell node : nodes) {
             if (!node.hasRoom()) return false;
         }
         return true;
@@ -193,30 +195,30 @@ class DungeonGenerator {
 
     //tarkistaa muodostaako huoneen lisääminen karttaa 2*2 huonemuodostelman, jota me ei haluta
     //koska ilman 2*2 muodostelmia kartasta tulee ilmavampi
-    private boolean formsSquare(Node node) {
+    private boolean formsSquare(Cell node) {
         int x = node.x; int y = node.y;
         //vasenalakulma
-        if (allHaveRooms(new Node(x - 1, y), new Node(x - 1, y + 1), new Node(x, y + 1)))
+        if (allHaveRooms(new Cell(x - 1, y), new Cell(x - 1, y + 1), new Cell(x, y + 1)))
             return true;
         //oikea-alakulma
-        if (allHaveRooms(new Node(x + 1, y), new Node(x + 1, y + 1), new Node(x, y + 1)))
+        if (allHaveRooms(new Cell(x + 1, y), new Cell(x + 1, y + 1), new Cell(x, y + 1)))
             return true;
         //vasenyläkulma
-        if (allHaveRooms(new Node(x - 1, y), new Node(x - 1, y - 1), new Node(x, y - 1)))
+        if (allHaveRooms(new Cell(x - 1, y), new Cell(x - 1, y - 1), new Cell(x, y - 1)))
             return true;
         //oikeayläkulma
-        if (allHaveRooms(new Node(x + 1, y), new Node(x + 1, y - 1), new Node(x, y - 1)))
+        if (allHaveRooms(new Cell(x + 1, y), new Cell(x + 1, y - 1), new Cell(x, y - 1)))
             return true;
         return false;
     }
 
     //Valitsee satunnaisen ruudun, joka on tyhjä
     //ei myöskään valitse ruutua, joka voisi muodostaa 2*2 huone-ruudukon
-    private Node randomNode() {
-        ArrayList<Node> choices = new ArrayList<>();
+    private Cell randomNode() {
+        ArrayList<Cell> choices = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                Node node = new Node(x,y);
+                Cell node = new Cell(x,y);
                 if (rooms[y][x] == null && !formsSquare(node))
                     choices.add(node);
             }
@@ -236,19 +238,19 @@ class DungeonGenerator {
         Room key = (Room) roomFactory.createTreasureRoom(this.key);
 
         PathBuilder pathBuilder = new PathBuilder();
-        Node startNode = randomNode(); //arvotaan aloitusruudun paikka
+        Cell startCell = randomNode(); //arvotaan aloitusruudun paikka
         //asetetaan huone ruudukkoon
         //se pitää asettaa tässä ettei avain huoneeksi valittais sattumalta samaa kuin aloitushuone
-        this.rooms[startNode.y][startNode.x] = start;
+        this.rooms[startCell.y][startCell.x] = start;
 
         //rakennetaan reitti aloitushuoneesta avainhuoneeseen
-        pathBuilder.buildPath(startNode, randomNode(), start, key);
+        pathBuilder.buildPath(startCell, randomNode(), start, key);
 
         //rakennetaan reitti aloitushuoneesta pomo-huoneeseen.
         //On mahdollista, mutta hyvin epätodennäköistä, että reittiä ei voida rakentaa
         int limit = 0;
         while (++limit < 1000) {
-            boolean b = pathBuilder.buildPath(startNode, randomNode(), start, boss);
+            boolean b = pathBuilder.buildPath(startCell, randomNode(), start, boss);
             if (b) break; //reitin rakentaminen onnistui
         }
         //yritettiin tuhat kertaa, mutta ei onnistuttu.
@@ -259,15 +261,39 @@ class DungeonGenerator {
             throw new IllegalStateException("Ei voida rakentaa reittiä pomo-huoneeseen!");
         }
 
+        //Rakennetaan reittejä random paikkoihin kartalla
+        int number = random.nextInt(2, level*2+1);
+        for (int i = 0; i < number; i++) {
+            pathBuilder.buildPath(startCell, randomNode(), start, randomRoom());
+        }
+
         return new Dungeon(rooms, start);
     }
+
+    private Room randomRoom() {
+        double rng = random.nextDouble();
+        if (rng <= 0.35) {
+            return (Room) roomFactory.createEnemyRoom();
+        }
+        else if (rng <= 0.7) {
+            return (Room) roomFactory.createTreasureRoom();
+        }
+        else if (rng <= 0.8){
+            return (Room) roomFactory.createShopRoom();
+        } else {
+            return (Room) roomFactory.createMessageRoom("Tyhjä huone");
+        }
+    }
+
     //testi metodi
     private static void stressTest() {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             int w = new Random().nextInt(5, 30);
             int h = new Random().nextInt(5, 20);
-            DungeonGenerator g = new DungeonGenerator(w,h);
-            g.generate();
+            DungeonGenerator g = new DungeonGenerator(w,h, 1);
+            System.out.println("XD: ");
+            debugMap(g.generate());
+            //g.generate();
         }
     }
     public static void main(String[] args) {

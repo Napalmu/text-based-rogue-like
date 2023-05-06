@@ -7,7 +7,6 @@ import game.model.IBattle;
 import game.model.rooms.IRoom;
 
 import java.util.List;
-//todo käytä samaa logiikkaa kuin ScreenEnemy
 class ScreenBossroom extends ScreenEnemy {
 
     Fighter boss;

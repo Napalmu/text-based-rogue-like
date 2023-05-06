@@ -27,7 +27,7 @@ class BossRoom extends EnemyRoom{
         if (hasBeenEntered()) {
             GameController.view.enterMessageRoom(this, Arrays.asList("Olet jo tuhonnut pomon!"));
         } else {
-            GameController.model.startBattle(this, enemy);
+            GameController.model.startBossFight(this, enemy);
         }
     }
 

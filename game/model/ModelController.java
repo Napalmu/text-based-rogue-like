@@ -27,7 +27,10 @@ public class ModelController {
 
         //GameEventManager.emitBattleStarted(battle);
     }
-
+    public void startBossFight(IRoom room, EnemyFighter boss) {
+        IBattle battle = new Battle(EntityManager.getPlayer(), boss);
+        GameController.view.enterBossRoom(room, battle, boss);
+    }
     /**
      * Asettaa tän hetkiseksi dungeoniksi parametri dungeonin.
      * Tarvitaan, jotta kartta voitaisiin piirtää siitä dungeonista, jossa ollaan
