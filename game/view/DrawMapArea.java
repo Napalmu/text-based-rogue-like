@@ -12,7 +12,7 @@ import game.model.rooms.Direction;
  */
 class DrawMapArea extends DrawTextCommand {
     public DrawMapArea() {
-        super(60, 16);
+        super(59, 16);
         GameEventManager.registerListener((GameEventManager.RoomEnteredListener) room -> {
             this.drawMap();
 
@@ -25,6 +25,7 @@ class DrawMapArea extends DrawTextCommand {
         MapWindow mapWindow = new MapWindow(map);
 
         this.setContent(mapWindow.getStringMap());
+        GameController.view.ChangeFont(68, 19);
     }
 }
 
@@ -33,7 +34,7 @@ class MapWindow{
     char[][] mapDrawning;
 
     final int HEIGHT = 7;
-    final int WIDTH = 11;
+    final int WIDTH = 19;
     MapWindow(MapRoom[][] map){
         mapDrawning = new char[HEIGHT][WIDTH];
         for (int y = 0; y < mapDrawning.length; y++) {
@@ -47,14 +48,18 @@ class MapWindow{
         DrawBorders();
     }
     void DrawBorders(){
-        for (int i = 0; i < WIDTH; i++) {
-            mapDrawning[0][i] = '-';
-            mapDrawning[HEIGHT - 1][i] = '-';
+        for (int i = 1; i < WIDTH; i++) {
+            mapDrawning[0][i] = '═';
+            mapDrawning[HEIGHT - 1][i] = '═';
         }
-        for (int i = 0; i < HEIGHT; i++) {
-            mapDrawning[i][0] = '|';
-            mapDrawning[i][WIDTH - 1] = '|';
+        for (int i = 1; i < HEIGHT; i++) {
+            mapDrawning[i][0] = '║';
+            mapDrawning[i][WIDTH - 1] = '║';
         }
+        mapDrawning[0][0] = '╔';
+        mapDrawning[0][WIDTH - 1] = '╗';
+        mapDrawning[HEIGHT - 1][0] = '╚';
+        mapDrawning[HEIGHT - 1][WIDTH - 1] = '╝';
     }
     void GenerateCenteredDraw(){
         class Cord{
@@ -75,7 +80,7 @@ class MapWindow{
         }
 
         for (int y = center.y - 1; y <= center.y + 1; y++) {
-            for (int x = center.x - 2; x <= center.x + 2; x++) {
+            for (int x = center.x - 4; x <= center.x + 4; x++) {
                 if(y < 0 || y >= map.length){
                     continue;
                 }
@@ -92,7 +97,7 @@ class MapWindow{
     void SetRoom(MapRoom room, int y, int x){
         if(room == null) return;
 
-        x = (x+2)*2 + 1;
+        x = (x+4)*2 + 1;
         y = (y+1)*2 + 1;
 
         mapDrawning[y][x] = room.getRoomType().symbol;

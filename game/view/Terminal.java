@@ -53,6 +53,11 @@ class Terminal extends JFrame {
         setChar(x, y, c + "");
     }
 
+    void setBold(int x, int y){
+        JLabel c = screen[x][y];
+        c.setFont(c.getFont().deriveFont(Font.BOLD, 14f));
+    }
+
     void setContent(Drawable content) {
         this.screenBuffer = content;
         drawContent();
@@ -61,7 +66,7 @@ class Terminal extends JFrame {
     private void drawContent() {
         if (screenBuffer == null) return;
 
-        DrawCommand dc = screenBuffer.getDrawCommand();
+        DrawCommand dc = screenBuffer.getDrawCommand();    
         dc.getStream().forEach((c) -> {
             setChar(c.x, c.y, c.c);
         });

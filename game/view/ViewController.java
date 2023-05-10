@@ -23,6 +23,15 @@ public class ViewController {
     }
 
     /**
+     * Vaihtaa annetun kohdan boldiksi, voi lisätä enumin ja muita fontteja myöhemmin
+     * @param x x koordinaatti
+     * @param y y koordinaatti
+     */
+    void ChangeFont(int x, int y){
+        t.setBold(x, y);
+    }
+
+    /**
      * Adds the given command to the draw queue to be drawn every frame.
      *
      * @param content the content to draw
