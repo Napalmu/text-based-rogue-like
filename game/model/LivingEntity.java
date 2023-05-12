@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 public class LivingEntity extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
     private Item_Weapon weapon = new Item_Weapon(game.controller.ItemType.NYRKIT);
+    private Item_Armor armor = new Item_Armor(ItemType.NO_ARMOR);
     private int hp;
     private final int speed;
     private int stamina;
@@ -62,6 +63,10 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
     public void changeWeapon(Item_Weapon item) {
         this.weapon = item;
     }
+    public void changeArmor(Item_Armor item) {
+        this.armor = item;
+    }
+
     @Override
     public ArrayList<Item> getItems() {
         return inventory.getDataList();

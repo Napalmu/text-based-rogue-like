@@ -1,6 +1,22 @@
 package game.controller;
 
 public enum ItemType implements GameConcept{
+    NO_ARMOR{
+        @Override
+        public String getName() {
+            return "Ei panssaria";
+        }
+
+        @Override
+        public int price() {
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Sinulla ei ole panssaria";
+        }
+    },
     NYRKIT {
         @Override
         public String getName() {return "Nyrkit";}

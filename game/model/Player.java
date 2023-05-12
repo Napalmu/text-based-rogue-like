@@ -1,6 +1,7 @@
 package game.model;
 
 import game.controller.GameController;
+import game.controller.InputManager;
 import game.controller.ItemType;
 
 public class Player extends LivingEntity{
@@ -20,8 +21,12 @@ public class Player extends LivingEntity{
         GameEventManager.emitPlayerStateChanged(getState());
     }
 
-    protected void setWeapon(Item_Weapon weapon){
+    public void setEquipment(Item_Weapon weapon){
         super.changeWeapon(weapon);
+        GameEventManager.emitPlayerStateChanged(getState());
+    }
+    public void setEquipment(Item_Armor armor){
+        super.changeArmor(armor);
         GameEventManager.emitPlayerStateChanged(getState());
     }
 
@@ -46,6 +51,8 @@ public class Player extends LivingEntity{
     public boolean canAfford(int price) {
         return hasItem(EntityManager.createItem(ItemType.COIN), price);
     }
+
+
 }
 
 
