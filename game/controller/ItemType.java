@@ -99,7 +99,7 @@ public enum ItemType implements GameConcept{
             return "kevyt ja hyvän näköinen miekka";
         }
     },
-    HALBERG {
+    HALBERD {
         @Override
         public String getName() {return "kätevä halperi";}
 
