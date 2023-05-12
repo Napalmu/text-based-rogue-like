@@ -2,6 +2,7 @@ package game.view;
 
 import game.model.Fighter;
 import game.model.IBattle;
+import game.model.InventoryHolder;
 import game.model.Item;
 import game.model.rooms.IRoom;
 
@@ -70,7 +71,7 @@ public class ViewController {
         changeRoom(new ScreenMessage(room, Arrays.asList(new String[]{"Seikkailuhuone"})));
     }
 
-    public void enterShopRoom(IRoom room, List<Item> items) {
+    public void enterShopRoom(IRoom room, InventoryHolder items) {
         changeRoom(new ScreenShop(room, items));
     }
 

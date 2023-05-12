@@ -3,6 +3,7 @@ package game.view;
 import game.controller.GameController;
 import game.controller.InputManager;
 import game.controller.InputManager.KeyPressedEvent;
+import game.model.InventoryHolder;
 import game.model.Item;
 import game.model.rooms.IRoom;
 
@@ -11,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ScreenShop extends ScreenThreePart {
-    private final List<Item> items;
+    private final InventoryHolder items;
     private List<KeyPressedEvent> shopKeys;
     private final ArrayList<KeyPressedEvent> enterShop = new ArrayList<>();
 
-    ScreenShop(IRoom room, List<Item> items) {
+    ScreenShop(IRoom room, InventoryHolder items) {
         super(room);
         this.items = items;
     }
@@ -75,13 +76,16 @@ class ScreenShop extends ScreenThreePart {
         private Item selectedItem;
 
         private void enterScreen() {
-            String[] strings = new String[items.size() + 2];
+            String[] strings = new String[items.itemcount() + 2];
             strings[0] = "Kaupan valikoima:";
             strings[1] = "0: Pois kaupasta";
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
+
+            int[] index=new int[]{0};
+            items.items().forEach((item)-> {
+                int i=index[0];
                 strings[i + 2] = (i + 1) + ": " + item.getType().getName() + " " + item.getType().price() + "€";
-            }
+                index[0]++;
+            });
             getMainArea().addMessage(strings);
         }
 
@@ -113,13 +117,15 @@ class ScreenShop extends ScreenThreePart {
 
         private List<KeyPressedEvent> getListenersForScreen() {
             ArrayList<KeyPressedEvent> shopEvents = new ArrayList<>();
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
+            int[] index=new int[]{0};
+            items.items().forEach((item) -> {
+                int i= index[0];
                 KeyPressedEvent event = new KeyPressedEvent(
                         KeyEvent.VK_1 + i,
                         () -> selectItem(item));
                 shopEvents.add(event);
-            }
+                index[0]++;
+            });
 
             //välilyönnillä ostetaan
             KeyPressedEvent buy = new KeyPressedEvent(

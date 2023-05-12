@@ -5,6 +5,7 @@ import game.controller.ItemType;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class LivingEntity extends Entity implements Fighter, InventoryHolder{
     private final Inventory inventory = new Inventory();
@@ -17,10 +18,12 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
     public void receiveItems(Item... item) {
         inventory.addItems(item);
     }
+
     @Override
     public void disposeItem(Item item) {
         inventory.removeItem(item);
     }
+    
     @Override
     public boolean hasItem(Item item) {
         return inventory.containsItem(item);
@@ -64,6 +67,16 @@ public class LivingEntity extends Entity implements Fighter, InventoryHolder{
         return inventory.getDataList();
     }
 
+    @Override
+    public int itemcount() {
+        return inventory.getDataList().size();
+    }
+    
+    @Override
+    public Stream<Item> items() {
+        return inventory.getDataList().stream();
+    }
+    
     public int getHp(){
         return hp;
     }
