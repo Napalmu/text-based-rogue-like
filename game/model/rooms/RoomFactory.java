@@ -79,7 +79,7 @@ public class RoomFactory {
             item2 = EntityManager.createItem(ItemType.PADDED_ARMOR);
         } else {
             item = EntityManager.createItem(ItemType.STICK);
-            item2 = EntityManager.createItem(ItemType.HALBERG);
+            item2 = EntityManager.createItem(ItemType.HALBERD);
         }
         return new ShopRoom(Arrays.asList(item, item2));
     }
